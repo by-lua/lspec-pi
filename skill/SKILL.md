@@ -49,14 +49,27 @@ The complexity determines the depth, not a fixed pipeline. Before starting any f
 
 ## Commands
 
-All commands use `/skill:l-spec <command>` format.
+All commands use `/skill:l-spec <command>` format. In PI, type `/lspec <command>` directly.
+
+> 💡 **Quick guide:**
+> ```
+> NEW PROJECT          → discovery → specify → discuss? → design? → tasks? → execute
+> EXISTING PROJECT:
+>   New feature        → feature-clarify? → specify → discuss? → design? → tasks? → execute
+>   Quick idea         → specify (skip clarify)
+>   Understand code    → ask
+>   Fix a bug          → bugfix
+>   Map codebase       → map
+> ```
+> `?` = optional (agent decides by complexity)
 
 ### Project-Level
 
 | Command | What it does |
 |---------|-------------|
-| `/skill:l-spec discovery` | Deep project init — 22 questions in 6 phases, captures design references |
-| `/skill:l-spec map` | Analyze existing codebase → 7 docs (stack, arch, conventions, structure, testing, integrations, concerns) |
+| `/skill:l-spec discovery` | **Start a new project.** 22 questions in 6 phases — captures vision, scope, stack, design references, risks, milestones. Creates `.specs/project/PROJECT.md`. |
+| `/skill:l-spec ask` | **Ask about existing code.** Explain a file, summarize a module, trace a function, suggest improvements. No planning, just understanding. |
+| `/skill:l-spec map` | **Analyze existing codebase.** Outputs 7 docs: stack, architecture, conventions, structure, testing, integrations, concerns. |
 | `/skill:l-spec pause` | Save STATE.md + HANDOFF.md for resumption |
 | `/skill:l-spec resume` | Load STATE.md + HANDOFF.md, show where you left off |
 | `/skill:l-spec next` | Go to next step manually |
@@ -66,13 +79,32 @@ All commands use `/skill:l-spec <command>` format.
 
 | Command | What it does |
 |---------|-------------|
-| `/skill:l-spec specify` | Define WHAT to build with testable requirements |
-| `/skill:l-spec discuss` | Capture user decisions on gray areas |
-| `/skill:l-spec design` | Define HOW — architecture, components, code reuse |
+| `/skill:l-spec feature-clarify` | **Add a new feature to an existing project.** 5 rapid questions — captures the idea, user, existing code, references, blockers. Saves to `.specs/features/[feature]/intake.md`. Skip this if the feature is already crystal clear and go straight to specify. |
+| `/skill:l-spec specify` | **Define WHAT to build.** Use AFTER discovery (for new projects) or AFTER feature-clarify (for new features). Can also use standalone if the idea is already clear — no clarify needed. Writes testable requirements with acceptance criteria. |
+| `/skill:l-spec discuss` | **Capture user decisions on gray areas.** When there are trade-offs or "it depends" decisions to make. |
+| `/skill:l-spec design` | **Define HOW to build it.** Architecture, components, code reuse. Auto-skipped for straightforward changes. |
 | `/skill:l-spec tasks` | Create task plan with dependencies and phases |
 | `/skill:l-spec execute` | Follow task plan — RED/GREEN/GATE/COMMIT per task |
 | `/skill:l-spec bugfix` | Quick mode for small bugs, full cycle for complex |
-| `/skill:l-spec feature-clarify` | Pre-feature rapid questions — 5 basic context captures before specifying |
+
+## Recommended Flow
+
+The order depends on what you're doing. Here's the recommended path:
+
+```
+NEW PROJECT:     discovery → specify → discuss? → design? → tasks? → execute
+EXISTING PROJECT:
+  New feature:   feature-clarify? → specify → discuss? → design? → tasks? → execute
+  Quick idea:    specify (skip clarify)
+  Understand:    ask
+  Fix a bug:     bugfix
+  Map codebase:  map
+```
+
+- **?** = optional phases (agent decides based on complexity)
+- **feature-clarify** = optional - use when the feature idea is vague, skip when it's already clear and go straight to specify
+- **design** = auto-skipped for straightforward changes, REQUIRED when `design-references/` exists
+- **tasks** = skipped when ≤3 obvious steps
 
 ## Discovery (22 Questions, 6 Phases)
 
@@ -251,6 +283,24 @@ Pre-feature rapid context capture. Lightweight — not a full discovery.
 
 **Output:** `.specs/features/[feature]/intake.md`
 
+## Ask
+
+Read, explain, or summarize code without planning anything.
+
+> Use this when you need to understand existing code — not to build something new.
+
+**Capabilities:**
+- Explain a specific file or function
+- Summarize a module or directory
+- Trace how data flows through the code
+- Suggest improvements or point out issues
+- Answer questions about the codebase
+
+**When NOT to use:**
+- You want to plan or build a feature → use specify
+- You want to fix a bug → use bugfix
+- You want to map the full codebase → use map
+
 ## Map
 
 Analyzes existing codebase.
@@ -319,6 +369,8 @@ Auto-updated at end of each phase in `STATE.md`:
 ## Subagents
 
 L-Spec defines **when** to use subagents. A separate subagent skill defines **which** subagent (model, tools, prompt).
+
+> ⚠️ **No subagent skill installed?** All phases run directly without delegation — orchestrator handles everything. The skill works fully standalone. Subagents are an optimization, not a requirement.
 
 | Phase | Subagent receives | Subagent produces |
 |-------|------------------|------------------|
