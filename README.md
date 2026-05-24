@@ -2,7 +2,7 @@
 
 > A 5-phase SDD workflow: Discovery → Specify → Design → Tasks → Execute. With deep discovery (22 questions), design references, auto-sizing, and quick mode.
 
-**⚠️ This is a PI.dev skill — it only runs inside PI.** It does NOT work on raw Hermes Agent or any other CLI.
+**⚠️ This is a PI.dev skill — it only runs inside PI.**
 
 ## Prerequisites
 
@@ -94,6 +94,99 @@ EXISTING:
 ```
 
 `?` = optional (agent decides by complexity)
+
+## Why Spec-Driven Development (SDD)?
+
+**Most coding projects fail not because of bad code, but because nobody defined what "done" looks like.**
+
+SDD flips the usual approach: instead of coding first and hoping it's right, you **spec first** — define exactly what needs to exist, how it behaves, and how you'll know it works — *then* implement.
+
+### Why this matters for AI-assisted coding
+
+Without SDD, the typical flow is:
+> "Build me a login system" → AI writes 500 lines → "No, I meant with OAuth" → AI rewrites → "Actually, just email + password" → AI rewrites again
+
+Each cycle wastes tokens, time, and patience. The AI is guessing your intent.
+
+With SDD (this skill):
+> **Discovery** → captures full context (problem, users, constraints, risks)  
+> **Specify** → turns intent into testable requirements (FEAT-01, FEAT-02...)  
+> **Design** → defines architecture before writing code  
+> **Tasks** → breaks into atomic steps  
+> **Execute** → implements with RED/GREEN — tests pass = feature done ✅
+
+The spec becomes the **source of truth**. If code drifts from spec, it's a SPEC_DEVIATION — not a surprise.
+
+### What you avoid
+
+- ❌ "I thought you meant something else" rewrites
+- ❌ Scope creep disguised as "just one more thing"
+- ❌ Code that works but does the wrong thing
+- ❌ Wasted tokens on AI guessing your intent
+
+## Why Tests Matter
+
+Every phase in L-Spec is designed around **testability**:
+
+| Phase | Testable output |
+|-------|----------------|
+| **Specify** | Acceptance criteria in WHEN/THEN/SHALL format — each is a test case |
+| **Design** | Component interfaces defined — each can be unit-tested |
+| **Tasks** | Each task has "Done when" criteria + a Gate command |
+| **Execute** | RED → write test first, GREEN → make it pass, GATE → verify everything passes |
+
+### Without tests, you're guessing
+
+> "It looks like it works" is not the same as "it works."
+
+Tests are not optional documentation — they're the **verification mechanism** for the spec. If a requirement says:
+
+> WHEN user submits invalid email THEN system SHALL show error message
+
+The test is: submit invalid email → check for error message. If the test passes, the requirement is met. If it fails, it's not done — no amount of "looks fine" changes that.
+
+### The RED/GREEN/GATE cycle
+
+```
+RED    → Write a test that fails (the requirement isn't implemented yet)
+GREEN  → Write the minimum code to make it pass
+GATE   → Run ALL tests + lint + build — nothing broken
+COMMIT → Atomic commit with test + code together
+```
+
+This ensures:
+- Every requirement has a test ✅
+- Tests pass before you move on ✅
+- You never break existing features (GATE catches regressions) ✅
+
+## Project State: Memory vs Context
+
+**The spec IS the memory.** It lives in `.specs/`, not in the AI's conversation.
+
+### What goes where
+
+| Lives in `.specs/` (persistent) | Lives in AI context (volatile) |
+|--------------------------------|--------------------------------|
+| Requirements (spec.md) | Current task instructions |
+| Architecture decisions (design.md) | Files being edited |
+| User decisions (context.md) | Recent commands |
+| Blockers and lessons (STATE.md) | This error message |
+| Task plans (tasks.md) | The next line of code |
+
+### Why this separation matters
+
+LLMs have a context window — it fills up and scrolls away. If project knowledge only lives in the chat:
+- Switch projects? Context is gone.
+- Come back tomorrow? Everything was scrolled off.
+- Hand off to someone else? They start from zero.
+
+By keeping state in **files inside the project** (`.specs/`):
+- **Any AI agent** can pick up where you left off — just load STATE.md
+- **Any tool** can read it (grep, cat, editor)
+- **You** can read it too — no need to scroll through chat history
+- **Git tracks changes** — see how decisions evolved
+
+> The chat is for conversation. The `.specs/` folder is for memory.
 
 ## Features
 
