@@ -426,6 +426,24 @@ Auto-updated at end of each phase in `STATE.md`:
 L-Spec defines **when** to use subagents. A separate subagent skill defines **which** subagent (model, tools, prompt).
 
 > ⚠️ **No subagent skill installed?** All phases run directly without delegation — orchestrator handles everything. The skill works fully standalone. Subagents are an optimization, not a requirement.
+>
+> **📢 Always inform the user when delegating:**
+> - **Which** subagent was called (`designer`, `coder`, `fixer`, etc.)
+> - **Which model** is running it (from `model-config.json`)
+> - **Current status** — `⏳ Started` / `✅ Completed` / `❌ Failed`
+> - **Result summary** — files created, decisions made, issues found
+>
+> Example:
+> ```
+> ▶ Delegating Design → subagent: designer (claude-sonnet-4)
+>    · Loading spec.md + design-references/
+>    · Running... ⏳
+> ────
+> ✅ Design completed → design.md saved
+>    · 3 components defined · 1 AD recorded · 0 blockers
+> ```
+>
+> This gives the user a clear "control panel" view of what's happening behind the scenes.
 
 | Phase | Subagent receives | Subagent produces |
 |-------|------------------|------------------|
