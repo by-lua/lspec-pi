@@ -56,7 +56,19 @@ Any PI subagent skill that provides these roles works:
 
 No subagent skill at all? The orchestrator handles everything directly with no delegation.
 
-### 4. Skill & Context
+### 5. Optional enhancements
+
+These PI packages make L-Spec more capable but are entirely optional:
+
+| Package | Install | What it does |
+|---------|---------|-------------|
+| **`@dreki-gg/pi-context7`** | `pi install npm:@dreki-gg/pi-context7` | Fetches up-to-date library/framework/API docs via Context7 — more accurate than web search. Recommended by TLC. |
+| **`context-mode`** | `pi install npm:context-mode` | MCP plugin that saves ~98% of context window. FTS5 knowledge base, sandboxed code execution, intent-driven search. |
+| **`pi-mcp-adapter`** | `pi install npm:pi-mcp-adapter` | Adapter to run MCP servers inside Pi — connect tools like filesystem, database, or custom MCP servers as native Pi tools. |
+| **`pi-web-access`** | `pi install npm:pi-web-access` | Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, local video analysis. |
+| **`pi-ask-user`** | `pi install npm:pi-ask-user` | Interactive ask_user with split-pane selection UI, multi-select, and freeform input. Better UX than plain text prompts. |
+
+### 6. Skill & Context
 
 L-Spec loads context in layers:
 
