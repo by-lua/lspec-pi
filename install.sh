@@ -2,7 +2,7 @@
 # L-Spec — Instalador
 # Uso: curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash
 
-set -euo pipefail
+set -uo pipefail
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -10,20 +10,19 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+REPO="https://github.com/by-lua/lspec-pi.git"
+
 echo ""
 echo -e "${BLUE}╔═══════════════════════════╗${NC}"
 echo -e "${BLUE}║   L-Spec — Instalador    ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════╝${NC}"
 echo ""
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [[ -f "$SCRIPT_DIR/skills/l-spec/SKILL.md" ]]; then
-    REPO_DIR="$SCRIPT_DIR"
-else
-    REPO_DIR="$(mktemp -d)"
-    git clone https://github.com/by-lua/lspec-pi.git "$REPO_DIR" 2>/dev/null || {
-        echo -e "${RED}✗ Erro ao clonar.${NC}"; exit 1; }
-fi
+# Sempre clona (via curl | bash não tem BASH_SOURCE)
+REPO_DIR="$(mktemp -d)"
+echo -e "${BLUE}→ Clonando repositório...${NC}"
+git clone --depth 1 "$REPO" "$REPO_DIR" 2>/dev/null || {
+    echo -e "${RED}✗ Erro ao clonar. Git instalado?${NC}"; rm -rf "$REPO_DIR"; exit 1; }
 
 PI_SKILLS_DIR="$HOME/.pi/agent/skills"
 PI_PROMPTS_DIR="$HOME/.pi/agent/prompts"
@@ -52,4 +51,4 @@ echo ""
 echo "Comandos: /lspec discovery | specify | design | tasks | execute | bugfix | auto | map | pause | resume | next | feature-clarify | discuss"
 echo ""
 
-[[ "$REPO_DIR" == /tmp/* ]] && rm -rf "$REPO_DIR"
+rm -rf "$REPO_DIR"
