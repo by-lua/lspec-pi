@@ -103,6 +103,7 @@ lspec-pi/
 ├── skills/l-spec/
 │   └── SKILL.md                        # main skill definition
 └── prompts/                            # slash command templates
+    ├── lspec-ask.md                   # ask about existing code
     ├── lspec-auto.md                   # run all phases automatically
     ├── lspec-bugfix.md                # bug fix (quick or full cycle)
     ├── lspec-design.md                # architecture & components
@@ -110,6 +111,7 @@ lspec-pi/
     ├── lspec-discuss.md               # capture decisions on gray areas
     ├── lspec-execute.md               # follow task plan (RED/GREEN/GATE/COMMIT)
     ├── lspec-feature-clarify.md      # 5 rapid questions before specifying
+    ├── lspec-help.md                  # list all commands with descriptions
     ├── lspec-map.md                   # analyze existing codebase → 7 docs
     ├── lspec-next.md                  # go to next phase manually
     ├── lspec-pause.md                 # save STATE + HANDOFF
@@ -125,6 +127,7 @@ lspec-pi/
 | Command | What it does |
 |---------|-------------|
 | `/lspec discovery` | **Start a new project.** 22 questions, 6 phases — vision, scope, stack, design refs, risks, milestones |
+| `/lspec ask` | **Ask about existing code.** Explain, summarize, trace — no planning, just understanding |
 | `/lspec map` | **Analyze existing codebase.** 7 docs: stack, arch, conventions, structure, testing, integrations, concerns |
 | `/lspec pause` | Save STATE + HANDOFF for resumption |
 | `/lspec resume` | Load STATE + HANDOFF, show where you left off |
@@ -151,8 +154,10 @@ EXISTING PROJECT:
   No .specs yet?  → map → then use any feature command
   New feature     → feature-clarify? → specify → discuss? → design? → tasks? → execute
   Quick idea      → specify (skip clarify)
+  Understand code → ask
   Fix a bug       → bugfix
   Map codebase    → map
+  All commands    → help
 ```
 
 `?` = optional (agent decides by complexity)
