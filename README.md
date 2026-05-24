@@ -4,6 +4,36 @@
 
 **⚠️ This is a PI.dev skill — it only runs inside PI.**
 
+## Why this exists
+
+Most AI coding sessions waste 40-60% of tokens on rewrites, clarifications, and "I thought you meant...". L-Spec fixes this by **specifying before coding** — so every token generates value, not guesses.
+
+| Without SDD | With L-Spec |
+|-------------|-------------|
+| ❌ "Build me a login" → AI guesses → rewrite → rewrite | ✅ Discovery first → AI knows exactly what you need |
+| ❌ No tests until the end (or never) | ✅ RED/GREEN/GATE — every feature verified before moving on |
+| ❌ Project knowledge lost when context scrolls | ✅ `.specs/` lives in your repo — any AI picks up where you left off |
+| ❌ Scope grows silently ("just one more thing") | ✅ Out-of-scope defined upfront — changes are conscious decisions |
+
+**Result:** fewer rewrites, fewer bugs, cleaner commits, and projects that survive between sessions.
+
+## Table of Contents
+
+| Section | What you'll learn |
+|---------|-----------------|
+| [Prerequisites](#prerequisites) | What to install before starting |
+| [Recommended: Subagents](#recommended-subagents) | Optional companion skill for Design & Execute phases |
+| [Optional Enhancements](#optional-enhancements) | Packages that extend capability (Context7, web access, etc.) |
+| [What's Inside](#whats-inside) | All 15 prompt templates and what each does |
+| [Commands](#commands) | Every `/lspec` command with quick guide |
+| [Why Spec-Driven Development?](#why-spec-driven-development-sdd) | SDD defined — why it prevents rewrites and aligns teams |
+| [Why Tests Matter](#why-tests-matter) | RED/GREEN/GATE cycle — tests as verification, not documentation |
+| [Project State: Memory vs Context](#project-state-memory-vs-context) | Why `.specs/` lives in the project, not in AI memory |
+| [Features](#features) | Auto-sizing, quick mode, design refs, pluggable subagents |
+| [License](#license) | CC-BY-4.0 |
+
+---
+
 ## Prerequisites
 
 | Required | Install |
