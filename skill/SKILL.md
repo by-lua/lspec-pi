@@ -556,14 +556,15 @@ This ensures:
 
 ### Why this separation matters
 
-LLMs have a context window — it fills up and scrolls away. If project knowledge only lives in the chat:
+**Every conversation is a new flight.** The crew (AI) forgets everything when the plane lands. If you didn't leave the flight manual in the cabin (`.specs/`), the next crew starts from zero — no idea where you were, what you decided, or what still needs fixing.
 
+This is how LLMs actually work:
 - Switch projects? Context is gone.
 - Come back tomorrow? Everything was scrolled off.
 - Hand off to someone else? They start from zero.
+- Browser refreshes, chat restarts, new tab? Blank slate.
 
 By keeping state in **files inside the project** (`.specs/`):
-
 - **Any AI agent** can pick up where you left off — just load STATE.md
 - **Any tool** can read it (grep, cat, editor)
 - **You** can read it too — no need to scroll through chat history
