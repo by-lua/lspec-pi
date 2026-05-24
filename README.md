@@ -99,9 +99,9 @@ skill/
 
 | Command | What it does |
 |---------|-------------|
-| `/lspec discovery` | **NEW PROJECT:** 22 questions, 6 phases — vision, scope, stack, design refs, risks, milestones |
-| `/lspec ask` | **EXISTING PROJECT:** Ask about code — explain, summarize, trace without planning |
-| `/lspec map` | **EXISTING PROJECT:** Analyze codebase → 7 docs: stack, arch, conventions, structure, testing, integrations, concerns |
+| `/lspec discovery` | **Start a new project.** 22 questions, 6 phases — vision, scope, stack, design refs, risks, milestones |
+| `/lspec ask` | **Ask about existing code.** Explain, summarize, trace without planning |
+| `/lspec map` | **Analyze existing codebase.** 7 docs: stack, arch, conventions, structure, testing, integrations, concerns |
 | `/lspec pause` | Save STATE + HANDOFF for resumption |
 | `/lspec resume` | Load STATE + HANDOFF, show where you left off |
 | `/lspec next` | Go to next phase manually |
@@ -111,19 +111,20 @@ skill/
 
 | Command | What it does |
 |---------|-------------|
-| `/lspec feature-clarify` | **EXISTING PROJECT:** Add feature — 5 rapid questions, saves intake.md |
-| `/lspec specify` | **Define WHAT to build.** Use after discovery (new) or clarify (existing), or standalone if already clear |
+| `/lspec feature-clarify` | **Add feature to existing project.** 5 rapid questions, saves intake.md |
+| `/lspec specify` | **Define WHAT to build.** Use after discovery or clarify, or standalone if already clear |
 | `/lspec discuss` | Capture user decisions on gray areas / trade-offs |
 | `/lspec design` | **Define HOW —** architecture, components. Auto-skipped for simple changes |
 | `/lspec tasks` | Create task plan with dependencies and phases |
 | `/lspec execute` | Follow task plan — RED/GREEN/GATE/COMMIT per task |
-| `/lspec bugfix` | **EXISTING PROJECT:** Quick mode for small bugs, full cycle for complex |
+| `/lspec bugfix` | Quick mode for small bugs, full cycle for complex |
 
 ### Quick Guide
 
 ```
 NEW PROJECT       → discovery → specify → discuss? → design? → tasks? → execute
-EXISTING:
+EXISTING PROJECT:
+  No .specs yet?  → map → then use any feature command
   New feature     → feature-clarify? → specify → discuss? → design? → tasks? → execute
   Quick idea      → specify (skip clarify)
   Understand code → ask
