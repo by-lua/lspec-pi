@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# L-Spec — Instalador
+# L-Spec — Instalador / Atualizador
 # Uso: curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash
 
 set -uo pipefail
@@ -12,20 +12,30 @@ NC='\033[0m'
 
 REPO="https://github.com/by-lua/lspec-pi.git"
 
-echo ""
-echo -e "${BLUE}╔═══════════════════════════╗${NC}"
-echo -e "${BLUE}║   L-Spec — Instalador    ║${NC}"
-echo -e "${BLUE}╚═══════════════════════════╝${NC}"
+PI_SKILLS_DIR="$HOME/.pi/agent/skills"
+PI_PROMPTS_DIR="$HOME/.pi/agent/prompts"
+
+# Detectar instalação existente
+if [[ -f "$PI_SKILLS_DIR/l-spec/SKILL.md" ]]; then
+    ACTION="update"
+    echo ""
+    echo -e "${YELLOW}╔════════════════════════════╗${NC}"
+    echo -e "${YELLOW}║   L-Spec — Atualizando... ║${NC}"
+    echo -e "${YELLOW}╚════════════════════════════╝${NC}"
+else
+    ACTION="install"
+    echo ""
+    echo -e "${BLUE}╔═══════════════════════════╗${NC}"
+    echo -e "${BLUE}║   L-Spec — Instalador    ║${NC}"
+    echo -e "${BLUE}╚═══════════════════════════╝${NC}"
+fi
 echo ""
 
 # Sempre clona (via curl | bash não tem BASH_SOURCE)
 REPO_DIR="$(mktemp -d)"
-echo -e "${BLUE}→ Clonando repositório...${NC}"
+echo -e "${BLUE}→ Baixando repositório...${NC}"
 git clone --depth 1 "$REPO" "$REPO_DIR" 2>/dev/null || {
     echo -e "${RED}✗ Erro ao clonar. Git instalado?${NC}"; rm -rf "$REPO_DIR"; exit 1; }
-
-PI_SKILLS_DIR="$HOME/.pi/agent/skills"
-PI_PROMPTS_DIR="$HOME/.pi/agent/prompts"
 
 mkdir -p "$PI_SKILLS_DIR" "$PI_PROMPTS_DIR"
 
@@ -46,7 +56,11 @@ for f in "$REPO_DIR/prompts/"/lspec-*.md; do
 done
 
 echo ""
-echo -e "${GREEN}✓ L-Spec instalado!${NC}"
+if [[ "$ACTION" == "update" ]]; then
+    echo -e "${GREEN}✓ L-Spec atualizado!${NC} (${count} comandos)"
+else
+    echo -e "${GREEN}✓ L-Spec instalado!${NC} (${count} comandos)"
+fi
 echo ""
 echo "Comandos: /lspec discovery | feature-clarify | specify | discuss | design | tasks | execute | bugfix | ask | map | pause | resume | next | auto | help"
 echo ""

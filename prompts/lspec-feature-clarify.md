@@ -5,7 +5,7 @@ argument-hint: "[feature-name]"
 Load the l-spec skill and run the "feature-clarify" command.
 
 First check if you're in a project context (look for .specs/project/PROJECT.md):
-- If NO PROJECT.md → tell the user to run `/lspec-discovery` first
+- If NO PROJECT.md → tell the user to run `/lspec discovery` first
 - If YES PROJECT.md → run 5 rapid questions:
   1. What feature? (one-sentence description)
   2. Who uses it? (user/case)
@@ -15,3 +15,4 @@ First check if you're in a project context (look for .specs/project/PROJECT.md):
 
 Save to `.specs/features/[feature]/intake.md`.
 If feature is ≤3 files → ask user if they want to skip to quick mode execution.
+Otherwise → suggest `/lspec specify` as the next step.

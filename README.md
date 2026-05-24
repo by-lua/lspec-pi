@@ -44,6 +44,16 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | b
 
 Installs to `~/.pi/agent/skills/l-spec/` (skill) and `~/.pi/agent/prompts/` (slash commands).
 
+### Update
+
+To update, just run the install command again — it detects the existing installation and overwrites:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash
+```
+
+You'll see "Atualizando..." instead of "Instalador" to confirm it's an update.
+
 ### Manual install
 
 ```bash
