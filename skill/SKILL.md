@@ -41,15 +41,25 @@ For subagent-powered phases (Design, Execute), install the companion skill:
 
 **[github.com/by-lua/lspec-subagents](https://github.com/by-lua/lspec-subagents)**
 
-This provides 9 specialized agents with **per-role model assignment** — you can run the cheap model for simple tasks and the powerful one only where it matters:
+This provides 9 specialized agents with **per-role model AND provider assignment** — each task runs on whatever LLM makes sense, not just whatever you're currently chatting with:
 
-| Task | Can run on | Why it saves tokens |
-|------|-----------|-------------------|
-| **Design** | Powerful model (reasoning, architecture) | Expensive, but only once per feature |
-| **Execute** | Cheap model (code generation) | Most of the work, at lowest cost |
-| **Review** | Mid model (quality check) | Catches issues before they compound |
+| Role | Example model | Example provider | Why it fits |
+|------|--------------|------------------|-------------|
+| **Design** | Claude Opus | Anthropic | Deep reasoning, architecture decisions, long-context planning |
+| **Execute** | Codex | OpenAI | Fast code generation, good at patterns and boilerplate |
+| **Review** | Grok | xAI | Quick quality check, catches regressions cheaply |
+| **Explore** | GPT-4o-mini | OpenAI | Cheapest option — reads files, maps structure |
 
-**Result:** instead of burning premium tokens on *everything*, you delegate intelligently — complex work gets the heavy model, boilerplate runs on the cheap one.
+**Result:** instead of burning Claude Opus tokens on *everything*, you route tasks intelligently — complex thinking gets the heavy model, code gen runs on Codex, review runs on Grok. Each task on the best tool for that job, potentially from different providers entirely.
+
+**Example config** (`model-config.json`):
+```json
+{
+  "designer": { "provider": "anthropic", "model": "claude-opus-4" },
+  "coder":    { "provider": "openai",    "model": "codex" },
+  "fixer":    { "provider": "xai",       "model": "grok-2" }
+}
+```
 
 See the repo README for setup instructions.
 
