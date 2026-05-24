@@ -41,7 +41,16 @@ For subagent-powered phases (Design, Execute), install the companion skill:
 
 **[github.com/by-lua/lspec-subagents](https://github.com/by-lua/lspec-subagents)**
 
-This provides 9 specialized agents (orchestrator, explorer, designer, fixer, etc.) with a central model config.  
+This provides 9 specialized agents with **per-role model assignment** — you can run the cheap model for simple tasks and the powerful one only where it matters:
+
+| Task | Can run on | Why it saves tokens |
+|------|-----------|-------------------|
+| **Design** | Powerful model (reasoning, architecture) | Expensive, but only once per feature |
+| **Execute** | Cheap model (code generation) | Most of the work, at lowest cost |
+| **Review** | Mid model (quality check) | Catches issues before they compound |
+
+**Result:** instead of burning premium tokens on *everything*, you delegate intelligently — complex work gets the heavy model, boilerplate runs on the cheap one.
+
 See the repo README for setup instructions.
 
 ### 3. But you can use ANY subagent skill
