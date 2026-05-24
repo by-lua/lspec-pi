@@ -48,7 +48,7 @@ done
 echo ""
 echo -e "${GREEN}✓ L-Spec instalado!${NC}"
 echo ""
-echo "Comandos: /lspec discovery | specify | design | tasks | execute | bugfix | auto | map | pause | resume | next | feature-clarify | discuss"
+echo "Comandos: /lspec discovery | feature-clarify | specify | discuss | design | tasks | execute | bugfix | ask | map | pause | resume | next | auto | help"
 echo ""
 
 rm -rf "$REPO_DIR"

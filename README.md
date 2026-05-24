@@ -1,6 +1,6 @@
 # L-Spec PI — Spec-Driven Development Skill for PI.dev
 
-> A 5-phase SDD workflow for **new AND existing projects**: Discovery → Specify → Design → Tasks → Execute. Also: analyze existing code (`/lspec map`), ask questions (`/lspec ask`), and fix bugs (`/lspec bugfix`).
+> A 5-phase SDD workflow for **new AND existing projects**: Discovery → Feature-Clarify → Specify → Design → Tasks → Execute. Also: analyze existing code (`/lspec map`), ask questions (`/lspec ask`), and fix bugs (`/lspec bugfix`).
 
 **⚠️ This is a PI.dev skill — it only runs inside PI.**
 
@@ -26,7 +26,7 @@ Most AI coding sessions waste 40-60% of tokens on rewrites, clarifications, and 
 | [Recommended: Subagents](#recommended-subagents) | Optional companion for Design & Execute phases |
 | [Optional Enhancements](#optional-enhancements) | Packages that extend capability |
 | [What's Inside](#whats-inside) | All files and what each does |
-| [Commands](#commands) | Every `/lspec` command with quick guide |
+| [Commands](#commands) | Every `/lspec` command in pipeline order |
 | [Why Spec-Driven Development?](#why-spec-driven-development-sdd) | SDD defined — why it prevents rewrites |
 | [Why Tests Matter](#why-tests-matter) | RED/GREEN/GATE cycle |
 | [Project State: Memory vs Context](#project-state-memory-vs-context) | Why `.specs/` lives in the project |
@@ -122,36 +122,30 @@ lspec-pi/
 
 ## Commands
 
-### Project-Level
-
 | Command | What it does |
 |---------|-------------|
 | `/lspec discovery` | **Start a new project.** 22 questions, 6 phases — vision, scope, stack, design refs, risks, milestones |
-| `/lspec ask` | **Ask about existing code.** Explain, summarize, trace — no planning, just understanding |
-| `/lspec map` | **Analyze existing codebase.** 7 docs: stack, arch, conventions, structure, testing, integrations, concerns |
-| `/lspec pause` | Save STATE + HANDOFF for resumption |
-| `/lspec resume` | Load STATE + HANDOFF, show where you left off |
-| `/lspec next` | Go to next phase manually |
-| `/lspec auto` | Run all phases automatically with auto-sizing |
-
-### Feature-Level
-
-| Command | What it does |
-|---------|-------------|
-| `/lspec feature-clarify` | **Add feature to existing project.** 5 rapid questions |
+| `/lspec feature-clarify` | **Add feature to existing project.** 5 rapid questions before specifying |
 | `/lspec specify` | **Define WHAT to build.** Testable requirements (FEAT-01, FEAT-02...) |
 | `/lspec discuss` | Capture user decisions on gray areas / trade-offs |
 | `/lspec design` | **Define HOW —** architecture, components. Auto-skipped for simple changes |
 | `/lspec tasks` | Create task plan with dependencies and phases |
 | `/lspec execute` | Follow task plan — RED/GREEN/GATE/COMMIT per task |
 | `/lspec bugfix` | Quick mode for small bugs, full cycle for complex |
+| `/lspec ask` | **Ask about existing code.** Explain, summarize, trace — no planning, just understanding |
+| `/lspec map` | **Analyze existing codebase.** 7 docs: stack, arch, conventions, structure, testing, integrations, concerns |
+| `/lspec pause` | Save STATE + HANDOFF for resumption |
+| `/lspec resume` | Load STATE + HANDOFF, show where you left off |
+| `/lspec next` | Go to next phase manually |
+| `/lspec auto` | Run all phases automatically with auto-sizing |
+| `/lspec help` | List all commands with descriptions |
 
 ### Quick Guide
 
 ```
-NEW PROJECT       → discovery → specify → discuss? → design? → tasks? → execute
+NEW PROJECT       → discovery → feature-clarify? → specify → discuss? → design? → tasks? → execute
 EXISTING PROJECT:
-  No .specs yet?  → map → then use any feature command
+  No .specs yet?  → map → then use any command
   New feature     → feature-clarify? → specify → discuss? → design? → tasks? → execute
   Quick idea      → specify (skip clarify)
   Understand code → ask
