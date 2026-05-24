@@ -26,80 +26,6 @@ metadata:
 * Agent auto-skips when scope doesn't need it. Quick mode for small changes (≤3 files).
 ```
 
-## Prerequisites & Setup
-
-### 1. PI.dev is required
-
-This is a **[PI.dev](https://github.com/tintinweb/pi) skill** — you need PI installed and running.  
-It does NOT run on raw Hermes Agent or any other CLI.
-
-> Already have PI? Just copy this skill to `~/.pi/agent/skills/l-spec/SKILL.md` and the prompt templates to `~/.pi/agent/prompts/lspec-*.md`.
-
-### 2. Recommended: @lspec/subagents
-
-For subagent-powered phases (Design, Execute), install the companion skill:
-
-**[github.com/by-lua/lspec-subagents](https://github.com/by-lua/lspec-subagents)**
-
-This provides 9 specialized agents with **per-role model AND provider assignment** — each task runs on whatever LLM makes sense, not just whatever you're currently chatting with:
-
-| Role | Example model | Example provider | Why it fits |
-|------|--------------|------------------|-------------|
-| **Design** | Claude Opus | Anthropic | Deep reasoning, architecture decisions, long-context planning |
-| **Execute** | Codex | OpenAI | Fast code generation, good at patterns and boilerplate |
-| **Review** | Grok | xAI | Quick quality check, catches regressions cheaply |
-| **Explore** | GPT-4o-mini | OpenAI | Cheapest option — reads files, maps structure |
-
-**Result:** instead of burning Claude Opus tokens on *everything*, you route tasks intelligently — complex thinking gets the heavy model, code gen runs on Codex, review runs on Grok. Each task on the best tool for that job, potentially from different providers entirely.
-
-**Example config** (`model-config.json`):
-```json
-{
-  "designer": { "provider": "anthropic", "model": "claude-opus-4" },
-  "coder":    { "provider": "openai",    "model": "codex" },
-  "fixer":    { "provider": "xai",       "model": "grok-2" }
-}
-```
-
-See the repo README for setup instructions.
-
-### 3. But you can use ANY subagent skill
-
-L-Spec only defines **when** to delegate — it doesn't care which subagent skill you use.  
-Any PI subagent skill that provides these roles works:
-
-| Phase | Agent role needed |
-|-------|------------------|
-| Design | an agent that reads specs + design references and outputs architecture |
-| Execute | an agent that reads tasks + specs + conventions and writes code |
-
-No subagent skill at all? The orchestrator handles everything directly with no delegation.
-
-### 5. Optional enhancements
-
-These PI packages make L-Spec more capable but are entirely optional:
-
-| Package | Install | What it does |
-|---------|---------|-------------|
-| **`@dreki-gg/pi-context7`** | `pi install npm:@dreki-gg/pi-context7` | Fetches up-to-date library/framework/API docs via Context7 — more accurate than web search. Recommended by TLC. |
-| **`context-mode`** | `pi install npm:context-mode` | MCP plugin that saves ~98% of context window. FTS5 knowledge base, sandboxed code execution, intent-driven search. |
-| **`pi-mcp-adapter`** | `pi install npm:pi-mcp-adapter` | Adapter to run MCP servers inside Pi — connect tools like filesystem, database, or custom MCP servers as native Pi tools. |
-| **`pi-web-access`** | `pi install npm:pi-web-access` | Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, local video analysis. |
-| **`pi-ask-user`** | `pi install npm:pi-ask-user` | Interactive ask_user with split-pane selection UI, multi-select, and freeform input. Better UX than plain text prompts. |
-
-### 6. Skill & Context
-
-L-Spec loads context in layers:
-
-| Layer | What | When |
-|-------|------|------|
-| **Base** | PROJECT.md + ROADMAP.md + STATE.md | Always loaded (≈15k tokens) |
-| **On-demand** | spec, context, design, tasks, TESTING.md, CONVENTIONS.md | Loaded per phase |
-| **Design refs** | `.specs/design-references/` images, HTML, patterns | Only during Design phase |
-| **Codebase** | STACK, ARCHITECTURE, STRUCTURE, CONVENTIONS, TESTING, INTEGRATIONS, CONCERNS | Only during Map / Execute |
-
-Never load multiple feature specs or archived docs simultaneously.
-
 ## Auto-Sizing
 
 The complexity determines the depth, not a fixed pipeline. Before starting any feature, assess its scope and apply only what's needed:
@@ -123,27 +49,14 @@ The complexity determines the depth, not a fixed pipeline. Before starting any f
 
 ## Commands
 
-All commands use `/skill:l-spec <command>` format. In PI, type `/lspec <command>` directly.
-
-> 💡 **Quick guide:**
-> ```
-> NEW PROJECT          → discovery → specify → discuss? → design? → tasks? → execute
-> EXISTING PROJECT:
->   New feature        → feature-clarify? → specify → discuss? → design? → tasks? → execute
->   Quick idea         → specify (skip clarify)
->   Understand code    → ask
->   Fix a bug          → bugfix
->   Map codebase       → map
-> ```
-> `?` = optional (agent decides by complexity)
+All commands use `/skill:l-spec <command>` format.
 
 ### Project-Level
 
 | Command | What it does |
 |---------|-------------|
-| `/skill:l-spec discovery` | **Start a new project.** 22 questions in 6 phases — captures vision, scope, stack, design references, risks, milestones. Creates `.specs/project/PROJECT.md`. |
-| `/skill:l-spec ask` | **Ask about existing code.** Explain a file, summarize a module, trace a function, suggest improvements. No planning, just understanding. |
-| `/skill:l-spec map` | **Analyze existing codebase.** Outputs 7 docs: stack, architecture, conventions, structure, testing, integrations, concerns. |
+| `/skill:l-spec discovery` | Deep project init — 22 questions in 6 phases, captures design references |
+| `/skill:l-spec map` | Analyze existing codebase → 7 docs (stack, arch, conventions, structure, testing, integrations, concerns) |
 | `/skill:l-spec pause` | Save STATE.md + HANDOFF.md for resumption |
 | `/skill:l-spec resume` | Load STATE.md + HANDOFF.md, show where you left off |
 | `/skill:l-spec next` | Go to next step manually |
@@ -153,32 +66,13 @@ All commands use `/skill:l-spec <command>` format. In PI, type `/lspec <command>
 
 | Command | What it does |
 |---------|-------------|
-| `/skill:l-spec feature-clarify` | **Add a new feature to an existing project.** 5 rapid questions — captures the idea, user, existing code, references, blockers. Saves to `.specs/features/[feature]/intake.md`. Skip this if the feature is already crystal clear and go straight to specify. |
-| `/skill:l-spec specify` | **Define WHAT to build.** Use AFTER discovery (for new projects) or AFTER feature-clarify (for new features). Can also use standalone if the idea is already clear — no clarify needed. Writes testable requirements with acceptance criteria. |
-| `/skill:l-spec discuss` | **Capture user decisions on gray areas.** When there are trade-offs or "it depends" decisions to make. |
-| `/skill:l-spec design` | **Define HOW to build it.** Architecture, components, code reuse. Auto-skipped for straightforward changes. |
+| `/skill:l-spec specify` | Define WHAT to build with testable requirements |
+| `/skill:l-spec discuss` | Capture user decisions on gray areas |
+| `/skill:l-spec design` | Define HOW — architecture, components, code reuse |
 | `/skill:l-spec tasks` | Create task plan with dependencies and phases |
 | `/skill:l-spec execute` | Follow task plan — RED/GREEN/GATE/COMMIT per task |
 | `/skill:l-spec bugfix` | Quick mode for small bugs, full cycle for complex |
-
-## Recommended Flow
-
-The order depends on what you're doing. Here's the recommended path:
-
-```
-NEW PROJECT:     discovery → specify → discuss? → design? → tasks? → execute
-EXISTING PROJECT:
-  New feature:   feature-clarify? → specify → discuss? → design? → tasks? → execute
-  Quick idea:    specify (skip clarify)
-  Understand:    ask
-  Fix a bug:     bugfix
-  Map codebase:  map
-```
-
-- **?** = optional phases (agent decides based on complexity)
-- **feature-clarify** = optional - use when the feature idea is vague, skip when it's already clear and go straight to specify
-- **design** = auto-skipped for straightforward changes, REQUIRED when `design-references/` exists
-- **tasks** = skipped when ≤3 obvious steps
+| `/skill:l-spec feature-clarify` | Pre-feature rapid questions — 5 basic context captures before specifying |
 
 ## Discovery (22 Questions, 6 Phases)
 
@@ -357,24 +251,6 @@ Pre-feature rapid context capture. Lightweight — not a full discovery.
 
 **Output:** `.specs/features/[feature]/intake.md`
 
-## Ask
-
-Read, explain, or summarize code without planning anything.
-
-> Use this when you need to understand existing code — not to build something new.
-
-**Capabilities:**
-- Explain a specific file or function
-- Summarize a module or directory
-- Trace how data flows through the code
-- Suggest improvements or point out issues
-- Answer questions about the codebase
-
-**When NOT to use:**
-- You want to plan or build a feature → use specify
-- You want to fix a bug → use bugfix
-- You want to map the full codebase → use map
-
 ## Map
 
 Analyzes existing codebase.
@@ -444,26 +320,6 @@ Auto-updated at end of each phase in `STATE.md`:
 
 L-Spec defines **when** to use subagents. A separate subagent skill defines **which** subagent (model, tools, prompt).
 
-> ⚠️ **No subagent skill installed?** All phases run directly without delegation — orchestrator handles everything. The skill works fully standalone. Subagents are an optimization, not a requirement.
->
-> **📢 Always inform the user when delegating:**
-> - **Which** subagent was called (`designer`, `coder`, `fixer`, etc.)
-> - **Which model** is running it (from `model-config.json`)
-> - **Current status** — `⏳ Started` / `✅ Completed` / `❌ Failed`
-> - **Result summary** — files created, decisions made, issues found
->
-> Example:
-> ```
-> ▶ Delegating Design → subagent: designer (claude-sonnet-4)
->    · Loading spec.md + design-references/
->    · Running... ⏳
-> ────
-> ✅ Design completed → design.md saved
->    · 3 components defined · 1 AD recorded · 0 blockers
-> ```
->
-> This gives the user a clear "control panel" view of what's happening behind the scenes.
-
 | Phase | Subagent receives | Subagent produces |
 |-------|------------------|------------------|
 | Design | spec.md + design-references/ + context.md | design.md |
@@ -476,7 +332,12 @@ L-Spec defines **when** to use subagents. A separate subagent skill defines **wh
 
 ## Context Loading
 
-See **[Prerequisites & Setup → Skill & Context](#4-skill--context)** for the full context loading strategy.
+**Base load:** PROJECT.md + ROADMAP.md + STATE.md (≈15k tokens)
+
+**On-demand (load as needed):**
+- Codebase docs, CONCERNS.md, TESTING.md, spec.md, context.md, design.md, tasks.md
+
+**Never simultaneously:** multiple feature specs, multiple architecture docs, archived documents
 
 ## Rules
 
@@ -486,107 +347,3 @@ See **[Prerequisites & Setup → Skill & Context](#4-skill--context)** for the f
 4. STATE.md always updated — clean resumption between sessions
 5. Clean context for subagents — only spec + current task
 6. WHEN/THEN/SHALL — acceptance criteria must be testable
-
----
-
-## Why Spec-Driven Development (SDD)?
-
-**Most coding projects fail not because of bad code, but because nobody defined what "done" looks like.**
-
-SDD flips the usual approach: instead of coding first and hoping it's right, you **spec first** — define exactly what needs to exist, how it behaves, and how you'll know it works — *then* implement.
-
-### Why this matters for AI-assisted coding
-
-Without SDD, the typical flow is:
-
-> "Build me a login system" → AI writes 500 lines → "No, I meant with OAuth" → AI rewrites → "Actually, just email + password" → AI rewrites again
-
-Each cycle wastes tokens, time, and patience. The AI is guessing your intent.
-
-With SDD:
-
-| Phase | What it does |
-|-------|-------------|
-| **Discovery** | Captures full context — problem, users, constraints, risks |
-| **Specify** | Turns intent into testable requirements (FEAT-01, FEAT-02...) |
-| **Design** | Defines architecture before writing code |
-| **Tasks** | Breaks into atomic steps with dependencies |
-| **Execute** | Implements with RED/GREEN — tests pass = feature done ✅ |
-
-The spec becomes the **source of truth**. If code drifts from spec, it's a SPEC_DEVIATION — not a surprise.
-
-### What you avoid
-
-- ❌ "I thought you meant something else" rewrites
-- ❌ Scope creep disguised as "just one more thing"
-- ❌ Code that works but does the wrong thing
-- ❌ Wasted tokens on AI guessing your intent
-
----
-
-## Why Tests Matter
-
-Every phase in L-Spec is designed around **testability**:
-
-| Phase | Testable output |
-|-------|----------------|
-| **Specify** | Acceptance criteria in WHEN/THEN/SHALL format — each is a test case |
-| **Design** | Component interfaces defined — each can be unit-tested |
-| **Tasks** | Each task has "Done when" criteria + a Gate command |
-| **Execute** | RED → write test first, GREEN → make it pass, GATE → verify everything passes |
-
-> "It looks like it works" is not the same as "it works."
-
-Tests are not optional documentation — they're the **verification mechanism** for the spec. If a requirement says:
-
-> WHEN user submits invalid email THEN system SHALL show error message
-
-The test is: submit invalid email → check for error message. If the test passes, the requirement is met. If it fails, it's not done — no amount of "looks fine" changes that.
-
-### The RED/GREEN/GATE cycle
-
-```
-RED    → Write a test that fails (the requirement isn't implemented yet)
-GREEN  → Write the minimum code to make it pass
-GATE   → Run ALL tests + lint + build — nothing broken
-COMMIT → Atomic commit with test + code together
-```
-
-This ensures:
-- Every requirement has a test ✅
-- Tests pass before you move on ✅
-- You never break existing features (GATE catches regressions) ✅
-
----
-
-## Project State: Memory vs Context
-
-**The spec IS the memory.** It lives in `.specs/`, not in the AI's conversation.
-
-### What goes where
-
-| Lives in `.specs/` (persistent) | Lives in AI context (volatile) |
-|--------------------------------|--------------------------------|
-| Requirements (spec.md) | Current task instructions |
-| Architecture decisions (design.md) | Files being edited |
-| User decisions (context.md) | Recent commands |
-| Blockers and lessons (STATE.md) | This error message |
-| Task plans (tasks.md) | The next line of code |
-
-### Why this separation matters
-
-**Every conversation is a new flight.** The crew (AI) forgets everything when the plane lands. If you didn't leave the flight manual in the cabin (`.specs/`), the next crew starts from zero — no idea where you were, what you decided, or what still needs fixing.
-
-This is how LLMs actually work:
-- Switch projects? Context is gone.
-- Come back tomorrow? Everything was scrolled off.
-- Hand off to someone else? They start from zero.
-- Browser refreshes, chat restarts, new tab? Blank slate.
-
-By keeping state in **files inside the project** (`.specs/`):
-- **Any AI agent** can pick up where you left off — just load STATE.md
-- **Any tool** can read it (grep, cat, editor)
-- **You** can read it too — no need to scroll through chat history
-- **Git tracks changes** — see how decisions evolved
-
-> The chat is for conversation. The `.specs/` folder is for memory.
