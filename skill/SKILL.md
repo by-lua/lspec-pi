@@ -26,6 +26,49 @@ metadata:
 * Agent auto-skips when scope doesn't need it. Quick mode for small changes (≤3 files).
 ```
 
+## Prerequisites & Setup
+
+### 1. PI.dev is required
+
+This is a **[PI.dev](https://github.com/tintinweb/pi) skill** — you need PI installed and running.  
+It does NOT run on raw Hermes Agent or any other CLI.
+
+> Already have PI? Just copy this skill to `~/.pi/agent/skills/l-spec/SKILL.md` and the prompt templates to `~/.pi/agent/prompts/lspec-*.md`.
+
+### 2. Recommended: @lspec/subagents
+
+For subagent-powered phases (Design, Execute), install the companion skill:
+
+**[github.com/by-lua/lspec-subagents](https://github.com/by-lua/lspec-subagents)**
+
+This provides 9 specialized agents (orchestrator, explorer, designer, fixer, etc.) with a central model config.  
+See the repo README for setup instructions.
+
+### 3. But you can use ANY subagent skill
+
+L-Spec only defines **when** to delegate — it doesn't care which subagent skill you use.  
+Any PI subagent skill that provides these roles works:
+
+| Phase | Agent role needed |
+|-------|------------------|
+| Design | an agent that reads specs + design references and outputs architecture |
+| Execute | an agent that reads tasks + specs + conventions and writes code |
+
+No subagent skill at all? The orchestrator handles everything directly with no delegation.
+
+### 4. Skill & Context
+
+L-Spec loads context in layers:
+
+| Layer | What | When |
+|-------|------|------|
+| **Base** | PROJECT.md + ROADMAP.md + STATE.md | Always loaded (≈15k tokens) |
+| **On-demand** | spec, context, design, tasks, TESTING.md, CONVENTIONS.md | Loaded per phase |
+| **Design refs** | `.specs/design-references/` images, HTML, patterns | Only during Design phase |
+| **Codebase** | STACK, ARCHITECTURE, STRUCTURE, CONVENTIONS, TESTING, INTEGRATIONS, CONCERNS | Only during Map / Execute |
+
+Never load multiple feature specs or archived docs simultaneously.
+
 ## Auto-Sizing
 
 The complexity determines the depth, not a fixed pipeline. Before starting any feature, assess its scope and apply only what's needed:
@@ -384,12 +427,7 @@ L-Spec defines **when** to use subagents. A separate subagent skill defines **wh
 
 ## Context Loading
 
-**Base load:** PROJECT.md + ROADMAP.md + STATE.md (≈15k tokens)
-
-**On-demand (load as needed):**
-- Codebase docs, CONCERNS.md, TESTING.md, spec.md, context.md, design.md, tasks.md
-
-**Never simultaneously:** multiple feature specs, multiple architecture docs, archived documents
+See **[Prerequisites & Setup → Skill & Context](#4-skill--context)** for the full context loading strategy.
 
 ## Rules
 
