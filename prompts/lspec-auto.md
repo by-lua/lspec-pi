@@ -1,7 +1,0 @@
----
-description: Run all phases automatically with auto-sizing
-argument-hint: "[feature-name]"
----
-Load the l-spec skill and run the "auto" command. 
-If no arguments given, ask the user what feature/project they want to work on first.
-
