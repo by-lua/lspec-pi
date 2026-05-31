@@ -77,9 +77,9 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/uninstall.sh |
 
 No nosso projeto, esses 3 trazem ganho direto no dia a dia:
 
-- `pi-cymbal` → melhora utilitários de execução e produtividade no fluxo
-- `@davehardy20/pi-lsp-tools` → fortalece análise/estrutura para trabalho guiado por spec
-- `pi-mermaid` → acelera documentação visual (diagramas e fluxos)
+- `pi-cymbal` → camada nativa de navegação e busca de código para agente (code navigation/search), acelerando entendimento e mudanças com menos tentativa/erro.
+- `@davehardy20/pi-lsp-tools` → navegação via LSP (go to definition, referências, diagnósticos, símbolos e rename), dando precisão técnica na implementação.
+- `pi-mermaid` → renderiza Mermaid em ASCII no TUI, deixando arquitetura/fluxo visível durante a sessão sem depender de ferramenta externa.
 
 ```bash
 pi install npm:pi-cymbal
