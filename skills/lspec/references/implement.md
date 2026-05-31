@@ -214,7 +214,7 @@ for reuse across multiple endpoints.
 
 During implementation, you will notice things that could be improved, refactored, or added. **Do not act on them.** Instead:
 
-- If it's a bug: note it in STATE.md as a blocker or use quick mode
+- If it's a bug: note it in STATE.md as a blocker
 - If it's an improvement: note it in STATE.md under "Deferred Ideas" or "Lessons Learned"
 - If it's related to the current task: only include it if it's in the "Done when" criteria
 

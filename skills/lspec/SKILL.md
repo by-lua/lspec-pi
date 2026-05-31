@@ -1,6 +1,6 @@
 ---
 name: lspec
-description: Versão PI do TLC Spec-Driven original. Mantém comportamento integral do TLC (Specify→Design→Tasks→Execute com discovery/adaptação), apenas adaptando organização/instalação/comandos ao ecossistema PI/lspec.
+description: Versão PI do TLC Spec-Driven original com fluxo Discovery→Specify→Tasks→Execute obrigatório. Clarify e Design são opcionais por contexto. Sem quick mode.
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr
@@ -17,35 +17,25 @@ metadata:
 Plan and implement projects with precision. Granular tasks. Clear dependencies. Right tools. Zero ceremony.
 
 ```
-┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
-│ SPECIFY  │ → │  DESIGN  │ → │  TASKS  │ → │ EXECUTE │
-└──────────┘   └──────────┘   └─────────┘   └─────────┘
-   required      optional*      optional*     required
+┌───────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
+│ DISCOVERY │ → │ SPECIFY  │ → │ CLARIFY* │ → │ DESIGN* │ → │  TASKS  │ → │ EXECUTE │
+└───────────┘   └──────────┘   └──────────┘   └─────────┘   └─────────┘
+   required        required       optional      optional      required      required
 
-* Agent auto-skips when scope doesn't need it
+* Opcional por contexto da tarefa
 ```
 
-## Auto-Sizing: The Core Principle
+## Fluxo Base do L-Spec PI
 
-**The complexity determines the depth, not a fixed pipeline.** Before starting any feature, assess its scope and apply only what's needed:
+Fluxo fixo: todo trabalho passa por `Discovery → Specify → Tasks → Execute`.
 
-| Scope       | What                     | Specify                                                 | Design                                          | Tasks                         | Execute                                               |
-| ----------- | ------------------------ | ------------------------------------------------------- | ----------------------------------------------- | ----------------------------- | ----------------------------------------------------- |
-| **Small**   | ≤3 files, one sentence   | **Quick mode** — skip pipeline entirely                 | -                                               | -                             | -                                                     |
-| **Medium**  | Clear feature, <10 tasks | Spec (brief)                                            | Skip — design inline                            | Skip — tasks implicit         | Implement + verify                                    |
-| **Large**   | Multi-component feature  | Full spec + requirement IDs                             | Architecture + components                       | Full breakdown + dependencies | Implement + verify per task                           |
-| **Complex** | Ambiguity, new domain    | Full spec + [discuss gray areas](references/discuss.md) | [Research](references/design.md) + architecture | Breakdown + parallel plan     | Implement + [interactive UAT](references/validate.md) |
-
-**Rules:**
-
-- **Specify and Execute are always required** — you always need to know WHAT and DO it
-- **Design is skipped** when the change is straightforward (no architectural decisions, no new patterns)
-- **Tasks is skipped** when there are ≤3 obvious steps (they become implicit in Execute)
-- **Discuss is triggered within Specify** only when the agent detects ambiguous gray areas that need user input
-- **Interactive UAT is triggered within Execute** only for user-facing features with complex behavior
-- **Quick mode** is the express lane — for bug fixes, config changes, and small tweaks
-
-**Safety valve:** Even when Tasks is skipped, Execute ALWAYS starts by listing atomic steps inline (see [implement.md](references/implement.md)). If that listing reveals >5 steps or complex dependencies, STOP and create a formal `tasks.md` — the Tasks phase was wrongly skipped.
+Regras:
+- Discovery: obrigatório (sempre inicia aqui)
+- Specify: obrigatório
+- Tasks: obrigatório
+- Execute: obrigatório
+- Clarify: opcional, apenas quando houver ambiguidade real
+- Design: opcional, apenas quando houver decisão arquitetural/padrão novo
 
 ## Project Structure
 
@@ -66,13 +56,9 @@ Plan and implement projects with precision. Granular tasks. Clear dependencies. 
 ├── features/           # Feature specifications
 │   └── [feature]/
 │       ├── spec.md     # Requirements with traceable IDs
-│       ├── context.md  # User decisions for gray areas (only when discuss is triggered)
-│       ├── design.md   # Architecture & components (only for Large/Complex)
-│       └── tasks.md    # Atomic tasks with verification (only for Large/Complex)
-└── quick/              # Ad-hoc tasks (quick mode)
-    └── NNN-slug/
-        ├── TASK.md
-        └── SUMMARY.md
+│       ├── context.md  # User decisions for gray areas (when clarify is needed)
+│       ├── design.md   # Architecture & components (when design is needed)
+│       └── tasks.md    # Atomic tasks with verification (required)
 ```
 
 ## Workflow
@@ -80,15 +66,13 @@ Plan and implement projects with precision. Granular tasks. Clear dependencies. 
 **New project:**
 
 1. Initialize project → PROJECT.md + ROADMAP.md
-2. For each feature → Specify → (Design) → (Tasks) → Execute (depth auto-sized)
+2. For each feature → Discovery → Specify → (Clarify) → (Design) → Tasks → Execute
 
 **Existing codebase:**
 
 1. Map codebase → 7 brownfield docs
 2. Initialize project → PROJECT.md + ROADMAP.md
-3. For each feature → same adaptive workflow
-
-**Quick mode:** Describe → Implement → Verify → Commit (for ≤3 files, one-sentence scope)
+3. For each feature → mesmo fluxo fixo (Discovery → Specify → (Clarify) → (Design) → Tasks → Execute)
 
 ## Context Loading Strategy
 
@@ -132,7 +116,7 @@ parallel execution. The orchestrating agent plans and coordinates; sub-agents do
 | Parallel `[P]` tasks | Yes (one per task) | The only way to actually run tasks in parallel |
 | Sequential tasks with no `[P]` | Yes | Keeps implementation artifacts out of the main context |
 | Planning, task creation, validation reports | No | These require the full accumulated context to be coherent |
-| Quick mode tasks | No | Too small to justify the overhead |
+| Clarify/Design support tasks | Yes, when needed | Only if ambiguity or architecture decisions demand it |
 
 **Context each sub-agent receives:**
 
@@ -169,16 +153,15 @@ The orchestrating agent uses this to update tasks.md status, traceability, and d
 | Pause work, end session | [session-handoff.md](references/session-handoff.md) |
 | Resume work, continue | [session-handoff.md](references/session-handoff.md) |
 
-**Feature-level (auto-sized):**
+**Feature-level (fluxo padrão):**
 | Trigger Pattern | Reference |
 |----------------|-----------|
 | Specify feature, define requirements | [specify.md](references/specify.md) |
-| Discuss feature, capture context, how should this work | [discuss.md](references/discuss.md) |
+| Ask, clarify feature, how should this work | [discuss.md](references/discuss.md) |
 | Design feature, architecture | [design.md](references/design.md) |
 | Break into tasks, create tasks | [tasks.md](references/tasks.md) |
 | Implement task, build, execute | [implement.md](references/implement.md) |
 | Validate, verify, test, UAT, walk me through it | [validate.md](references/validate.md) |
-| Quick fix, quick task, small change, bug fix | [quick-mode.md](references/quick-mode.md) |
 
 ## Skill Integrations
 

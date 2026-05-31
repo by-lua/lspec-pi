@@ -21,25 +21,16 @@
 
 ## ✨ What Is This Skill?
 
-**TLC Spec-Driven** transforms how AI agents approach software projects. Instead of a rigid, bureaucratic pipeline, it uses **4 adaptive phases** that auto-size based on complexity — applying full rigor for complex features and skipping ceremony for simple ones:
+**L-Spec PI (base TLC)** organiza o trabalho em fluxo consistente, mantendo rigor e sem pular etapas essenciais.
 
 ```
-┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
-│ SPECIFY  │ → │  DESIGN  │ → │  TASKS  │ → │ EXECUTE │
-└──────────┘   └──────────┘   └─────────┘   └─────────┘
-   required      optional*      optional*     required
+┌───────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
+│ DISCOVERY │ → │ SPECIFY  │ → │ CLARIFY* │ → │ DESIGN* │ → │  TASKS  │ → │ EXECUTE │
+└───────────┘   └──────────┘   └──────────┘   └─────────┘   └─────────┘
+   required        required       optional      optional      required      required
 
-* Agent auto-skips when scope doesn't need it
+* Opcional por contexto da tarefa
 ```
-
-**The complexity is in the system, not in your workflow.** You talk naturally — the skill decides how deep to go:
-
-| Scope                               | What happens                                                      |
-| ----------------------------------- | ----------------------------------------------------------------- |
-| **Small** (≤3 files)                | Quick mode — describe → implement → verify → commit               |
-| **Medium** (clear feature)          | Specify → Execute (design and tasks inline)                       |
-| **Large** (multi-component)         | Full pipeline with formal design and task breakdown               |
-| **Complex** (ambiguity, new domain) | Full pipeline + gray area discussion + research + interactive UAT |
 
 ## 🚀 Quick Start
 
@@ -56,7 +47,6 @@ npx @tech-leads-club/agent-skills install -s tlc-spec-driven
 | Start a new project     | `"Initialize project"` or `"Setup project"`   |
 | Work with existing code | `"Map codebase"` or `"Analyze existing code"` |
 | Plan a feature          | `"Specify feature [name]"`                    |
-| Quick bug fix           | `"Quick fix: [description]"`                  |
 | Resume previous work    | `"Resume work"` or `"Continue"`               |
 
 > 💬 **Natural Conversation, Not Commands**
@@ -87,16 +77,12 @@ The skill creates a `.specs/` directory to organize all project documentation:
 │   └── [feature-name]/
 │       ├── spec.md     # Requirements with traceable IDs (FEAT-01, AUTH-02...)
 │       ├── context.md  # User decisions for gray areas (only when needed)
-│       ├── design.md   # Architecture and components (only for large/complex)
-│       └── tasks.md    # Atomic tasks with dependencies (only for large/complex)
+│       ├── design.md   # Architecture and components (when needed)
+│       └── tasks.md    # Atomic tasks with dependencies (required)
 │
-└── quick/              # Ad-hoc tasks (quick mode)
-    └── NNN-slug/
-        ├── TASK.md     # Description + verification
-        └── SUMMARY.md  # What was done + commit
 ```
 
-## 🔄 The Four Adaptive Phases
+## 🔄 Fluxo L-Spec PI
 
 ### Specify (always)
 
@@ -116,9 +102,9 @@ The agent acts as a thinking partner — not an interviewer. It asks clarifying 
 | AUTH-03        | WHEN user is already logged in THEN system SHALL redirect to dashboard         |
 ```
 
-**Discuss gray areas (auto-triggered):** When the spec has ambiguous, user-facing decisions (layout preferences, interaction patterns, error handling style), the agent automatically asks the user about them — creating a `context.md` that locks those decisions before design. This is NOT a separate phase — it only happens within Specify when ambiguity is detected.
+**Clarify (auto-triggered):** When the spec has ambiguous, user-facing decisions (layout preferences, interaction patterns, error handling style), the agent asks the user and captures decisions in `context.md` before design.
 
-### Design (when needed)
+### Design (optional)
 
 **Goal:** Define HOW to build it. Architecture, components, what to reuse.
 
@@ -128,13 +114,11 @@ The agent acts as a thinking partner — not an interviewer. It asks clarifying 
 
 **Output:** `design.md` with architecture diagrams, component definitions, and integration points.
 
-### Tasks (when needed)
+### Tasks (required)
 
 **Goal:** Break into GRANULAR, ATOMIC tasks with clear dependencies.
 
-**Skipped when:** There are ≤3 obvious steps. In that case, tasks are listed inline at the start of Execute.
-
-**Safety valve:** If listing inline steps reveals >5 steps or complex dependencies, the agent STOPS and creates a formal `tasks.md` — acknowledging that the Tasks phase was wrongly skipped.
+Tasks sempre existe como etapa formal antes de Execute.
 
 | ❌ Vague Task | ✅ Atomic Tasks                   |
 | ------------- | --------------------------------- |
@@ -172,25 +156,6 @@ fix(cart): prevent negative quantity on item decrement
 
 **Feature-level validation** happens after all tasks complete — including acceptance criteria checks, code quality review, and optionally interactive UAT for complex user-facing features.
 
-## ⚡ Quick Mode
-
-For small tasks (bug fixes, config changes, tweaks ≤3 files) that don't need the full pipeline:
-
-```
-You: Quick fix: login button returns 401 because token refresh skips expired check
-
-Agent: Quick Task: Fix token refresh expired check
-       Files: src/services/auth.ts
-       Approach: Add expiry validation before refresh attempt
-       Verify: Login with expired token returns new session, not 401
-
-       [Implements...]
-
-       ✅ Done. Committed: fix(auth): add expiry check to token refresh
-```
-
-**Guardrails:** Max 3 files, max 1 hour, no design decisions, no new dependencies. If any of these are exceeded, the agent recommends the full pipeline.
-
 ## 📋 Complete Command Reference
 
 These trigger patterns help the agent recognize your intent, but you don't need to use them verbatim. Speak naturally — the agent understands variations and context.
@@ -207,17 +172,17 @@ These trigger patterns help the agent recognize your intent, but you don't need 
 | `Pause work`, `End session`                  | Create handoff for session continuity                 |
 | `Resume work`, `Continue`                    | Load previous state and continue                      |
 
-### Feature-Level (auto-sized)
+
 
 | Trigger Pattern                           | Description                             |
 | ----------------------------------------- | --------------------------------------- |
-| `Specify feature`, `Define requirements`  | Create spec.md with requirement IDs     |
-| `Discuss feature`, `How should this work` | Capture user decisions for gray areas   |
-| `Design feature`, `Architecture`          | Create design.md with architecture      |
-| `Break into tasks`, `Create tasks`        | Create tasks.md with atomic breakdown   |
-| `Implement task`, `Build`, `Execute`      | Execute specific task with verification |
-| `Validate`, `Verify work`, `UAT`          | Feature-level validation and testing    |
-| `Quick fix`, `Quick task`, `Bug fix`      | Express lane for small changes          |
+| `Discovery`, `Start discovery`           | Run adaptive discovery and capture context |
+| `Specify feature`, `Define requirements`  | Create spec.md with requirement IDs        |
+| `Ask`, `Clarify`, `How should this work`  | Capture user decisions for gray areas      |
+| `Design feature`, `Architecture`          | Create design.md with architecture         |
+| `Break into tasks`, `Create tasks`        | Create tasks.md with atomic breakdown      |
+| `Implement task`, `Build`, `Execute`      | Execute specific task with verification    |
+| `Validate`, `Verify work`, `UAT`          | Feature-level validation and testing       |
 
 ## 🔁 Workflow Examples
 
@@ -240,7 +205,7 @@ Agent: ✅ Created .specs/project/PROJECT.md
 ### Working with an Existing Codebase
 
 ```
-You: Map codebase
+You: Discovery + Map codebase
 
 Agent: I'll analyze your existing codebase and document:
        - Technology stack, Architecture patterns, Coding conventions
@@ -253,14 +218,14 @@ Agent: I'll analyze your existing codebase and document:
        Next: Initialize project to define goals and roadmap
 ```
 
-### Implementing a Feature (auto-sized)
+
 
 ```
 You: Specify feature user-authentication
 
 Agent: [Asks clarifying questions, creates spec.md with requirement IDs]
        I notice some gray areas in the UX — how should failed login attempts behave?
-       [Discusses gray areas, creates context.md]
+       [Clarify: asks user and creates context.md]
 
 You: Design the feature
 
@@ -281,21 +246,6 @@ Agent: Implementing T1: Create auth service interface
 
        ✅ Committed: feat(auth): create auth service interface
        Next available: T2, T3 [P] (parallel)
-```
-
-### Quick Bug Fix
-
-```
-You: Quick fix: dark mode toggle doesn't persist after page refresh
-
-Agent: Quick Task: Persist dark mode preference
-       Files: src/hooks/useTheme.ts, src/utils/storage.ts
-       Approach: Save preference to localStorage on toggle
-       Verify: Toggle dark mode, refresh page, preference persists
-
-       [Implements...]
-
-       ✅ Committed: fix(theme): persist dark mode preference to localStorage
 ```
 
 ### Session Continuity
@@ -363,7 +313,6 @@ The skill includes detailed reference documentation loaded on-demand:
 | `tasks.md`              | Granular task breakdown methodology                                    |
 | `implement.md`          | Execute: implementation + verification + atomic commits                |
 | `validate.md`           | Feature validation and interactive UAT                                 |
-| `quick-mode.md`         | Express lane for ad-hoc tasks                                          |
 | `session-handoff.md`    | Pause/resume work process                                              |
 | `state-management.md`   | Persistent memory: decisions, blockers, lessons, todos, deferred ideas |
 | `coding-principles.md`  | Behavioral guidelines for implementation                               |
@@ -376,16 +325,14 @@ The skill includes detailed reference documentation loaded on-demand:
 
 - **Start with project initialization** — Even for existing codebases
 - **Be specific about scope** — Clear boundaries prevent creep
-- **Trust the auto-sizing** — The agent applies the right depth
 - **Use natural language** — No need to memorize commands
 - **Say "pause work" before ending** — Enables seamless resumption
 - **Challenge the agent** — If something looks wrong, say so
 
 ### Don'ts ❌
 
-- **Don't force all phases** — Let the agent skip what's unnecessary
 - **Don't work on multiple features at once** — One feature per cycle
-- **Don't ignore verification** — Even quick tasks need a verify step
+- **Don't ignore verification** — Every task needs a verify step
 - **Don't accept vague answers** — If the agent says something fuzzy, ask for specifics
 
 ## 💡 Model Recommendation
@@ -416,9 +363,6 @@ This skill works with **any AI coding agent** that supports skills or custom ins
 
 ## ❓ FAQ
 
-**Q: Can I skip phases?**
-A: Yes! The skill auto-sizes. Design and Tasks are skipped for simple features. Quick mode skips the entire pipeline for small changes. You only get ceremony when scope demands it.
-
 **Q: What if my project already has code?**
 A: Use `"Map codebase"` first. This creates 7 documents analyzing your existing architecture, conventions, stack, and concerns before you start adding features.
 
@@ -427,9 +371,6 @@ A: Each requirement gets a unique ID (e.g., `AUTH-01`) in spec.md. Tasks referen
 
 **Q: What are atomic git commits?**
 A: Each task produces exactly one commit following [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/). This means clean git history, easy bisect for debugging, and simple rollbacks when needed.
-
-**Q: Can I use this for small tasks or quick fixes?**
-A: Yes! Say `"Quick fix: [description]"` for bug fixes, config changes, or small tweaks. You get quality guardrails (verify + commit) without the planning overhead.
 
 **Q: What happens if I close my session mid-task?**
 A: Say `"Pause work"` before ending your session. This creates a handoff document. Next session, say `"Resume work"` to continue exactly where you left off.
