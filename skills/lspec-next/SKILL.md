@@ -10,7 +10,7 @@ Este comando é um atalho PI.
 Fonte de verdade: `skills/lspec/SKILL.md` (adaptação integral do TLC original).
 
 Referências principais:
-- references/state-management.md + references/roadmap.md
+- ../lspec/references/state-management.md + ../lspec/references/roadmap.md
 
 Regra:
 - Preserve comportamento do TLC original; adapte apenas superfície PI/comandos.
