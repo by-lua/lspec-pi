@@ -75,6 +75,12 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/uninstall.sh |
 
 ## 🧩 Pacotes PI recomendados (melhor funcionamento)
 
+No nosso projeto, esses 3 trazem ganho direto no dia a dia:
+
+- `pi-cymbal` → melhora utilitários de execução e produtividade no fluxo
+- `@davehardy20/pi-lsp-tools` → fortalece análise/estrutura para trabalho guiado por spec
+- `pi-mermaid` → acelera documentação visual (diagramas e fluxos)
+
 ```bash
 pi install npm:pi-cymbal
 pi install npm:@davehardy20/pi-lsp-tools
