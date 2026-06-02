@@ -97,6 +97,10 @@ Regras:
 │       ├── context.md  # User decisions for gray areas (when clarify is needed)
 │       ├── design.md   # Architecture & components (when design is needed)
 │       └── tasks.md    # Atomic tasks with verification (required)
+└── fixes/              # Bug fix documentation (sempre registrado)
+    └── [fix-name]/
+        ├── spec.md     # Bug description, root cause, solution
+        └── context.md  # Decisions during fix (opcional)
 ```
 
 ## Workflow
@@ -111,6 +115,21 @@ Regras:
 1. Map codebase → 7 brownfield docs
 2. Initialize project → PROJECT.md + ROADMAP.md
 3. For each feature → mesmo fluxo fixo (Discovery → Specify → (Clarify) → (Design) → Tasks → Execute)
+
+**Bug/fix:**
+
+1. Discovery detecta bug → identifica pasta `features/[feature-afetada]/`
+2. Specify do fix → documenta em `.specs/fixes/[fix-name]/spec.md`:
+   - Bug report (comportamento esperado vs atual)
+   - Root cause analysis (o que causou)
+   - Solução implementada (o que mudou)
+3. **Regra híbrida de feature spec:** No Specify, o fluxo avalia:
+   - O fix **muda contrato/comportamento/saída esperada** da feature? → Atualiza `.specs/features/[feature-afetada]/spec.md` com a nova expectativa
+   - O fix é só **correção de implementação interna**? → Feature spec original permanece. Só documenta em `fixes/`
+
+   O critério é simples: se o teste de aceitação da feature mudar, o spec precisa ser atualizado. Se não, o spec continua verdadeiro e o fix é só histórico de aprendizado.
+
+4. Tasks → Execute seguem o fluxo normal, carregando tanto a feature spec (quando aplicável) quanto o fix spec
 
 ## Context Loading Strategy
 
