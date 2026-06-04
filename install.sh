@@ -7,7 +7,7 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-REPO="https://github.com/by-lua/lspec-tlc-pi.git"
+REPO="https://github.com/by-lua/lspec-pi.git"
 PI_SKILLS_DIR="$HOME/.pi/agent/skills"
 
 echo ""
