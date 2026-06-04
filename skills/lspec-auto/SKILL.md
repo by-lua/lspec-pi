@@ -7,6 +7,32 @@ description: "Executa ciclo completo automatico: Discovery, Specify, Design, Tas
 
 Executa ciclo completo de desenvolvimento de features: Discovery → Discuss* → Specify → Clarify* → Design* → Tasks → Execute.
 
+## AUTO-DETECÇÃO (rode primeiro)
+
+Analise a mensagem do usuário para detectar o tipo de tarefa:
+
+```bash
+MSG="$1"
+if echo "$MSG" | grep -iE "bug|erro|falha|problema|não funciona|quebrou|falhar|fixar|corrigir" > /dev/null; then
+  echo "BUG"
+elif echo "$MSG" | grep -iE "feature|melhoria|adicionar|novo|criar|implementar" > /dev/null; then
+  echo "FEATURE"
+elif echo "$MSG" | grep -iE "map|analyze|existing|codebase" > /dev/null; then
+  echo "MAP"
+else
+  echo "GENERAL"
+fi
+```
+
+**Ações por tipo:**
+
+|| Tipo | Fluxo |
+||------|-------|
+|| BUG | Discovery curto (3 perguntas) → Specify → Tasks → Execute |
+|| FEATURE | Discovery focado → Specify → Clarify? → Tasks → Execute |
+|| MAP | Use `lspec-map` diretamente |
+|| GENERAL | Discovery completo → Todas as fases |
+
 ## Regras de Uso
 
 - **NUNCA** utilizar quick mode
@@ -36,6 +62,21 @@ Executa ciclo completo de desenvolvimento de features: Discovery → Discuss* �
 **OBRIGATÓRIO** — Sempre inicia aqui
 
 Collect: objetivo, problema, usuário-alvo, MVP, stack, referências, riscos, marcos
+
+### Adaptar por Tipo:
+
+**Se BUG detectado:**
+1. O que não está funcionando?
+2. Qual o comportamento esperado vs atual?
+3. Como reproduzir o bug?
+
+**Se FEATURE detectada:**
+1. O que a feature deve fazer?
+2. Quem vai usar?
+3. Como sabe que está pronto?
+
+**Se GENERAL/NOVO:**
+6 fases completas (ver lspec-discovery)
 
 **Ao finalizar:** "Discovery completo. Deseja avançar para Discuss (opcional — áreas cinzentas)?"
 

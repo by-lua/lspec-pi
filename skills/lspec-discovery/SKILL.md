@@ -60,6 +60,8 @@ fi
 
 → Gera `features/bug-[nome]/spec.md`
 
+**Ao finalizar:** "Bug documentado. Deseja avançar para Tasks (obrigatório — corrigir o bug)?"
+
 ---
 
 ## Feature Flow (focado)
@@ -69,6 +71,8 @@ fi
 3. Como você sabe que está pronto?
 
 → Gera `features/[feature]/spec.md`
+
+**Ao finalizar:** "Feature documentada. Deseja avançar para Tasks (obrigatório)?"
 
 ---
 
