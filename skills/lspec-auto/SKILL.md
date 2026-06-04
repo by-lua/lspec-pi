@@ -1,10 +1,10 @@
 ---
 name: lspec-auto
-description: Executa ciclo completo automático: specify → design → tasks → implement.
+description: Executa ciclo completo automatico: specify, design, tasks, implement
 ---
 
-# auto
+# lspec-auto
 
-Executa ciclo completo automático: specify → design → tasks → implement.
+Executa ciclo completo: specify, design, tasks, implement.
 
-**Carregar referência:** `../lspec/references/specify.md + ../lspec/references/design.md + ../lspec/references/tasks.md + ../lspec/references/implement.md`
+**Carregar referencia:** `../lspec/references/specify.md + ../lspec/references/design.md + ../lspec/references/tasks.md + ../lspec/references/implement.md`
