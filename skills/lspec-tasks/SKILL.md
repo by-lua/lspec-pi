@@ -306,3 +306,41 @@ Antes de Execute, confirmar:
 - **Done when = Testable** — Se não pode verificar, reescreva
 - **One commit por tarefa** — Plano do formato da mensagem de commit
 - **Autosave** — Salvar estado em cada transição
+
+---
+
+## Fluxo de Continuação
+
+Após completar a fase **Tasks**:
+
+1. ✅ Validar tasks via Approval Gate (seção acima)
+2. 💬 Perguntar ao usuário:
+   > → Deseja avançar para **Execute** (obrigatório)?
+
+**Se usuário confirmar:**
+- Avançar para a fase Execute
+- Continuar pipeline normalmente
+
+**Se usuário NÃO confirmar:**
+- Salvar estado atual em `features/[name]/STATE.md`
+- Incluir tasks.md gerado e contexto completo
+- Aguardar confirmação para prosseguir
+
+```markdown
+# [Feature] State — Aguardando Confirmação
+
+**Pipeline:** Discovery → Discuss → Specify → Clarify → Design → **Tasks** ✅ → Execute ⏳
+
+**Current Phase:** Tasks (Completo)
+**Status:** Aguardando confirmação do usuário
+
+## Tarefas Geradas
+
+- [x] tasks.md criado com todas as tarefas granulares
+- [x] Execution plan validado
+- [x] Approval Gate aprovado
+
+## Próximo Passo
+
+Aguardando usuário confirmar avanço para Execute.
+```

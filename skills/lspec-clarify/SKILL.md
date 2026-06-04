@@ -284,6 +284,18 @@ features/
 
 ---
 
+## Fluxo de Continuação
+
+**Clarify completo.** Requisitos ambíguos resolvidos e salvos em `features/[name]/clarify.md`.
+
+→ Deseja avançar para **Design** (opcional — decisões arquiteturais)?
+
+Se **não precisa** de design: → salve estado e avance direto para **Tasks** (obrigatório).
+
+Se **não avançar**: salve estado em `STATE.md` e aguarde novas instruções.
+
+---
+
 ## Integração com lspec
 
 Este skill trabalha em conjunto com:

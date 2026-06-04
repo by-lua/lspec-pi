@@ -381,3 +381,13 @@ Se implementação falha:
 3. Se blocker → anota em STATE.md, pergunta usuário
 4. Se não blocker → fixa, re-roda gate
 5. Nunca prossiga com gate vermelho
+
+---
+
+## Fluxo de Continuação
+
+Ao finalizar todas as tasks da fase Execute:
+
+```
+→ Todas as tasks completas. Deseja fazer validação final?
+```

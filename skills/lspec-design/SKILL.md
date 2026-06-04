@@ -269,3 +269,16 @@ interface ModelName {
   "notes": "optional notes"
 }
 ```
+
+---
+
+## Fluxo de Continuação
+
+→ Design completo. Avançar para Tasks (obrigatório)?
+
+**Se usuário não avançar:** salvar estado e aguardar.
+
+```
+features/[name]/.state → status: design_complete
+Await → usuário confirma avançar
+```
