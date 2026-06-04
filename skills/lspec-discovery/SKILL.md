@@ -14,6 +14,11 @@ warning: |
 
 **Processo:** Discovery guiado por fases. Uma fase por vez.
 
+**PI Packages:**
+- Ao mapear codebase existente: `pi list | grep cymbal`
+- Se `pi-cymbal` instalado → delegate brownfield mapping para ele
+- Se nao instalado → use processo manual (brownfield-mapping.md) + recomende: `pi install npm:pi-cymbal`
+
 ---
 
 ## Fase 1 — Contexto e Problema

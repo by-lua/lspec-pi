@@ -14,6 +14,14 @@ warning: |
 
 **Goal:** Implementar UMA tarefa por vez. Mudancas cirurgicas. Verificar. Comitar. Repetir.
 
+**PI Packages:**
+- Antes de navegar/codigo: `pi list | grep -E 'cymbal|lsp-tools'`
+- Se `pi-cymbal` instalado → delegate navegacao de codigo para ele
+- Se `pi-lsp-tools` instalado → use LSP para go-to-definition, refs, rename
+- Se nenhum instalado → use ferramentas nativas (grep, read_file, etc) + recomende:
+  `pi install npm:pi-cymbal`
+  `pi install npm:@davehardy20/pi-lsp-tools`
+
 ---
 
 ## MANDATORY: Antes de Comecar Qualquer Implementacao

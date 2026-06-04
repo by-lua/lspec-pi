@@ -8,10 +8,16 @@ warning: |
   - Nao invente arquitetura sem contexto do codebase
   - Verifique CONCERNS.md antes de projetar areas frageis
   - Apresente diagrama de componentes e aguarde APPROVAL antes de Tasks
+  - Antes de criar diagramas, verifique se `pi-mermaid` esta instalado
 
 # design — Design de Feature
 
 **Goal:** Definir COMO construir. Arquitetura, componentes, o que reutilizar.
+
+**PI Packages:**
+- Antes de criar diagramas: `pi list | grep mermaid`
+- Se `pi-mermaid` instalado → delegate para renderizar em ASCII no TUI
+- Se nao instalado → use blocos mermaid inline e recomende: `pi install npm:pi-mermaid`
 
 **Pule esta fase quando:** A mudanca e direta — sem decisoes arquiteturais, sem novos padroes, sem interacoes de componentes para planejar. Para features simples, design acontece inline durante Execute.
 
