@@ -1,16 +1,49 @@
 ---
 name: lspec-auto
-description: Comando PI para operar LSpec (base TLC original).
+description: Executa o ciclo completo do pipeline LSpec — discovery → specify → discuss → design → tasks → execute — sem quick mode, passo a passo.
 ---
 
 # lspec-auto
 
-Este comando é um atalho PI.
+Executa o ciclo completo do pipeline LSpec em sequência, sem atalhos.
 
-Fonte de verdade: `skills/lspec/SKILL.md` (adaptação integral do TLC original).
+## Como usar
 
-Referências principais:
-- ../lspec/references/specify.md + ../lspec/references/design.md + ../lspec/references/tasks.md + ../lspec/references/implement.md
+```
+/lspec auto
+```
 
-Regra:
-- Preserve comportamento do TLC original; adapte apenas superfície PI/comandos.
+## O que faz
+
+Executa cada fase em ordem:
+
+```
+1. Discovery → captura contexto do projeto
+2. Specify → define requisitos testáveis
+3. Discuss → captura decisões em áreas cinzas (se houver)
+4. Design → define arquitetura (se necessário)
+5. Tasks → quebra em tarefas atômicas
+6. Execute → implementa tarefa por tarefa
+```
+
+## Interrupção
+
+```
+/lspec pause
+```
+
+Pausa o auto e salva checkpoint. Pode continuar depois com `/lspec resume`.
+
+## Diferente de "next"
+
+- `next` → avança uma fase
+- `auto` → executa todas as fases até o fim
+
+## Pré-requisito
+
+- Projeto inicializado (`/lspec discovery` já rodou)
+- Feature definida (ou usa a feature atual do STATE)
+
+## Regra
+
+Sem quick mode, sem auto-sizing. Cada fase roda completa antes de avançar.

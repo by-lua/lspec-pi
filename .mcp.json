@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "agent-lsp": {
+      "type": "stdio",
+      "command": "agent-lsp",
+      "args": [
+        "javascript:typescript-language-server,--stdio",
+        "json:vscode-json-language-server,--stdio",
+        "php:intelephense,--stdio",
+        "python:pyright-langserver,--stdio",
+        "typescript:typescript-language-server,--stdio",
+        "yaml:yaml-language-server,--stdio"
+      ]
+    }
+  }
+}
