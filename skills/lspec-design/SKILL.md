@@ -1,25 +1,35 @@
 ---
 name: lspec-design
-description: "Define arquitetura e componentes da feature."
+description: "Design arquitetural de feature — OPCIONAL, só quando há decisões arquiteturais."
 ---
 
 warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Nao invente arquitetura sem contexto do codebase
-  - Verifique CONCERNS.md antes de projetar areas frageis
+  ⚠️ REGRAS ABSOLUTAS:
+  - Design é OPCIONAL — só execute se houver decisão arquitetural significativa
+  - NUNCA use quick mode ou auto-sizing
+  - Verifique CONCERNS.md antes de projetar áreas frágeis
   - Apresente diagrama de componentes e aguarde APPROVAL antes de Tasks
-  - Antes de criar diagramas, verifique se `pi-mermaid` esta instalado
+  - Output: `features/[name]/design.md` (NÃO em fixes/)
 
-# design — Design de Feature
+# design — Design Arquitetural
 
-**Goal:** Definir COMO construir. Arquitetura, componentes, o que reutilizar.
+**Quando usar esta fase:**
+- Há decisões arquiteturais a tomar (novos padrões, integrações, serviços)
+- Componentes novos precisam ser planejados antes da implementação
+- Há dependências entre componentes que precisam ser explicitadas
+- A feature requer data models complexos
+
+**Quando PULAR esta fase:**
+- Mudança direta — sem decisões arquiteturais, sem novos padrões
+- Feature simples que pode ser implementada inline durante Execute
+- Apenas ajustes em código existente sem mudanças estruturais
+
+**Entrada:** `features/[name]/spec.md` e `features/[name]/context.md` (se existir)
 
 **PI Packages:**
 - Antes de criar diagramas: `pi list | grep mermaid`
 - Se `pi-mermaid` instalado → delegate para renderizar em ASCII no TUI
-- Se nao instalado → use blocos mermaid inline e recomende: `pi install npm:pi-mermaid`
-
-**Pule esta fase quando:** A mudanca e direta — sem decisoes arquiteturais, sem novos padroes, sem interacoes de componentes para planejar. Para features simples, design acontece inline durante Execute.
+- Se não instalado → use blocos mermaid inline e recomende: `pi install npm:pi-mermaid`
 
 ---
 
@@ -27,47 +37,102 @@ warning: |
 
 ### 1. Carregar Contexto
 
-Leia `.specs/[feature]/spec.md` antes de desenhar. Se `.specs/[feature]/context.md` existir, carregue tambem — contem decisoes de implementacao que restringem o design.
+```
+features/[name]/
+├── spec.md        # Obrigatório — requirements
+└── context.md     # Opcional — decisões de implementação já feitas
+```
 
-### 2. Pesquisar (Opcional mas Recomendado)
+Leia `features/[name]/spec.md` antes de desenhar. Se `features/[name]/context.md` existir, carregue também — contém decisões que restringem o design.
 
-Se a feature envolve tecnologia unfamiliar, padroes ou integracoes, pesquise antes de desenhar. Documente achados brevemente no design doc ou como notas inline.
+### 2. Salvar Estado: Design Started
 
-**CRITICAL: NUNCA assuma ou fabrication informacao.** Se voce nao consegue encontrar uma resposta atraves da cadeia, diga explicitamente "Eu nao sei" ou "Nao consegui encontrar documentacao para isso".
+```bash
+echo "status: design_started
+timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" > features/[name]/.state
+```
 
-### 3. Definir Arquitetura
+### 3. Analisar Decisões Arquiteturais Necessárias
 
-Overview de como componentes interagem. Use diagramas mermaid quando util.
+Identifique:
+- Quais componentes novos são necessários?
+- Quais integrações com sistemas existentes?
+- Quais padrões de arquitetura aplicar?
+- Quais data models precisam ser definidos?
 
-### 4. Identificar Reutilizacao de Codigo
+Se não houver decisões significativas → **PULE esta fase**, vá direto para Tasks.
 
-**CRITICAL:** Qual codigo existente podemos aproveitar? Isso salva tokens e reduz erros.
+### 4. Pesquisar (Se Necessário)
 
-Se `.specs/codebase/CONCERNS.md` existir, check antes de desenhar. Qualquer componente marcado como fragil, carregando divida tecnica, ou com gaps de cobertura de teste requer cuidado extra no design.
+Se a feature envolve tecnologia unfamiliar, pesquise antes de desenhar. Documente achados no design doc.
 
-### 5. Definir Componentes e Interfaces
+**CRITICAL: NUNCA assuma ou fabricate informação.** Se não conseguir encontrar resposta, diga "Eu não sei" ou "Não consegui encontrar documentação para isso".
 
-Cada componente: Purpose, Location, Interfaces, Dependencies, What it reuses.
+### 5. Definir Arquitetura
 
-### 6. Definir Data Models
+#### Componentes Principais
+Identifique cada componente: Purpose, Location, Interfaces, Dependencies, What it reuses.
 
-Se a feature envolve dados, defina modelos antes da implementacao.
+#### Diagrama de Arquitetura
+Use mermaid quando útil:
+
+```mermaid
+graph TD
+    A[User Action] --> B[Component A]
+    B --> C[Service Layer]
+    C --> D[Data Store]
+    B --> E[Component B]
+```
+
+### 6. Code Reuse Analysis
+
+**CRITICAL:** Qual código existente podemos aproveitar? Isso salva tokens e reduz erros.
+
+Se `.specs/codebase/CONCERNS.md` existir, check antes de desenhar. Áreas marcadas como frágeis ou com dívida técnica requerem cuidado extra.
+
+### 7. Definir Data Models
+
+Se a feature envolve dados, defina modelos antes da implementação.
+
+### 8. Salvar Estado: Design Complete
+
+```bash
+echo "status: design_complete
+timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+design_approved: false" > features/[name]/.state
+```
 
 ---
 
-## Template: `.specs/[feature]/design.md`
+## Fluxo de Decisão
+
+```
+Discovery → Specify → [Design?] → Tasks → Execute
+                ↓          ↓
+                └──────────┴── Se há decisão arquitetural → DESIGN
+                                      ↓
+                         Se simples/direta → Tasks (pula Design)
+```
+
+---
+
+## Template: `features/[name]/design.md`
 
 ```markdown
 # [Feature] Design
 
-**Spec**: `.specs/[feature]/spec.md`
+**Spec**: `features/[name]/spec.md`
 **Status**: Draft | Approved
+**Created**: YYYY-MM-DD
+**Updated**: YYYY-MM-DD
 
 ---
 
 ## Architecture Overview
 
 [Brief description of the architecture approach]
+
+### Components Diagram
 
 ```mermaid
 graph TD
@@ -144,6 +209,15 @@ interface ModelName {
 
 ---
 
+## Approval
+
+- [ ] Architecture approved by team
+- [ ] Code reuse strategy validated
+- [ ] Tech decisions documented
+- [ ] Ready for Tasks phase
+
+---
+
 ## Tips
 
 - **Load context first** — If context.md exists, decisions there are locked
@@ -153,3 +227,45 @@ interface ModelName {
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
 - **Confirm before Tasks** — User approves design before breaking into tasks
+- **Autosave state** — Update .state file at end of each phase
+```
+
+---
+
+## State Machine
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    lspec-design STATES                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  discovery_started ──► specify ──► design_started            │
+│         │                              │                     │
+│         │                              │ (if architectural   │
+│         │                              │  decisions needed)  │
+│         │                              ▼                     │
+│         │                       design_complete               │
+│         │                              │                     │
+│         │                              ▼ (user approves)     │
+│         │                       design_approved              │
+│         │                              │                     │
+│         └──────────────────────────────┴──► tasks_pending   │
+│                                                              │
+│  SKIP: No architectural decisions needed                      │
+│    specify ──────────────────────────────► tasks_pending    │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### State File: `features/[name]/.state`
+
+```json
+{
+  "phase": "design",
+  "status": "design_complete|design_approved|skipped",
+  "started_at": "ISO8601",
+  "completed_at": "ISO8601",
+  "approved": false,
+  "notes": "optional notes"
+}
+```

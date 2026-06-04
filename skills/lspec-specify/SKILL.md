@@ -1,65 +1,197 @@
 ---
 name: lspec-specify
-description: "Cria/evolui especificacao da feature (SPEC.md)."
+description: "Especificação de feature — OBRIGATÓRIO no pipeline."
 ---
 
-warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Pergunte primeiro, COLLECT informacao antes de escrever spec
-  - NUNCA pule pra codigo ou implementacao durante Specify
-  - Ao final, mostre o spec e aguarde APROVACAO do usuario antes de continuar
+# Specify — Especificação de Feature
 
-# specify — Especificacao de Feature
+**Aviso CRÍTICO:**
+- Specify é **OBRIGATÓRIO** — não pode ser pulado
+- NUNCA use "quick mode" ou auto-sizing
+- CONFIRME cada fase antes de avançar
+- NUNCA pule para implementação durante Specify
 
-**Goal:** Capturar O QUE construir com requisitos testaveis e rastreaveis.
-
----
-
-## 1. Coletar Requisitos
-
-Seja parceiro de pensamento, nao entrevistador. Comece aberto — deixe o usuario despejar seu modelo mental. Siga a energia: o que ele enfatizar, aprofunde.
-
-Pergunte de forma conversacional:
-
-- "Qual problema voce esta resolvendo?"
-- "Quem e o usuario e qual e a dor?"
-- "Como seria o sucesso?"
-
-Se necessario:
-
-- "Quais sao as restricoes (tempo, tech, recursos)?"
-- "O que esta explicitamente fora do escopo?"
-
-**Desafie vagueza.** Nunca aceite respostas fuzzy. "Bom" significa o que? "Usuarios" sao quem? "Simples" significa como? Torne o abstrato concreto: "Me walk through usando isso." "O que isso realmente parece?"
-
-**Saiba quando parar.** Quando voce entender o que estao construindo, porque, para quem, e como sera o done — proponha prosseguir.
+**Pipeline:** Discovery → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
-## 2. Capturar User Stories com Prioridades
+## AUTO-DETECÇÃO
 
-**P1 = MVP** (deve lancar), **P2** (deveria ter), **P3** (nice to have)
+Primeiro, verifique se existe contexto prévio:
 
-Cada story DEVE ser **independente testavel** — voce pode implementar e demonstrar apenas aquela story.
+```bash
+# Verificar estado atual
+if [ -f ".specs/features/[name]/STATE.md" ]; then
+  echo "HAS_STATE"
+elif [ -f ".specs/features/[name]/spec.md" ]; then
+  echo "HAS_SPEC"
+else
+  echo "FRESH"
+fi
+```
+
+**Matriz de decisões:**
+
+| Contexto | Ação |
+|----------|------|
+| FRESH + nome de feature | Criar spec do zero |
+| HAS_STATE | Continuar da fase salva |
+| HAS_SPEC | Oferecer revisão/evolução |
+| Discuss? completo | Usar contexto do Discuss |
 
 ---
 
-## 3. Escrever Criterios de Aceitacao
+## Autosave de Estado
 
-Use formato **QUANDO/ENTAO/SHALL** — e preciso e testavel:
+**OBRIGATÓRIO:** Salvar estado após cada fase.
 
-- QUANDO [evento/acao] ENTAO [sistema] SHALL [resposta/comportamento]
+Salvar em `features/[name]/STATE.md`:
+
+```markdown
+# State: [feature-name]
+
+## Last Updated
+[ISO timestamp]
+
+## Current Phase
+[Phase name]
+
+## Phase Data
+[Fase atual com respostas coletadas]
+
+## Progress
+- [x] Discovery
+- [ ] Discuss
+- [x] Specify (in progress)
+- [ ] Clarify
+- [ ] Design
+- [ ] Tasks
+- [ ] Execute
+
+## Notes
+[Observações da sessão]
+```
 
 ---
 
-## Template: `.specs/[feature]/spec.md`
+## Fase 1: Define (OBRIGATÓRIO)
+
+Coletar informação antes de escrever. Seja parceiro de pensamento.
+
+**Perguntas-chave:**
+
+1. Qual problema estamos resolvendo?
+2. Quem é o usuário e qual a dor?
+3. Como seria o sucesso?
+4. O que está fora do escopo?
+
+**Desafie vagueza:**
+- "Bom" significa o que?
+- "Usuários" são quem?
+- "Simples" significa como?
+- "Me walk through usando isso"
+- "O que isso realmente parece?"
+
+> **AUTOSAVE:** Salvar estado após completar Define
+
+---
+
+## Fase 2: Discuss (OPCIONAL)
+
+Discussão em profundidade sobre detalhes técnicos ou escopo.
+
+**Perguntas quando necessário:**
+
+- Quais são as restrições (tempo, tech, recursos)?
+- O que já foi tentado antes?
+- Quais são os pontos de decisão?
+
+**Pular se:** Contexto do Discovery ou Discuss já cobriu isso.
+
+> **AUTOSAVE:** Salvar estado se passou por Discuss
+
+---
+
+## Fase 3: Specify (OBRIGATÓRIO)
+
+Escrever spec completo com user stories e critérios de aceite.
+
+### 3.1 User Stories com Prioridades
+
+**P1 = MVP** (deve lançar), **P2** (deveria ter), **P3** (nice to have)
+
+Cada story **DEVE** ser independente testável.
+
+### 3.2 Critérios de Aceitação
+
+Formato **QUANDO/ENTÃO/SHALL**:
+
+- QUANDO [evento/ação] ENTÃO [sistema] SHALL [resposta/comportamento]
+
+### 3.3 Edge Cases
+
+- O que quebra? O que está vazio? O que é enorme?
+- O que acontece com input inválido?
+- O que acontece com timeout?
+
+> **AUTOSAVE:** Salvar estado com spec draft
+
+---
+
+## Fase 4: Clarify (OPCIONAL)
+
+Revisão e esclarecimento do spec.
+
+**Checklist:**
+- [ ] Todos os termos definidos?
+- [ ] TODOS os critérios de aceite são testáveis?
+- [ ] Out of scope claro?
+- [ ] IDs de requisito únicos?
+
+**Corrigir vagueza:**
+- Substituir "deve ser rápido" → "SHALL responder em <200ms"
+- Substituir "boa UX" → criteria específicos
+- Substituir "seguro" →具体的な controles
+
+> **AUTOSAVE:** Salvar estado com spec clarificado
+
+---
+
+## Fase 5: Design (OPCIONAL)
+
+Decisões de design técnicas (API, schema, fluxo).
+
+**Se necessário:**
+- Diagrama de fluxo
+- API endpoints
+- Data model
+- Dependencies
+
+> **AUTOSAVE:** Salvar estado com design decisions
+
+---
+
+## Output Final
+
+```
+features/
+└── [name]/
+    ├── STATE.md      # Autosave em cada fase
+    ├── spec.md       # Especificação final
+    └── design/       # Opcional
+        └── [files]
+```
+
+---
+
+## Template: `features/[name]/spec.md`
 
 ```markdown
 # [Feature Name] Specification
 
 ## Problem Statement
 
-[Describe the problem in 2-3 sentences. What pain point are we solving? Why now?]
+[Describe the problem in 2-3 sentences. What pain point? Why now?]
 
 ## Goals
 
@@ -68,12 +200,11 @@ Use formato **QUANDO/ENTAO/SHALL** — e preciso e testavel:
 
 ## Out of Scope
 
-Explicitly excluded. Documented to prevent scope creep.
+Explicitly excluded items.
 
-| Feature     | Reason         |
-| ----------- | -------------- |
-| [Feature X] | [Why excluded] |
-| [Feature Y] | [Why excluded] |
+| Feature | Reason |
+|---------|--------|
+| [X] | [Why excluded] |
 
 ---
 
@@ -83,7 +214,7 @@ Explicitly excluded. Documented to prevent scope creep.
 
 **User Story**: As a [role], I want [capability] so that [benefit].
 
-**Why P1**: [Why this is critical for MVP]
+**Why P1**: [Critical for MVP]
 
 **Acceptance Criteria**:
 
@@ -99,14 +230,12 @@ Explicitly excluded. Documented to prevent scope creep.
 
 **User Story**: As a [role], I want [capability] so that [benefit].
 
-**Why P2**: [Why this isn't MVP but important]
+**Why P2**: [Not MVP but important]
 
 **Acceptance Criteria**:
 
 1. WHEN [event] THEN system SHALL [behavior]
 2. WHEN [event] THEN system SHALL [behavior]
-
-**Independent Test**: [How to verify]
 
 ---
 
@@ -114,7 +243,7 @@ Explicitly excluded. Documented to prevent scope creep.
 
 **User Story**: As a [role], I want [capability] so that [benefit].
 
-**Why P3**: [Why this is nice-to-have]
+**Why P3**: [Nice-to-have]
 
 **Acceptance Criteria**:
 
@@ -124,29 +253,27 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Edge Cases
 
-- WHEN [boundary condition] THEN system SHALL [behavior]
-- WHEN [error scenario] THEN system SHALL [graceful handling]
-- WHEN [unexpected input] THEN system SHALL [validation response]
+- WHEN [boundary] THEN system SHALL [behavior]
+- WHEN [error] THEN system SHALL [handling]
+- WHEN [invalid input] THEN system SHALL [validation]
 
 ---
 
 ## Requirement Traceability
 
-Each requirement gets a unique ID for tracking.
+| ID | Story | Phase | Status |
+|----|-------|-------|--------|
+| [FEAT]-01 | P1: [Story] | Specify | Pending |
+| [FEAT]-02 | P1: [Story] | Specify | Pending |
+| [FEAT]-03 | P2: [Story] | Specify | Pending |
 
-| Requirement ID | Story       | Phase  | Status  |
-| -------------- | ----------- | ------ | ------- |
-| [FEAT]-01      | P1: [Story] | Design | Pending |
-| [FEAT]-02      | P1: [Story] | Design | Pending |
-| [FEAT]-03      | P2: [Story] | -      | Pending |
-
-**Status values:** Pending → In Design → In Tasks → Implementing → Verified
+**Status:** Pending → In Design → In Tasks → Implementing → Verified
 
 ---
 
 ## Success Criteria
 
-How we know the feature is successful:
+How we know this is successful:
 
 - [ ] [Measurable outcome]
 - [ ] [Measurable outcome]
@@ -154,11 +281,25 @@ How we know the feature is successful:
 
 ---
 
+## Validation Checklist
+
+Antes de mover para Tasks:
+
+- [ ] User stories com prioridades P1/P2/P3
+- [ ] Todos os critérios de aceite em formato QUANDO/ENTÃO/SHALL
+- [ ] TODOS os critérios são testáveis
+- [ ] Edge cases documentados
+- [ ] Out of scope definido
+- [ ] IDs de requisito únicos
+- [ ] Estado salvo em STATE.md
+- [ ] **APROVAÇÃO do usuário obtida**
+
+---
+
 ## Tips
 
-- **P1 = Vertical Slice** — A complete, demo-able feature, not just backend or frontend
-- **QUANDO/ENTAO e codigo** — Se voce nao consegue escrever como teste, reescreva
-- **IDs de requisito sao obrigatorios** — Toda story mapeia pra IDs rastreaveis
-- **Edge cases importam** — O que quebra? O que esta vazio? O que e enorme?
-- **Out of Scope previne creep** — Se nao esta aqui, nao e construido
-- **Confirme antes de avancar** — Usuario deve aprovar spec antes de mover para proxima fase
+- **P1 = Vertical Slice** — demo-able, não só backend ou frontend
+- **Se não consegue testar, reescreva** — critérios não-testáveis = não-spec
+- **IDs obrigatórios** — rastreabilidade é crítica
+- **Autosave em cada fase** — nunca perca progresso
+- **Confirme antes de avançar** — usuário aprova spec

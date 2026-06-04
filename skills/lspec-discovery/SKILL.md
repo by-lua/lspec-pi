@@ -1,171 +1,149 @@
 ---
 name: lspec-discovery
-description: "Descobre e documenta contexto inicial do projeto."
+description: "Descobre e documenta contexto inicial do projeto. Discovery adaptativo — profundidade varia por tipo (novo, bug, feature)."
 ---
 
-warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Responda ONLY com perguntas da fase atual
-  - NUNCA pule fases ou despeje todas perguntas de uma vez
-  - Ao final de cada fase, CONFIRME com o usuario antes de continuar
-  - NUNCA pule pra implementacao, codigo ou edicao durante Discovery
+# Discovery — Contexto Inicial
 
-# discovery — Inicializacao de Projeto
+**Aviso CRÍTICO:**
+- Responda APENAS com perguntas da fase atual
+- NUNCA pule fases ou despeje todas perguntas de uma vez
+- CONFIRME antes de continuar para próxima fase
+- NUNCA pule para implementação durante Discovery
 
-**Processo:** Discovery guiado por fases. Uma fase por vez.
-
-**PI Packages:**
-- Ao mapear codebase existente: `pi list | grep cymbal`
-- Se `pi-cymbal` instalado → delegate brownfield mapping para ele
-- Se nao instalado → use processo manual (brownfield-mapping.md) + recomende: `pi install npm:pi-cymbal`
+**Pipeline:** Discovery → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
-## Fase 1 — Contexto e Problema
+## AUTO-DETECÇÃO (rode primeiro)
 
-1. Qual e o objetivo do projeto? Descreva em uma frase.
-2. Que problema voce esta resolvendo? Quem tem esse problema?
-3. Como voce sabe que isso e um problema real? (dados, feedback, instinto?)
-4. Qual e a situacao atual/solucao alternativa? O que ha de ruim nisso?
-5. O que acontece se voce **nao** construir isso?
-
-> Apos coletar respostas da Fase 1, prossiga para a Fase 2.
-
----
-
-## Fase 2 — Visao e Escopo
-
-6. Como voce define sucesso? E como voce medira?
-7. O que e o MVP? O minimo absoluto necessario para lancar o produto?
-8. O que esta explicitamente **fora do escopo** por enquanto?
-9. Quem e o usuario-alvo? Descreva-o.
-10. Existem requisitos nao funcionais? (desempenho, seguranca, escalabilidade, conformidade)
-
-> Apos coletar respostas da Fase 2, prossiga para a Fase 3.
-
----
-
-## Fase 3 — Conjunto Tecnico
-
-11. Qual linguagem/framework/plataforma?
-12. Existe algum codigo existente que possa ser integrado?
-13. Ha alguma restricao? (orcamento, tamanho da equipe, cronograma, hospedagem, APIs)
-14. Preferencia por backend / frontend / banco de dados?
-
-> Apos coletar respostas da Fase 3, prossiga para a Fase 4.
-
----
-
-## Fase 4 — Referencias de Projeto
-
-15. Alguma referencia de design? (captura de tela, HTML, mockup, link do Figma)
-
-Se houver referencias:
-- criar `.specs/design-references/` com os arquivos/links organizados;
-- gerar `README.md` descrevendo cada referencia;
-- extrair padroes visuais (cores, layout, componentes, interacoes).
-
-> Apos coletar respostas da Fase 4, prossiga para a Fase 5.
-
----
-
-## Fase 5 — Estado da Tecnica e Riscos
-
-16. O que ja foi tentado antes? O que nao funcionou?
-17. Qual o maior risco? O que poderia acabar com este projeto?
-18. Qual a parte mais dificil — tecnicamente ou de qualquer outra forma?
-19. Tem algum prazo? Data fixa ou "quando estiver pronto"?
-
-> Apos coletar respostas da Fase 5, prossiga para a Fase 6.
-
----
-
-## Fase 6 — Marcos Importantes
-
-20. Como voce dividiria isso em etapas?
-21. A primeira coisa que voce quer que funcione?
-22. Recurso "uau" para o lancamento?
-
-**Fim da descoberta.**
-
----
-
-## Output: `.specs/project/PROJECT.md`
-
-```markdown
-# [Project Name]
-
-**Vision:** [1-2 sentence description]
-**For:** [target users]
-**Solves:** [core problem being addressed]
-
-## Goals
-- [Primary goal with measurable success metric]
-- [Secondary goal with measurable success metric]
-
-## Problem Validation
-- Evidence: [data / feedback / market signals / founder insight]
-- Current alternative: [how users solve this today]
-- Why current alternative fails: [main pain points]
-- Cost of not building: [impact if project is not built]
-
-## Success Criteria
-- [Metric 1 + target]
-- [Metric 2 + target]
-
-## MVP Scope
-**v1 includes:**
-- [Core capability 1]
-- [Core capability 2]
-- [Core capability 3]
-
-**Explicitly out of scope:**
-- [What is NOT being built]
-- [What is NOT being built]
-
-## Target User
-- [Persona summary]
-- [Main jobs-to-be-done]
-
-## Non-Functional Requirements
-- Performance: [if applicable]
-- Security: [if applicable]
-- Scalability: [if applicable]
-- Compliance: [if applicable]
-
-## Tech Stack
-**Core:**
-- Framework: [name + version]
-- Language: [name + version]
-- Database: [name]
-
-**Key dependencies:** [3-5 critical libraries/frameworks]
-
-## Constraints
-- Timeline: [if applicable]
-- Technical: [if applicable]
-- Resources: [if applicable]
-- Budget/hosting/APIs: [if applicable]
-
-## Risks & Unknowns
-- Major risk: [description]
-- Hardest part: [description]
-- Previous failed attempts: [summary]
-
-## Milestones
-- Phase 1: [name]
-- Phase 2: [name]
-- Phase 3: [name]
-
-## Launch Priorities
-- First thing to work: [description]
-- "Wow" feature: [description]
+```bash
+# Verificar tipo de projeto
+if [ -f ".specs/project/PROJECT.md" ]; then
+  echo "EXISTING"
+elif [ -d ".specs/features" ]; then
+  echo "EXISTING"
+elif [ -d "$(find . -name '*.py' -o -name '*.js' -o -name '*.ts' 2>/dev/null | head -1)" ]; then
+  echo "CODE_ONLY"
+else
+  echo "NEW"
+fi
 ```
 
-**Validation Checklist:**
-- Visao clara em 1-2 frases
-- Problema e evidencia estao explicitos
-- Limites de escopo estao explicitos
-- Metricas de sucesso sao mensuraveis
-- Risco maior e parte mais dificil estao documentadas
-- Primeira fatia funcional + recurso uau estao definidos
+**Matriz de decisões:**
+
+| Contexto | Ação |
+|----------|------|
+| EXISTING + bug na msg | Bug Flow — descubra o bug |
+| EXISTING + feature na msg | Feature Flow — descubra a feature |
+| EXISTING + sem contexto | "Ouvindo..." — escute o usuário |
+| CODE_ONLY | Sugira `/lspec reverse` primeiro |
+| NEW | 6 fases completas |
+
+---
+
+## Fluxo Adaptativo
+
+**PROJETO NOVO:** 6 fases completas
+
+**BUG:** 3 fases curtas (foco no problema)
+
+**FEATURE:** 4 fases focadas
+
+---
+
+## Bug Flow (curto)
+
+1. O que não está funcionando?
+2. Qual o comportamento esperado vs atual?
+3. Como reproduzir o bug?
+
+→ Gera `features/bug-[nome]/spec.md`
+
+---
+
+## Feature Flow (focado)
+
+1. O que a feature deve fazer?
+2. Quem vai usar?
+3. Como você sabe que está pronto?
+
+→ Gera `features/[feature]/spec.md`
+
+---
+
+## Projeto Novo — 6 Fases
+
+### Fase 1: Contexto e Problema
+
+1. Qual o objetivo do projeto?
+2. Que problema resolve? Quem tem esse problema?
+3. Como sabe que é problema real?
+4. O que acontece se não construir?
+
+> CONFIRME antes de continuar
+
+### Fase 2: Visão e Escopo
+
+5. Como define sucesso?
+6. O que é o MVP?
+7. O que está fora do escopo?
+8. Quem é o usuário-alvo?
+
+> CONFIRME antes de continuar
+
+### Fase 3: Stack Técnica
+
+9. Qual linguagem/framework?
+10. Código existente para integrar?
+11. Restrições (orçamento, equipe, prazo)?
+
+> CONFIRME antes de continuar
+
+### Fase 4: Referências
+
+12. Alguma referência de design?
+
+Se houver: criar `.specs/design-references/`
+
+> CONFIRME antes de continuar
+
+### Fase 5: Riscos
+
+13. O que já foi tentado antes?
+14. Qual o maior risco?
+15. Parte mais difícil?
+
+> CONFIRME antes de continuar
+
+### Fase 6: Marcos
+
+16. Como dividir em etapas?
+17. Primeira coisa que funciona?
+
+→ Gera `PROJECT.md`
+
+---
+
+## Output
+
+```
+.specs/
+├── project/
+│   ├── PROJECT.md
+│   ├── ROADMAP.md
+│   └── STATE.md
+└── features/
+    └── [feature]/
+        └── spec.md
+```
+
+---
+
+## Validation Checklist
+
+- [ ] Visão em 1-2 frases
+- [ ] Problema com evidência
+- [ ] Escopo definido (in/out)
+- [ ] Métricas de sucesso
+- [ ] Primeiro marco definido

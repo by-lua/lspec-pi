@@ -1,73 +1,113 @@
 ---
 name: lspec-pause
-description: "Pausa trabalho e cria checkpoint de handoff."
+description: "Pausa trabalho e cria checkpoint de handoff para continuidade."
 ---
 
 warning: |
   ⚠️ REGRA ABSOLUTA:
-  - Salve estado atual ANTES de qualquer outra acao
-  - Documente TODO o contexto necessario para ressumir
+  - Salve estado atual ANTES de qualquer outra ação
+  - Documente TODO o contexto necessário para ressumir
 
 # pause — Pausar Trabalho
 
 **Trigger:** "Pause work", "End session", "Create handoff", "/lspec pause"
 
-**Purpose:** Checkpoint current state for resumption.
+**Purpose:** Criar checkpoint de estado para ressumir posteriormente.
 
 ---
 
-## Processo
+## Pipeline
 
-### 1. Identificar Estado Atual
+### Discovery
 
-- Quais tarefas estao em progresso?
-- Quais arquivos estao modificados?
-- Quais decisoes foram tomadas?
+Analisar estado atual do trabalho:
 
-### 2. Documentar Handoff
+- Quais tarefas estão em progresso?
+- Quais arquivos estão modificados?
+- Quais decisões foram tomadas?
+- Qual o branch git atual?
+- Há changes não commitados?
 
-Crie/actualize `.specs/HANDOFF.md`:
+### Specify (OBRIGATÓRIO)
+
+Documentar o estado no arquivo `features/`:
 
 ```markdown
-# Handoff
+# Paused Feature
 
-**Date:** [ISO timestamp]
-**Feature:** [feature name]
-**Task:** [task identifier] - [brief status]
+**Feature:** [nome da feature]
+**Data:** [ISO timestamp]
+**Branch:** [git branch]
 
-## Completed ✓
+## Estado Atual
 
-- [Completed work item]
-- [Completed work item]
+### Completo ✓
+- [item completo]
 
-## In Progress
+### Em Progresso
+- [work em andamento] — [percentual ou status]
+- Localização: [file:line]
 
-- [Current work] ([percentage or status])
-- Specific location: [file:line if applicable]
+### Pendente
+- [próximo passo]
+- [passo seguinte]
 
-## Pending
+### Bloqueios
+- [descrição do bloqueio] — [impacto]
 
-- [Next immediate step]
-- [Following step]
+## Contexto de Ressumição
 
-## Blockers
-
-- [Blocker description] - [impact]
-
-## Context
-
-- Branch: [git branch if applicable]
-- Uncommitted: [files with changes]
-- Related decisions: [STATE.md references if applicable]
+- Arquivos modificados: [lista]
+- Decisões: [referências a STATE.md]
+- Notas importantes: [contexto adicional]
 ```
+
+### Tasks (OBRIGATÓRIO)
+
+1. Criar/atualizar `.specs/HANDOFF.md` com estado documentado
+2. Confirmar que todos os arquivos estão salvos
+3. Listar próximo passo claro para ressumição
+
+### Execute
+
+Realizar ações de pause:
+
+```bash
+# Verificar estado do git
+git status
+
+# Criar checkpoint se necessário
+git add -A
+git commit -m "WIP: [feature name] - checkpoint before pause"
+
+# Confirmar HANDOFF.md existe
+cat .specs/HANDOFF.md
+```
+
+---
+
+## Estrutura de Arquivos
+
+```
+.specs/
+└── features/
+    └── [feature-name]/
+        └── HANDOFF.md
+```
+
+**NUNCA usar:**
+- `fixes/` — apenas `features/`
+- quick mode
+- auto-sizing
 
 ---
 
 ## Tips
 
-- Focus on actionable information for resumption
-- Include specific file/line references where relevant
-- Note uncommitted changes explicitly
-- Reference related STATE.md entries if applicable
+- Foco em informação acionável para ressumição
+- Incluir referências específicas de file:line
+- Notar mudanças não commitadas explicitamente
+- Referenciar entradas de STATE.md quando aplicável
+- Manter HANDOFF.md conciso e preciso
 
-**Proximo passo:** `/lspec resume` para continuar de onde parou.
+**Próximo passo:** `/lspec resume` para continuar de onde parou.

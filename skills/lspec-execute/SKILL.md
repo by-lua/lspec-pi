@@ -1,194 +1,297 @@
 ---
 name: lspec-execute
-description: "Executa tarefa/implementa codigo seguindo spec e design."
+description: "Executa implementação de feature seguindo Discovery, Spec, Design e Tasks. Execute é OBRIGATÓRIO — nunca pular."
 ---
 
-warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Execute APENAS tarefas aprovadas na fase Tasks
-  - NUNCA invente codigo fora do spec
-  - A cada tarefa, mostre o resultado e aguarde confirmacao
-  - Ao completar, mostre o que mudou e aguarde validacao
+# lspec-execute — Execução de Implementação
 
-# execute — Implementacao de Tarefas
+**Fase do pipeline:** Execute (última fase, obrigatória)
 
-**Goal:** Implementar UMA tarefa por vez. Mudancas cirurgicas. Verificar. Comitar. Repetir.
-
-**PI Packages:**
-- Antes de navegar/codigo: `pi list | grep -E 'cymbal|lsp-tools'`
-- Se `pi-cymbal` instalado → delegate navegacao de codigo para ele
-- Se `pi-lsp-tools` instalado → use LSP para go-to-definition, refs, rename
-- Se nenhum instalado → use ferramentas nativas (grep, read_file, etc) + recomende:
-  `pi install npm:pi-cymbal`
-  `pi install npm:@davehardy20/pi-lsp-tools`
+**Precede:** Nenhuma (fase final)
+**Depende de:** Tasks (tarefas aprovadas e ordenadas)
 
 ---
 
-## MANDATORY: Antes de Comecar Qualquer Implementacao
+## Pipeline Context
 
-**Leia e declare:**
+```
+Discovery → [Discuss] → Specify → [Clarify] → [Design] → Tasks → Execute
+                                        ↑__________________|
+```
 
-1. **Suposicoes** - O que estou assumindo? Alguma incerteza?
-2. **Arquivos a mexer** - Liste SOMENTE os arquivos que esta tarefa requer
-3. **Criterios de sucesso** - Como vou verificar se funciona?
+| Fase | Status | Descrição |
+|------|--------|-----------|
+| Discovery | Obrigatório | Análise de código existente, coleta de contexto |
+| Discuss | Opcional | Debate com usuário sobre requisitos, trade-offs |
+| Specify | Obrigatório | Criação de spec.md com requisitos |
+| Clarify | Opcional | Clarificação de pontos ambíguos |
+| Design | Opcional | Criação de design.md com abordagem técnica |
+| Tasks | Obrigatório | Decomposição em tarefas verificáveis |
+| **Execute** | **OBRIGATÓRIO** | Implementação código |
 
-⚠️ **Nao prossiga sem declarar isso explicitamente.**
+**⚠️ Execute NUNCA pode ser pulado. Se chegar aqui, implementação é mandatória.**
 
 ---
 
-## Processo
-
-### 0. Listar Passos Atomicos (OBRIGATORIO se Tasks foi pulada)
-
-Se nao existir `tasks.md` para esta feature, voce DEVE listar passos atomicos antes de escrever qualquer codigo. Isso e inegociavel.
+## Regra Absoluta
 
 ```
-## Execution Plan
-
-1. [Step] → files: [list] → verify: [how] → commit: [message]
-2. [Step] → files: [list] → verify: [how] → commit: [message]
-3. [Step] → files: [list] → verify: [how] → commit: [message]
+⚠️ EXECUTE É FASE FINAL — CÓDIGO DEVE SER ESCRITO
+- Execute APENAS tarefas aprovadas na fase Tasks
+- NUNCA invente código fora do spec/design
+- Autosave de estado após cada fase
 ```
 
-**Cada passo deve ser:**
-- UM entregavel (um componente, uma funcao, um endpoint, uma mudanca de arquivo)
-- Verificavel independentemente (pode provar que funciona antes de continuar)
-- Comitavel independentemente (tem seu proprio commit atomico)
+### Proibidos
 
-Se listar passos revelar >5 passos ou dependencias complexas, PARE e crie um `tasks.md` formal. A fase Tasks foi erroneamente pulada.
+- ❌ **quick mode** — sempre implementar completo, sem atalhos
+- ❌ **auto-sizing** — não redimensionar automaticamente sem aprovação
+- ❌ **pular tarefas** — implementar todas as tarefas listadas
+- ❌ **features em fixes/** — toda estrutura vai em `features/`
 
-### 1. Escolher Tarefa
+---
 
-De tasks.md (se existir) ou do plano inline acima. Usuario especifica ("implemente T3") ou sugira proxima disponivel.
+## PI Packages — Navegação de Código
 
-### 2. Verificar Dependencias
+**Antes de navegar/codificar, verifique ferramentas disponíveis:**
 
-Se tasks.md existe, check dependencies. Se usando plano inline, siga a ordem listada.
-
-❌ Se bloqueado: "T3 depende de T2 que ainda nao esta pronto. Devo fazer T2 primeiro?"
-
-### 3. Declarar Plano de Implementacao
-
-Antes de escrever codigo:
-
-```
-Files: [list]
-Approach: [brief description]
-Success: [how to verify]
+```bash
+pi list | grep -E 'cymbal|lsp-tools'
 ```
 
-### 4. Escrever Testes Primeiro (RED)
+| Package | Uso |
+|---------|-----|
+| `pi-cymbal` | Delegate navegação de código para ele |
+| `pi-lsp-tools` | Use LSP para go-to-definition, refs, rename |
+| Nenhum instalado | Use ferramentas nativas + recomende instalação |
 
-Se a tarefa inclui testes (per campo Tests em tasks.md ou TESTING.md coverage matrix):
+**Recomendação:**
+```bash
+pi install npm:pi-cymbal
+pi install install npm:@davehardy20/pi-lsp-tools
+```
 
-1. Escreva o arquivo(s) de teste ANTES de escrever qualquer implementacao
-2. Testes devem codificar o comportamento esperado dos criterios "Done when" da tarefa
-3. Rode o comando de teste — confirme que testes FALHAM (estado RED)
-4. Se testes passam antes da implementacao existir, os testes estao fracos demais — reescreva-os
+**Fallback com agent-lsp:**
+```markdown
+<!-- agent-lsp:rules:start -->
+[Usar tools agent-lsp para código: list_symbols, find_symbol, inspect_symbol, 
+ find_references, find_callers, blast_radius, etc]
+<!-- agent-lsp:rules:end -->
+```
 
-**Constraints:**
-- Testes definem comportamento correto independentemente da implementacao
-- Cada criterio de aceitacao de "Done when" mapeia pra pelo menos uma assercao de teste
-- Edge cases de spec.md que se aplicam a esta tarefa tambem recebem casos de teste
+---
 
-Se a tarefa NAO inclui testes (ex: entity-only, config-only), pule para o Passo 4b.
+## Estrutura de Diretórios
 
-### 4b. Implementar (GREEN)
+```
+features/
+├── feature-name/
+│   ├── STATE.md          # Estado do projeto (autosave por fase)
+│   ├── spec.md           # Requisitos
+│   ├── design.md         # Abordagem técnica
+│   ├── tasks.md          # Tarefas aprovadas
+│   └── impl/
+│       ├── index.ts      # Entry point
+│       ├── types.ts      # Tipos
+│       └── [modulos].ts  # Módulos
+└── shared/
+    └── [componentes]
+```
 
-Escreva a implementacao minima necessaria para satisfazer os criterios de sucesso da tarefa.
+**NUNCA criar `fixes/` — tudo é feature.**
+
+---
+
+## Autosave de Estado
+
+**Após cada fase do Execute, salvar estado em STATE.md:**
+
+```markdown
+## Execute Phase Status
+
+### Current Task
+- T[X]: [Title]
+- Status: [in-progress/complete/blocked]
+- Started: [timestamp]
+
+### Completed Tasks
+- T1: ✅ [date]
+- T2: ✅ [date]
+
+### Pending Tasks
+- T3: [description]
+- T4: [description]
+
+### Blockers
+- [ blocker description ]
+
+### Recent Commits
+- [hash] [message]
+```
+
+**Autosave triggers:**
+1. Início de nova tarefa
+2. Commit feito
+3. Blocker identificado
+4. Fim de sessão
+
+---
+
+## Processo de Implementação
+
+### 0. Verificar Pré-condições
+
+```markdown
+## Pre-Implementation Check
+
+✅ Discovery completo? → [y/n]
+✅ Spec.md existe? → [y/n]
+✅ Design.md existe? → [y/n]
+✅ Tasks.md existe? → [y/n]
+
+If any ❌ → PARE e resolva antes de prosseguir
+```
+
+### 1. Carregar Contexto
+
+1. Ler `features/[name]/spec.md`
+2. Ler `features/[name]/design.md`
+3. Ler `features/[name]/tasks.md`
+4. Ler `features/[name]/STATE.md`
+5. Identificar tarefa atual
+
+### 2. Declarar Plano de Implementação
+
+**Antes de escrever código, declare:**
+
+```markdown
+## Implementing T[X]: [Task Title]
+
+**Reading:**
+- task definition from tasks.md
+- design approach from design.md
+
+**Dependencies:**
+- [All done? ✅ | Blocked by: TY]
+
+**Tests:** [unit/e2e/integration/none]
+**Gate:** [full/build] — NUNCA quick
+
+**Files to touch:**
+- [list ONLY these files]
+
+**Success criteria:**
+- [how to verify]
+```
+
+### 3. TDD — RED (Testes Primeiro)
+
+Se tarefa inclui testes:
+
+1. Escrever arquivo(s) de teste ANTES de qualquer implementação
+2. Mapear cada critério "Done when" → asserção de teste
+3. Cobrir edge cases do spec.md
+4. Rodar comando de teste → confirmar FALHAM (RED)
+5. Se testes passam sem implementação → testes fracos, reescreva
+
+**Se tarefa não inclui testes:**
+- Pular para passo 4b
+- Documentar em STATE.md: "No tests for this task"
+
+### 4. Implementar — GREEN
+
+Implementar código mínimo para satisfazer critérios de sucesso.
 
 **HARD CONSTRAINTS:**
-- NAO modifique testes escritos no Passo 4. Testes sao o spec — implementacao conforma a eles.
-- NAO enfraqueça asserções (tornando-as menos especificas para passar mais facilmente)
-- NAO delete ou skip casos de teste
-- NAO use mecanismos skip/disable/pending do framework de testes para bypassar testes falhando
-- Codigo minimo para passar — salve melhorias estruturais para uma tarefa de refactor
+- ❌ NÃO modificar testes escritos no RED
+- ❌ NÃO enfraquecer asserções
+- ❌ NÃO deletar ou skipar casos de teste
+- ❌ NÃO usar mecanismos skip/disable/pending
 
-Se um teste esta genuinamente errado (testa o comportamento errado per spec), PARE e pergunte ao usuario antes de modifica-lo. Nunca mude um teste silenciosamente.
+**Permitido:**
+- ✅ Codigo mais simples que funciona
+- ✅ Mexer SOMENTE nos arquivos declarados
+- ✅ Sem scope creep
 
-Siga coding-principles.md:
-- Codigo mais simples que funciona
-- Mexa SOMENTE nos arquivos listados
-- Sem scope creep
+Se um teste está genuinamente errado (testa comportamento errado):
+→ PARE e pergunte ao usuário ANTES de modificar
 
-### 5. Gate Check (VERIFY)
+### 5. Gate Check — VERIFY
 
-Rode o comando de gate check da definicao da tarefa. Isso e OBRIGATORIO.
+**⚠️ SEMPRE usar full ou build — NUNCA quick**
 
-1. Look up the command for the task's Gate level (quick/full/build) in TESTING.md's Gate Check Commands section, then run it
-2. Non-zero exit code = STOP. Fix the failure. Re-run. Nao prossiga ate ficar verde.
-3. Confirme que o count de testes corresponde as expectativas (nenhum teste foi silenciosamente deletado ou skipped)
+Rode o comando de gate check definido em TESTING.md:
 
-**Tiered gates (from TESTING.md Gate Check Commands):**
+| Task includes | Gate level | Command |
+|---------------|------------|---------|
+| Unit tests only | Build | build + lint + unit |
+| E2E/integration | Full | unit + e2e |
+| Last task | Build | build + lint + all tests |
+| No tests | Build | build + lint only |
 
-| Task includes | Gate level | What runs |
-|--------------|------------|------------|
-| Unit tests only | Quick | Unit test command |
-| E2E or integration tests | Full | Unit + E2E commands |
-| Last task in a phase | Build | Build + lint + all tests |
-| No tests (config, entities, etc) | Build | Build + lint only |
+**Sequência:**
+1. Run gate command
+2. Non-zero exit → STOP → Fix → Re-run
+3. Confirmar contagem de testes (nenhum silenciosamente deletado)
 
-### 6. Pos-Gate Review
+### 6. Post-Gate Review
 
-Apos o gate check passar:
+```markdown
+### Post-Gate Checklist
 
-1. Verificar test count: Ha pelo menos tantos casos de teste quanto antes? (previne deletion silenciosa)
-2. Verificar que nao ha SPEC_DEVIATION: Se implementacao divergiu do spec/design, adicione um marcador:
+- [ ] Test count matches RED phase count
+- [ ] No SPEC_DEVIATION (or markers added)
+- [ ] No unnecessary changes made
+- [ ] Matches existing patterns
+- [ ] Complexity acceptable? (senior engineer flag?)
 
+If [ ] not checked → fix before commit
 ```
+
+**SPEC_DEVIATION marker (se necessário):**
+```typescript
 // SPEC_DEVIATION: [what diverged]
-// Reason: [why the deviation was necessary]
+// Reason: [why deviation was necessary]
 ```
 
-3. Verificacao rapida de complexidade: "Um engenior senior sinalizaria isso como complicado demais?"
-   - Sim → Simplifique, re-rode gate
-   - Nao → Prossiga para commit
+### 7. Git Commit Atômico
 
-### 7. Git Commit Atomico
-
-Cada tarefa tem seu proprio commit imediatamente apos verificacao. Nunca agrupe multiplas tarefas em um commit.
-
-**Format (Conventional Commits):**
-
-```
-<type>(<scope>): <description>
+```bash
+git add [files]
+git commit -m "<type>(<scope>): <description>
 
 [optional body]
 
-[optional footer(s)]
+[optional footer(s)]"
 ```
 
-**Types:**
-- `feat` — New feature or capability
-- `fix` — Bug fix
-- `refactor` — Code change that neither fixes a bug nor adds a feature
-- `docs` — Documentation only
-- `test` — Adding or correcting tests
-- `style` — Formatting, missing semicolons, etc. (no code change)
-- `perf` — Performance improvement
-- `build` — Build system or external dependencies
-- `ci` — CI configuration files and scripts
-- `chore` — Maintenance tasks
+**Types permitidos:**
+- `feat` — New feature
+- `refactor` — Code change (no bug fix, no feature)
+- `docs` — Documentation
+- `test` — Tests
+- `build` — Build system
+- `ci` — CI config
 
 **Rules:**
 - One task = one commit
-- Description references what was DONE, not what was planned
-- Include only files listed in the task — never sneak in "while I'm here" changes
-- If tests are part of the task, include them in the same commit
+- Descrição = o que foi FEITO, não planejado
+- Include only files in task definition
+- Tests no mesmo commit se parte da tarefa
 
-### 8. Scope Guardrail
+### 8. Autosave de Estado
 
-Durante implementacao, voce notara coisas que podem ser melhoradas, refatoradas ou adicionadas. **Nao atue nelas.** Em vez disso:
+Após commit, atualizar STATE.md:
 
-- Se e bug: anote em STATE.md como blocker
-- Se e melhoria: anote em STATE.md em "Deferred Ideas" ou "Lessons Learned"
-- Se e relacionado a tarefa atual: only include it if it's in the "Done when" criteria
+```markdown
+## Execute Status Update
 
-**The heuristic:** "Is this in my task definition?" If no, don't touch it.
+**Completed:** T[X] - [date] - [commit hash]
+**Next:** T[Y] - [description]
 
-### 9. Atualizar Status da Tarefa
-
-Marque tarefa completa em tasks.md. Atualize rastreabilidade de requisitos em spec.md se IDs de requisito forem usados.
+**Changes:**
+- [file] - [change summary]
+```
 
 ---
 
@@ -197,10 +300,9 @@ Marque tarefa completa em tasks.md. Atualize rastreabilidade de requisitos em sp
 ```markdown
 ## Implementing T[X]: [Task Title]
 
-**Reading:** task definition from tasks.md
-**Dependencies:** [All done? ✅ | Blocked by: TY]
-**Tests:** [unit/e2e/integration/none]
-**Gate:** [quick/full/build]
+**Dependencies:** ✅ [all done] | ❌ Blocked by TY
+**Tests:** [type]
+**Gate:** [full/build] — NEVER quick
 
 ### Pre-Implementation (MANDATORY)
 
@@ -212,39 +314,70 @@ Marque tarefa completa em tasks.md. Atualize rastreabilidade de requisitos em sp
 
 - Test file(s): [paths]
 - Test count: [N test cases]
-- Confirmed failing: [Yes — all N tests fail as expected]
+- Status: Confirmed failing ✅
 
 ### GREEN: Implement
 
 [Write minimum code to pass tests]
 
-- Tests modified: None
-- Tests skipped/deleted: None
+- Tests modified: ❌ None
+- Tests skipped/deleted: ❌ None
 
 ### VERIFY: Gate Check
 
-- Command: [gate check command]
+- Command: [gate command]
 - Result: [X passed, 0 failed]
-- Test count: [N — matches RED phase count]
+- Test count: [N — matches RED]
 
 ### Post-Gate
 
-- [x] No SPEC_DEVIATION (or markers added)
-- [x] No unnecessary changes made
-- [x] Matches existing patterns
+- [x] No SPEC_DEVIATION
+- [x] No unnecessary changes
+- [x] Matches patterns
+
+### Commit
+
+- Hash: [git hash]
+- Files: [list]
 
 **Status:** ✅ Complete | ❌ Blocked | ⚠️ Partial
 ```
 
 ---
 
+## Scope Guardrail
+
+**Durante implementação, você notará coisas melhoráveis. NÃO atue nelas.**
+
+| Type | Action |
+|------|--------|
+| Bug | Anotar em STATE.md como blocker |
+| Melhoria | Anotar em "Deferred Ideas" |
+| Related to current task | Include only if in "Done when" |
+
+**Heuristic:** "Is this in my task definition?" → No → Don't touch it
+
+---
+
 ## Tips
 
-- **One task at a time** — Focus prevents errors
-- **Tools matter** — Wrong MCP = wrong approach
-- **Reuses save tokens** — Copy patterns, don't reinvent
-- **Check before commit** — Verify all criteria, then commit
-- **Stay surgical** — Touch only what's necessary
-- **Commit per task** — Clean git history enables bisect and rollback
-- **Never "while I'm here"** — Scope creep during implementation is the #1 quality killer
-- **Learn from mistakes** — If something goes wrong, add a Lesson Learned to STATE.md
+- **Uma tarefa por vez** — foco previne erros
+- **Ferramentas importam** — LSP tools para navegação, não grep
+- **Reuse padrões** — copy existing, don't reinvent
+- **Verifique antes de commit** — todos critérios antes de commitar
+- **Surgical changes** — toque só o necessário
+- **Commit por task** — git history limpo = bisect fácil
+- **Nunca "while I'm here"** — scope creep é assassino de qualidade
+- **Learn from mistakes** — se algo der errado, adicione Lesson Learned
+
+---
+
+## Error Recovery
+
+Se implementação falha:
+
+1. Identificar erro específico
+2. Verificar se é blocker ou não
+3. Se blocker → anota em STATE.md, pergunta usuário
+4. Se não blocker → fixa, re-roda gate
+5. Nunca prossiga com gate vermelho

@@ -1,97 +1,164 @@
 ---
 name: lspec-tasks
-description: "Gerencia lista de tarefas, atualiza status e progresso."
+description: "Quebra requirements em tarefas granulares, atômicas, com dependências claras e plano de execução. Fase OBRIGATÓRIA antes de Execute."
 ---
 
 warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - NUNCA execute codigo fora da fase Execute
-  - Liste tarefas e aguarde APROVACAO antes de implementar
-  - Apresente diagrama de dependencias junto com as tarefas
+  ⚠️ REGRAS ABSOLUTAS:
+  - Tasks É OBRIGATÓRIA — NUNCA pule esta fase
+  - NUNCA use quick mode ou auto-sizing
+  - Output vai para `features/[name]/tasks.md` (NÃO em fixes/)
+  - Autosave de estado em cada transição de fase
 
-# tasks — Divisao em Tarefas
+# Tasks — Divisão em Tarefas Granulares
 
-**Goal:** Quebrar em tarefas GRANULARES, ATOMICAS. Dependencias claras. Plano de execucao paralelo.
+**Goal:** Transformar requirements em tarefas ATÔMICAS, PARALELIZÁVEIS, VERIFICÁVEIS.
 
-**Pule esta fase quando:** Tiver <= 3 passos obvios. Entao tasks sao implicitas — va direto pro Execute e liste-as inline.
+**Pipeline completo:**
+```
+Discovery → [Discuss (opcional)] → Specify → [Clarify (opcional)] → [Design (opcional)] → Tasks → Execute
+```
+
+**Tasks é OBRIGATÓRIA.** Execute não começa sem tarefas aprovadas.
 
 ---
 
 ## Por que Tarefas Granulares?
 
 | Tarefa Vazia (Ruim) | Tarefas Granulares (Bom) |
-| ------------------- | ------------------------- |
-| "Criar formulario" | T1: Criar input de email |
-|                   | T2: Adicionar validacao de email |
-|                   | T3: Criar botao de submit |
-|                   | T4: Adicionar gerencia de estado do form |
+|---------------------|--------------------------|
+| "Criar formulário" | T1: Criar input de email |
+|                   | T2: Adicionar validação de email |
+|                   | T3: Criar botão de submit |
+|                   | T4: Adicionar gerência de estado do form |
 |                   | T5: Conectar form a API |
 
-**Beneficios:**
-- Agentes nao erram — foco unico, sem ambiguidade
-- Facil de testar — cada tarefa = um resultado verificavel
-- Paralelizavel — tarefas independentes rodam simultaneamente
-- Erros isolados — uma falha nao bloqueia tudo
+**Benefícios:**
+- Agentes não erram — foco único, sem ambiguidade
+- Fácil de testar — cada tarefa = um resultado verificável
+- Paralelizável — tarefas independentes rodam simultaneamente
+- Erros isolados — uma falha não bloqueia tudo
 
 **Regra:** Uma tarefa = UMA destas:
 - Um componente
-- Uma funcao
+- Uma função
 - Um endpoint de API
-- Uma mudanca de arquivo
+- Uma mudança de arquivo
 
 ---
 
-## Processo
+## Fluxo de Trabalho
 
-### 1. Revisar Design
+### Fase 1: Carregar Contexto
 
-Leia `.specs/[feature]/design.md` antes de criar tarefas.
+Antes de criar tarefas, carregue:
 
-### 2. Quebrar em Tarefas Atomicas
+1. **Requirements:** `features/[name]/requirements.md`
+2. **Spec (se existir):** `features/[name]/spec.md`
+3. **Design (se existir):** `features/[name]/design.md`
 
-**Tarefa = UM entregavel.** Exemplos:
+```markdown
+## Contexto Carregado
 
-- ✅ "Criar interface UserService" (um arquivo, um conceito)
-- ❌ "Implementar gerenciamento de usuarios" (muito vago, multiplos arquivos)
+- [x] requirements.md ✓
+- [x] spec.md ✓
+- [ ] design.md (opcional)
+```
 
-### 3. Definir Dependencias
+### Fase 2: Quebrar em Tarefas Atômicas
 
-O que PRECISA ser feito antes desta tarefa poder comecar?
+**Tarefa = UM entregável.**
 
-### 4. Criar Plano de Execucao
+| ✅ Bom | ❌ Mau |
+|--------|--------|
+| "Criar interface UserService" | "Implementar gerenciamento de usuários" |
+| "Adicionar validação de email" | "Fazer validações" |
+| "Criar endpoint /api/users" | "Criar API de users" |
 
-Agrupar tarefas em fases. Identificar o que pode rodar em paralelo.
+### Fase 3: Definir Dependências
 
-### 5. Validar Antes de Apresentar (OBRIGATORIO)
+O que PRECISA ser feito antes desta tarefa poder começar?
 
-Antes de mostrar tarefas ao usuario, rode TODOS os tres checks de pre-aprovacao:
+```markdown
+T1 → T2 → T3
+T3 → T4
+T3 → T5
+T4 + T5 → T6
+```
 
-**Check 1: Granularidade** — verify each task is atomic.
+### Fase 4: Identificar Tarefas Paralelas
 
-**Check 2: Diagrama-Definicao Cross-Check** — verify the execution diagram matches every task's `Depends on` field.
+Tarefas são paralelas se:
+- Nenhuma depende da outra
+- Não compartilham estado mutável
+- Testes são idempotentes
 
-**Check 3: Co-localizacao de Testes** — verify every task's `Tests` field matches TESTING.md coverage matrix.
+Marcamos com `[P]` para paralelo.
 
-**Output both tables with the tasks** so the user can see the validation results. Any ❌ means you MUST restructure before presenting.
+### Fase 5: Validar (OBRIGATÓRIO)
 
-### 6. Perguntar Sobre MCPs e Skills
+Antes de apresentar, rode os checks:
 
-**CRITICO:** Antes da execucao, pergunte ao usuario:
+#### Check 1: Granularidade
 
-> "Para cada tarefa, quais ferramentas devo usar?"
-> 
-> **MCPs Disponiveis:** [lista do projeto ou usuario]
-> **Skills Disponiveis:** [lista do projeto ou usuario]
+| Task | Scope | Status |
+|------|-------|--------|
+| T1: Create email input | 1 component | ✅ |
+| T2: Add validation | 1 function | ✅ |
+| T3: Create form + DB + API | 3 domains | ❌ SPLIT |
+
+#### Check 2: Diagrama vs Depends
+
+Verificar que o execution plan corresponde aos campos `Depends on`.
+
+#### Check 3: Ferramentas Definidas
+
+Cada tarefa deve ter MCPs/Skills definidos antes de prosseguir.
 
 ---
 
-## Template: `.specs/[feature]/tasks.md`
+## Autosave de Estado
+
+A cada transição de fase, salvar estado em `features/[name]/state.md`:
+
+```markdown
+# [Feature] State
+
+**Pipeline:** Discovery → Discuss → Specify → Clarify → Design → **Tasks** → Execute
+
+**Current Phase:** Tasks
+**Started:** YYYY-MM-DD HH:MM
+**Last Updated:** YYYY-MM-DD HH:MM
+
+## Phase Status
+
+| Phase | Status | Timestamp |
+|-------|--------|-----------|
+| Discovery | ✅ Done | ... |
+| Specify | ✅ Done | ... |
+| Tasks | 🔄 In Progress | ... |
+
+## Decisions Made
+
+- [Lista de decisões tomadas durante as fases]
+
+## Blockers
+
+- [Nenhum / lista de bloqueios pendentes]
+```
+
+---
+
+## Template: `features/[name]/tasks.md`
 
 ```markdown
 # [Feature] Tasks
 
-**Design**: `.specs/[feature]/design.md`
-**Status**: Draft | Approved | In Progress | Done
+**Design:** `features/[name]/design.md` (se existir)
+**Requirements:** `features/[name]/requirements.md`
+**Status:** Draft → Approved → In Progress → Done
+**Created:** YYYY-MM-DD HH:MM
+**Updated:** YYYY-MM-DD HH:MM
 
 ---
 
@@ -101,69 +168,74 @@ Antes de mostrar tarefas ao usuario, rode TODOS os tres checks de pre-aprovacao:
 
 Tarefas que devem ser feitas primeiro, em ordem.
 
+```
 T1 → T2 → T3
+```
 
 ### Phase 2: Core Implementation (Parallel OK)
 
-Apos foundation, estas podem rodar em paralelo.
+Após foundation, estas podem rodar em paralelo.
 
+```
      ┌→ T4 ─┐
-
 T3 ──┼→ T5 ─┼──→ T8
 └→ T6 ─┘
 T7 ──────→
+```
 
 ### Phase 3: Integration (Sequential)
 
 Juntando tudo.
 
+```
 T8 → T9
+```
 
 ---
 
 ## Task Breakdown
 
-### T1: [Criar Interface X]
+### T1: [Nome da Tarefa]
 
-**What:** [Uma frase: entregavel exato]
+**What:** [Uma frase: entregável exato]
 **Where:** `src/path/to/file.ts`
 **Depends on:** None
 **Reuses:** `src/existing/BaseInterface.ts`
-**Requirement:** [FEAT]-01
+**Requirement:** [REQ]-01
 
 **Tools:**
-- MCP: `filesystem` (or NONE)
+- MCP: `pi-lsp-tools` / `filesystem` / NONE
 - Skill: NONE
 
 **Done when:**
-- [ ] Interface definida com todos os metodos do design
+- [ ] Interface definida com todos os métodos do design
 - [ ] Types exportados corretamente
 - [ ] Sem erros TypeScript
 
-**Tests:** [unit/e2e/integration/none — from coverage matrix]
-**Gate:** [quick/full/build — from gate check commands]
+**Tests:** unit / e2e / integration / none
+**Gate:** build (NUNCA quick)
 
 ---
 
-### T2: [Implementar Servico Y] [P]
+### T2: [Nome da Tarefa] [P]
 
-**What:** [Entregavel exato]
+**What:** [Entregável exato]
 **Where:** `src/services/YService.ts`
 **Depends on:** T1
 **Reuses:** `src/services/BaseService.ts` patterns
 
 **Tools:**
-- MCP: `filesystem`, `context7`
+- MCP: `pi-cymbal` / `pi-lsp-tools`
 - Skill: NONE
 
 **Done when:**
 - [ ] Implementa interface do T1
 - [ ] Handles casos de erro do design
-- [ ] Gate check passa
+- [ ] Build passa
 - [ ] Test count: [N] tests pass
 
 **Tests:** unit
-**Gate:** quick
+**Gate:** build
 
 ---
 
@@ -185,33 +257,52 @@ Phase 3 (Sequential):
 ```
 
 **Constraint:** Uma tarefa marcada `[P]` precisa de:
-- Nenhuma dependencia nao terminada
-- Tipo de teste requerido e parallel-safe (per TESTING.md)
-- Nenhum estado mutavel compartilhado com outras tarefas `[P]` na mesma fase
+- Nenhuma dependência não terminada
+- Tipo de teste requerido e parallel-safe
+- Nenhum estado mutável compartilhado com outras tarefas `[P]` na mesma fase
 
 ---
 
-## Task Granularity Check
+## Validation Results
+
+### Granularity Check
 
 | Task | Scope | Status |
-| ---- | ----- | ------ |
+|------|-------|--------|
 | T1: Create email input | 1 component | ✅ Granular |
 | T2: Add validation function | 1 function | ✅ Granular |
-| T3: Create form with all fields | 5+ components | ❌ Split it! |
+| T3: Create form with all fields | 5+ components | ❌ SPLIT |
 | T4: Connect to API | 1 function | ✅ Granular |
 
-**Granularity check:**
-- ✅ 1 component / 1 function / 1 endpoint = Good
-- ⚠️ 2-3 related things in same file = OK if cohesive
-- ❌ Multiple components or files = MUST split
+### Dependency vs Execution Plan Check
+
+| Task | Depends | In Execution Plan | Status |
+|------|---------|-------------------|--------|
+| T1 | None | Phase 1 | ✅ |
+| T2 | T1 | Phase 1 after T1 | ✅ |
+| T3 | T2 | Phase 2 | ✅ |
+
+---
+
+## Approval Gate
+
+Antes de Execute, confirmar:
+
+1. ✅ Todas tarefas são granulares (≥8 tarefas = bom sinal)
+2. ✅ Execution plan corresponde a dependencies
+3. ✅ Tools definidas para cada tarefa
+4. ✅ Sem "quick mode" ou "auto-sizing" em Gates
+
+**Output:** Aprovar para Execute ou pedir refinamento.
 
 ---
 
 ## Tips
 
-- **[P] = Parallel OK** — Mark tasks that can run simultaneously
-- **Reuses = Token saver** — Always reference existing code
-- **Tools per task** — MCPs and Skills prevent wrong approaches
-- **Dependencies are gates** — Clear what blocks what
-- **Done when = Testable** — If you can't verify it, rewrite it
-- **One commit per task** — Plan the commit message format in advance
+- **[P] = Parallel OK** — Marcar tarefas que podem rodar simultaneamente
+- **Reuses = Token saver** — Sempre referenciar código existente
+- **Tools por tarefa** — MCPs e Skills previnem abordagens erradas
+- **Dependencies são gates** — Claro o que bloqueia o quê
+- **Done when = Testable** — Se não pode verificar, reescreva
+- **One commit por tarefa** — Plano do formato da mensagem de commit
+- **Autosave** — Salvar estado em cada transição

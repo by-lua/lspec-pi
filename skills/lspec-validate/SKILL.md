@@ -8,6 +8,8 @@ warning: |
   - Verifique TODOS os criterios de aceitacao antes de declarar completo
   - Execute gate check de nivel Build OBRIGATORIO
   - Apresente resultado por tarefa e aguarde confirmacao do usuario
+  - NUNCA use quick mode ou auto-sizing
+  - Estrutura: features/ apenas, NAO use fixes/
 
 # validate — Validacao e Verificacao
 
@@ -15,60 +17,92 @@ warning: |
 
 ---
 
-## Processo
+## Pipeline de Validacao
 
-### 1. Verificar Tarefas Completas
+### FASE 1: Discovery
 
-Verifique tasks.md:
-- [ ] Todas as tarefas marcadas como done?
-- [ ] Alguma bloqueada ou parcial?
+Colete informacoes da feature:
 
-### 2. Verificar Criterios de Aceitacao
+```
+.specs/features/[feature]/
+  - spec.md          (user stories + criterios)
+  - edge-cases.md    (casos limites se existir)
+```
 
-Para cada user story em spec.md:
+Verifique:
+- [ ] spec.md existe em `.specs/features/[feature]/`
+- [ ] user stories P1 estao definidas
+- [ ] criterios de aceitacao estao claros
 
-```markdown
+### FASE 2: Discuss (OPCIONAL)
+
+Se houver ambiguidade no spec:
+- Confirme interpretacao com usuario
+- Documente decisoes tomadas
+- Prossiga apenas apos alinhamento
+
+### FASE 3: Specify
+
+Para cada user story P1 (MVP):
+
+```
 ### P1: [Story Title]
 
 **Acceptance Criteria:**
-
 1. WHEN [X] THEN [Y] → [PASS/FAIL]
 2. WHEN [X] THEN [Y] → [PASS/FAIL]
 ```
 
-### 3. Verificar Edge Cases
+Registre criterios que serao validados.
 
-De spec.md edge cases:
-- [ ] [Edge case 1] handled correctly
-- [ ] [Edge case 2] handled correctly
+### FASE 4: Clarify (OPCIONAL)
 
-### 4. Executar Gate Check de Build (OBRIGATORIO)
+Se edge-cases.md existir:
+- Revise casos limites
+- Confirme handling implementado
 
-Rode o comando de gate check de nivel Build do TESTING.md. Isso NAO e opcional.
+### FASE 5: Design (OPCIONAL)
 
-1. Run: `[build gate command from TESTING.md]`
-2. Non-zero exit code = STOP. Nao prossiga para Code Quality Check.
-3. Registre resultados:
-   - Total test count: [N]
-   - Passed: [N]
-   - Failed: [list]
+Se design.md existir:
+- Verifique implementacao segue estrutura definida
+- Confirme componentes/módulos estao corretos
 
-### 5. Code Quality Check (OBRIGATORIO)
+### FASE 6: Tasks
+
+Verifique tasks.md:
+- [ ] Todas as tarefas marcadas como done?
+- [ ] Alguma bloqueada ou parcial?
+- [ ] Nenhuma tarefa em fixes/
+
+### FASE 7: Execute
+
+Execute validacao completa:
+
+#### 1. Code Quality Check (OBRIGATORIO)
 
 Para cada arquivo modificado, verifique contra coding-principles.md:
 
 | Check | Pass? |
 | ----- | ----- |
-| No features beyond what was asked | |
-| No abstractions for single-use code | |
-| No unnecessary "flexibility" added | |
-| Only touched files required for task | |
-| Didn't "improve" unrelated code | |
+| Nao adicionou features alem do pedido | |
+| Nao criou abstrações para codigo single-use | |
+| Nao adicionou "flexibilidade" desnecessaria | |
+| Apenas tocou arquivos necessarios para task | |
+| Nao "melhorou" codigo nao relacionado | |
 | Matches existing patterns/style | |
 
 ❌ Algum "No"? → Corrija antes de marcar completo.
 
-### 6. Relatorio
+#### 2. Gate Check de Build (OBRIGATORIO)
+
+Rode o comando de gate check de nivel Build do TESTING.md.
+
+1. Run: `[build gate command from TESTING.md]`
+2. Non-zero exit code = STOP. Nao prossiga.
+3. Registre resultados:
+   - Total test count: [N]
+   - Passed: [N]
+   - Failed: [list]
 
 ---
 
@@ -78,7 +112,7 @@ Para cada arquivo modificado, verifique contra coding-principles.md:
 # [Feature] Validation
 
 **Date:** [YYYY-MM-DD]
-**Spec:** `.specs/[feature]/spec.md`
+**Spec:** `.specs/features/[feature]/spec.md`
 
 ---
 
@@ -102,12 +136,22 @@ Para cada arquivo modificado, verifique contra coding-principles.md:
 
 ---
 
+## Code Quality
+
+| Check | Pass? |
+| ----- | ----- |
+| No features beyond what was asked | ✅ |
+| No single-use abstractions | ✅ |
+| No unnecessary flexibility | ✅ |
+| Only touched required files | ✅ |
+| Matches existing patterns | ✅ |
+
+---
+
 ## Tests
 
 - **Gate command:** [full command]
 - **Result:** [X] passed, [Y] failed
-- **Test count before feature:** [N]
-- **Test count after feature:** [M]
 
 ---
 
@@ -124,8 +168,10 @@ Para cada arquivo modificado, verifique contra coding-principles.md:
 
 ## Tips
 
-- **P1 first** — MVP must work before P2/P3
-- **WHEN/THEN = Test** — Each criterion is a test case
-- **Be specific** — "Doesn't work" isn't helpful
-- **Recommend fixes** — Don't just report problems, create fix tasks
-- **Quality check is mandatory** — Not optional
+- **P1 first** — MVP deve funcionar antes de P2/P3
+- **WHEN/THEN = Test** — Cada criterio e um test case
+- **Be specific** — "Doesn't work" nao e util
+- **Recommend fixes** — Nao apenas reportar problemas, criar tasks
+- **Quality check e mandatory** — Nao opcional
+- **NUNCA quick mode** — Validacao completa sempre
+- **Estrutura features/** — Nunca use fixes/
