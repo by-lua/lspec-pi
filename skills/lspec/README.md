@@ -363,16 +363,22 @@ The skill is designed to work within context limits:
 
 When context exceeds 40k tokens, the skill displays a status indicator and suggests optimizations.
 
-## 🔗 Skill Integrations
+## PI Package Integrations
 
-L-Spec PI works even better when combined with complementary skills:
+L-Spec PI detecta e delega para PI packages quando instalados:
 
-| Skill              | Integration                                                                       |
-| ------------------ | --------------------------------------------------------------------------------- |
-| **mermaid-studio** | Diagrams — architecture overviews, data flows, sequence diagrams                  |
-| **codenavi**       | Code exploration — brownfield mapping, pattern identification, dependency tracing |
+| Package | Instalação | Propósito |
+|---------|-----------|-----------|
+| `pi-cymbal` | `pi install npm:pi-cymbal` | Navegação nativa de código |
+| `@davehardy20/pi-lsp-tools` | `pi install npm:@davehardy20/pi-lsp-tools` | LSP (go-to-definition, refs, símbolos) |
+| `pi-mermaid` | `pi install npm:pi-mermaid` | Renderiza diagramas Mermaid em ASCII |
+| `@dreki-gg/pi-context7` | `pi install npm:@dreki-gg/pi-context7` | Documentação de libs atualizada |
+| `context-mode` | `pi install npm:context-mode` | Redução agressiva de contexto |
+| `pi-ask-user` | `pi install npm:pi-ask-user` | Ask_user interativo com UI |
 
-The skill automatically detects if these are installed and delegates specialized tasks to them. If not installed, it falls back gracefully and recommends them once per session.
+**Verificar instalados:** `pi list | grep -E 'cymbal|lsp|mermaid|context7|ask-user'`
+
+O skill detecta automaticamente packages instalados e delega tarefas especializadas. Se não instalado, cai graciosamente para alternativas nativas.
 
 ## 📚 Reference Files
 
