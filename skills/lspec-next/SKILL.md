@@ -3,11 +3,47 @@ name: lspec-next
 description: "Determina próxima tarefa/ação baseada no estado atual."
 ---
 
+# State
+**Last Updated:** [ISO timestamp]
+**Current Work:** [Feature name] - [Task identifier]
+---
+## Recent Decisions (Last 60 days)
+### AD-[NNN]: [Decision title] ([date])
+**Decision:** [What was decided]
+**Reason:** [Why this choice]
+**Trade-off:** [What was sacrificed]
+**Impact:** [How this affects implementation]
+---
+## Active Blockers
+### B-[NNN]: [Blocker description]
+---
+## Lessons Learned
+### L-[NNN]: [Learning description]
+---
+## Deferred Ideas
+- [ ] [Idea] — Captured during: [feature/phase]
+---
+## Todos
+- [ ] [TODO: action item]
+
+---
+
+# Roadmap
+**Current Milestone:** [name]
+**Status:** Planning | In Progress | Complete
+---
+## [Milestone 1 Name]
+**Goal:** [What makes this milestone shippable]
+**Target:** [Date or completion criteria]
+### Features
+**[Feature Name]** - STATUS
+- [Capability 1]
+
+---
+
 # next
 
 Determina próxima tarefa/ação baseada no estado atual.
-
-**Carregar referência:** `../lspec/references/state-management.md + ../lspec/references/roadmap.md`
 
 ## Pipeline de Execução
 
