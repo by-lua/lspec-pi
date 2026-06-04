@@ -111,12 +111,9 @@ Com ela, você consegue delegar por especialidade, por exemplo:
 
 Esse modelo multiagente encaixa muito bem com o L-Spec PI porque mantém discovery/spec centralizados e distribui execução com papéis claros.
 
-## 📚 Leituras recomendadas
+## 📚 Informações Adicionais
 
-- `references/pi-version-setup.md` — instalação e configuração do PI.dev
-- `references/pi-packages-guide.md` — comparação de pacotes PI e descoberta de novos pacotes
-- `references/pi-v2-architecture.md` — arquitetura híbrida v2 (skills como motor, comandos como atalhos)
-- `references/subagent-context-budget.md` — otimização de contexto (estratégia, `think: true`, calibração de `max_turns`, padrão de 3 agentes)
+Para configuração do PI.dev e packages, consulte a documentação oficial do lspec-pi no GitHub.
 
 ### First Commands
 
