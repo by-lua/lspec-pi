@@ -1,48 +1,10 @@
 ---
 name: lspec
-description: Versão PI do TLC Spec-Driven original com fluxo Discovery→Specify→Tasks→Execute obrigatório. Clarify e Design são opcionais por contexto. Sem quick mode.
+description: LSpec PI — Spec-Driven Development com comandos explícitos. Sem AUTO-TRIGGER. Discovery, Specify, Design, Tasks, Execute via comandos manuais (/lspec discovery, /lspec specify, etc).
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr
   version: 2.0.0
----
-
-## ⚡ AUTO-TRIGGER — DETECÇÃO AUTOMÁTICA DE INTENÇÃO
-
-**REGRRA ABSOLUTA:** Enquanto esta skill estiver carregada, QUALQUER menção do usuário a uma das situações abaixo DEVE disparar automaticamente o fluxo de Discovery (`lspec discovery`). NÃO espere o usuário digitar `/lspec discovery` manualmente.
-
-**Como funciona:** detecte a categoria pelo contexto, pergunte o MÍNIMO necessário e avance para Specify → Tasks → Execute seguindo o fluxo obrigatório.
-
-> ⚠️ **PROIBIDO delegar subagente (Explorer/Fixer/Coder/etc) diretamente sem antes passar pelo Discovery**
-
----
-
-### Gatilhos para PROJETO NOVO / INICIALIZAÇÃO
-iniciar projeto, novo projeto, setup, começar do zero, greenfield, projeto do zero, criar projeto, quero criar, vamos criar, bora criar, montar um projeto, estrutura inicial, organizar projeto, configurar projeto, setup inicial, iniciar do zero, partir do zero, esqueleto, boilerplate, scaffold, inicializar repositório
-
-### Gatilhos para FEATURE / FUNCIONALIDADE NOVA
-feature, funcionalidade, adicionar, adiciona, criar, implementar, quero que faça, preciso que, fazer uma, preciso de uma, nova funcionalidade, novo recurso, nova capability, novo módulo, quero adicionar, capacidade nova, adicionar suporte, suporte a, habilitar, ativar, permitir, criar sistema de, criar módulo de, criar tela de, criar página de, adicionar página, adicionar tela, criar componente, novo comando, novo endpoint, nova rota, nova API, novo serviço, nova integração, integração com, conectar com, ligar com, sincronizar com, integrar com, importar dados de, exportar dados para, gerar relatório de, dashboard de, painel de, tela de, formulário de, listagem de, cadastro de, registro de, busca de, pesquisa de, filtro de, ordenação de, paginação de, autenticação, login, cadastro, registro, recuperar senha, notificação, email, push, webhook, CRUD de
-
-### Gatilhos para BUG / CORREÇÃO / ERRO
-bug, corrige, corrigir, correção, quebrou, quebrado, erro, errado, crash, crashou, travou, não funciona, não está funcionando, não está rodando, não roda, não carrega, não aparece, não mostra, não exibe, não envia, não recebe, não salva, não atualiza, não deleta, não responde, resposta vazia, retorno vazio, retorna vazio, deu erro, deu ruim, falha, falhou, failure, fail, exception, exceção, exception log, stack trace, traceback, panic, pânico, loop infinito, timeout, estourou, memória, memory leak, vazamento, null pointer, undefined, NaN, infinito, broken, quebrado, corrompido, duplicado, registro duplicado, inconsistente, inconsistência, fora do ar, offline, 404, 500, 403, 401, erro de, problema com, problema em, problema no, tá zuado, tá estranho, tá esquisito, tá bugado, tá com erro, tá quebrado, tá dando erro, tá falhando, tá caindo, tá offline, tá fora
-
-### Gatilhos para TESTE / VALIDAÇÃO / E2E (inclusive em produção)
-testar, testei, testando, teste, rodar teste, executar teste, validar, validação, verificar, verificação, checar, checagem, conferir, conferência, e2e, end-to-end, ponta a ponta, fluxo completo, teste manual, teste automatizado, bateria de testes, suite de testes, regressão, smoke test, teste de aceitação, UAT, teste em produção, testar no site, testar ao vivo, testar no live, testar no real, testa no ambiente, testa no live, testa em produção, testa no site, testa no real, sobe e testa, subir e testar, colocar no ar e testar, rodar no live, fazer teste, testa produção, homologação, teste funcional, cenário de teste, script de teste, até o final, fluxo até o fim, fluxo completo, simular checkout, simular compra, simular usuário, simular fluxo, bater o site, bater endpoint, fazer requisição, ver se passa, ver se quebra, ver o que acontece, ver se funciona, ver se tá ok, ver se roda, testar API, testar endpoint, testar fluxo de, testar funcionalidade, experimentar testar
-
-### Gatilhos para REVERSE / MAPEAMENTO / ANÁLISE DE CÓDIGO
-reverse, mapear, mapeamento, mapeia, reverse engineer, engenharia reversa, analisar código, analisar código fonte, entender código, documentar código, documentar arquitetura, documentar projeto, fazer mapa, gerar mapa, mapear código, mapear estrutura, descobrir como funciona, como é o código, como tá organizado, qual a stack, quais tecnologias, stack do projeto, estrutura do projeto, arquitetura do projeto, levantar requisitos, levantar funcionalidades, catalogar, inventariar, auditar, analisar dependências, quais libs, quais pacotes, código legado, brownfield, explorar código, mapear fluxo, mapear rotas, mapear endpoints
-
-### Gatilhos para PEQUENA MUDANÇA / AJUSTE RÁPIDO
-ajuste, ajustar, pequena mudança, mudança pequena, alteração simples, alteração rápida, tweak, ajuste fino, modificar, modifica, alterar, altera, atualizar, atualiza, mudar, muda, renomear, renomeia, trocar, troca, substituir, substitui, editar, edita, remover, remove, deletar, deleta, apagar, apaga, limpar, limpa, refatorar, refatora, reorganizar, reorganiza, mover, move, copiar, copia, extrair, extrai, inline, inlinar, simplificar, simplifica, melhorar, melhora, otimizar, otimiza, performático, performance, lentidão, lento, demora, lerdou, deixar mais rápido, acelerar
-
-### Gatilhos para DISCUSSÃO / DÚVIDA / CONVERSA SOBRE O PROJETO
-sobre o projeto, sobre a arquitetura, o que acha, como faria, melhor abordagem, melhor forma, como implementar, como fazer, dúvida sobre, dúvida de, qual a melhor, qual caminho, o que recomenda, sugestão, sugestões, opinião, conselho, brainstorm, pensar junto, discutir, debate, conversar sobre, trocar ideia, alinhar, esclarecer, ajuda com, help com, visão geral, ideia inicial, conceito, proposta, o que você pensa
-
----
-
-> **Total:** centenas de gatilhos em 7 categorias (projeto novo, feature, bug, teste/E2E, reverse, pequena mudança, discussão).  
-> Ao detectar qualquer um, **NÃO** delegue subagente — inicie Discovery e pergunte o mínimo necessário.
-
 ---
 
 # LSpec PI (base TLC original)
