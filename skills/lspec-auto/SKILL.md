@@ -1,6 +1,6 @@
 ---
 name: lspec-auto
-description: Executa ciclo completo automatico: specify, design, tasks, implement
+description: "Executa ciclo completo automatico: specify, design, tasks, implement"
 ---
 
 # lspec-auto

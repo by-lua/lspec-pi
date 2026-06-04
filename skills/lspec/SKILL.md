@@ -1,6 +1,6 @@
 ---
 name: lspec
-description: LSpec PI — Spec-Driven Development com comandos explícitos. Sem AUTO-TRIGGER. Discovery, Specify, Design, Tasks, Execute via comandos manuais (/lspec discovery, /lspec specify, etc).
+description: "LSpec PI — Spec-Driven Development com comandos explícitos. Sem AUTO-TRIGGER. Discovery, Specify, Design, Tasks, Execute via comandos manuais (/lspec discovery, /lspec specify, etc)."
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr

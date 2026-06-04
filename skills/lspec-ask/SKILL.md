@@ -1,6 +1,6 @@
 ---
 name: lspec-ask
-description: Faz pergunta sobre o projeto, decisão ou contexto técnico.
+description: "Faz pergunta sobre o projeto, decisão ou contexto técnico."
 ---
 
 # ask

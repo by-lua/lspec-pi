@@ -1,6 +1,6 @@
 ---
 name: lspec-discovery
-description: Descobre e documenta contexto inicial do projeto.
+description: "Descobre e documenta contexto inicial do projeto."
 ---
 
 # discovery

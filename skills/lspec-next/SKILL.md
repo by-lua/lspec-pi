@@ -1,6 +1,6 @@
 ---
 name: lspec-next
-description: Determina próxima tarefa/ação baseada no estado atual.
+description: "Determina próxima tarefa/ação baseada no estado atual."
 ---
 
 # next

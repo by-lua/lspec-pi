@@ -1,6 +1,6 @@
 ---
 name: lspec-specify
-description: Cria/evolui especificação da feature (SPEC.md).
+description: "Cria/evolui especificação da feature (SPEC.md)."
 ---
 
 # specify

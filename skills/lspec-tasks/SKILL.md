@@ -1,6 +1,6 @@
 ---
 name: lspec-tasks
-description: Gerencia lista de tarefas, atualiza status e progresso.
+description: "Gerencia lista de tarefas, atualiza status e progresso."
 ---
 
 # tasks

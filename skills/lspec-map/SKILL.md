@@ -1,6 +1,6 @@
 ---
 name: lspec-map
-description: Mapeia codebase existente e documenta estrutura/análise.
+description: "Mapeia codebase existente e documenta estrutura/análise."
 ---
 
 # map

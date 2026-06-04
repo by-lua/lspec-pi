@@ -1,6 +1,6 @@
 ---
 name: lspec-design
-description: Cria/evolui documento de design técnico para a feature atual.
+description: "Cria/evolui documento de design técnico para a feature atual."
 ---
 
 # design

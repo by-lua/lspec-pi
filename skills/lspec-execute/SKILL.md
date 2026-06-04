@@ -1,6 +1,6 @@
 ---
 name: lspec-execute
-description: Executa tarefa/implementa código seguindo spec e design.
+description: "Executa tarefa/implementa código seguindo spec e design."
 ---
 
 # execute

@@ -1,6 +1,6 @@
 ---
 name: lspec-help
-description: Mostra ajuda sobre comandos LSpec disponíveis.
+description: "Mostra ajuda sobre comandos LSpec disponíveis."
 ---
 
 # help

@@ -1,6 +1,6 @@
 ---
 name: lspec-resume
-description: Carrega .specs/HANDOFF.md e mostra posição atual, propondo próxima ação.
+description: "Carrega .specs/HANDOFF.md e mostra posição atual, propondo próxima ação."
 ---
 
 # resume
