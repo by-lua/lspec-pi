@@ -297,9 +297,20 @@ Antes de mover para Tasks:
 ---
 
 ## Tips
-
 - **P1 = Vertical Slice** — demo-able, não só backend ou frontend
 - **Se não consegue testar, reescreva** — critérios não-testáveis = não-spec
 - **IDs obrigatórios** — rastreabilidade é crítica
 - **Autosave em cada fase** — nunca perca progresso
 - **Confirme antes de avançar** — usuário aprova spec
+
+---
+
+## Fluxo de Continuação
+
+**Specify completo.** Spec aprovado e salvo em `features/[name]/spec.md`.
+
+→ Deseja avançar para **Tasks** (obrigatório)?
+
+Se não: salve estado em `STATE.md` e aguarde novas instruções.
+
+---

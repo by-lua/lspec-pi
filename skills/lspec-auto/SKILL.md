@@ -14,25 +14,44 @@ Executa ciclo completo de desenvolvimento de features: Discovery → Discuss* �
 - **Estrutura**: apenas `features/`, **nunca** `fixes/`
 - **Autosave**: estado salvo em cada fase
 
-## Pipeline Overview
+## Fluxo de Execução
+
+**APÓS CADA FASE, SEMPRE PERGUNTE:**
 
 ```
-┌────────────┬──────────────────────────────────────────────────────────┐
-│ FASE       │ QUANDO RODA                                             │
-├────────────┼──────────────────────────────────────────────────────────┤
-│ Discovery  │ SEMPRE                                                  │
-│ Discuss    │ OPCIONAL — só se área cinzenta/ambígua                  │
-│ Specify    │ SEMPRE (OBRIGATÓRIO)                                    │
-│ Clarify    │ OPCIONAL — só se ambiguidade nos requisitos             │
-│ Design     │ OPCIONAL — só se necessidade arquitetural                │
-│ Tasks      │ SEMPRE                                                  │
-│ Execute    │ SEMPRE                                                  │
-└────────────┴──────────────────────────────────────────────────────────┘
+✅ [Fase atual] completa
+→ Deseja avançar para [próxima fase]? (Opcional/Obrigatório)
 ```
+
+**Regras de confirmação:**
+- **OBRIGATÓRIO**: "Avançar para [próxima]?" → usuário responde sim/não
+- **OPCIONAL**: "Há áreas cinzentas a discutir?" → usuário decide se pula
+- Se OPCIONAL e usuário diz "não precisa" → salve estado e pule
+- Se OBRIGATÓRIO → usuário deve confirmar, senão continua refinement
 
 ---
 
-## FASE 1: SPECIFY
+## FASE 1: DISCOVERY
+
+**OBRIGATÓRIO** — Sempre inicia aqui
+
+Collect: objetivo, problema, usuário-alvo, MVP, stack, referências, riscos, marcos
+
+**Ao finalizar:** "Discovery completo. Deseja avançar para Discuss (opcional — áreas cinzentas)?"
+
+---
+
+## FASE 2: DISCUSS
+
+**OPCIONAL** — Só se há ambiguidade
+
+Capturar contexto em áreas cinzentas (layout, interações, edge cases)
+
+**Ao finalizar:** "Discuss completo. Avançar para Specify (obrigatório)?"
+
+---
+
+## FASE 3: SPECIFY
 
 **Goal**: Capture WHAT to build with testable, traceable requirements.
 
@@ -182,11 +201,22 @@ How we know the feature is successful:
 - **Requirement IDs are mandatory** — Every story maps to trackable IDs
 - **Edge cases matter** — What breaks? What's empty? What's huge?
 - **Out of Scope prevents creep** — If it's not here, it doesn't get built
-- **Confirm before Discuss** — User must approve spec before moving to discuss phase
+
+**Ao finalizar:** "Specify completo. Há ambiguidades a resolver em Clarify (opcional)?"
 
 ---
 
-## FASE 2: DESIGN
+## FASE 4: CLARIFY
+
+**OPCIONAL** — Só se há ambiguidade nos requisitos
+
+Resolver ambiguidades restantes nos requisitos
+
+**Ao finalizar:** "Clarify completo. Há decisões arquiteturais para Design (opcional)?"
+
+---
+
+## FASE 5: DESIGN
 
 **Goal**: Define HOW to build it. Architecture, components, what to reuse.
 
@@ -347,11 +377,12 @@ interface AnotherModel {
 - **Keep it visual** — Diagrams save 1000 words (check pi-mermaid)
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
-- **Confirm before Tasks** — User approves design before breaking into tasks
+
+**Ao finalizar:** "Design completo. Avançar para Tasks (obrigatório)?"
 
 ---
 
-## FASE 3: TASKS
+## FASE 6: TASKS
 
 **Goal**: Break into GRANULAR, ATOMIC tasks. Clear dependencies. Right tools. Parallel execution plan.
 
@@ -629,9 +660,11 @@ The goal: no task produces unverified code. If code can't be tested in the task 
 - **Requirement ID = Traceable** — Every task traces back to a spec requirement
 - **One commit per task** — Plan the commit message format in advance
 
+**Ao finalizar:** "Tasks completo. Deseja avançar para Execute (obrigatório)?"
+
 ---
 
-## FASE 4: EXECUTE
+## FASE 7: EXECUTE
 
 **Goal**: Implement ONE task at a time. Surgical changes. Verify. Commit. Repeat.
 
@@ -639,7 +672,7 @@ This is where code gets written. Every task follows the same cycle: plan → imp
 
 ### MANDATORY: Before Starting Any Implementation
 
-**Read [coding-principles.md](coding-principles.md) and state:**
+**Read and state:**
 
 1. **Assumptions** - What am I assuming? Any uncertainty?
 2. **Files to touch** - List ONLY files this task requires
@@ -722,7 +755,7 @@ Write the minimum implementation needed to satisfy the task's success criteria: 
 
 If a test is genuinely wrong (tests the wrong behavior per spec), STOP and ask the user before modifying it. Never silently change a test.
 
-Follow [coding-principles.md](coding-principles.md):
+Follow conventions:
 
 - Simplest code that works
 - Touch ONLY listed files

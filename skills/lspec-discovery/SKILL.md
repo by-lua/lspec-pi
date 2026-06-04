@@ -100,11 +100,17 @@ fi
 
 > CONFIRME antes de continuar
 
-### Fase 4: Referências
+### Fase 4: Referências e Preferências
 
-12. Alguma referência de design?
+12. Alguma referência de design? (Figma, screenshots, sites)
 
-Se houver: criar `.specs/design-references/`
+Se houver: criar `design-references/`
+
+13. Tem preferências de design? (como quer que fique, estilo, tons, layout)
+
+Estas preferências serão capturadas na fase Design. Exemplo: "quero que tenha um ar minimalista" ou "prefiro cores escuras".
+
+> Design (opcional) capturará suas preferências em detalhes
 
 > CONFIRME antes de continuar
 
@@ -122,6 +128,16 @@ Se houver: criar `.specs/design-references/`
 17. Primeira coisa que funciona?
 
 → Gera `PROJECT.md`
+
+---
+
+## Fluxo de Continuação
+
+**Discovery completo.**
+
+→ Deseja avançar para **Discuss** (opcional — áreas cinzentas/ambiguidade)?
+
+Se não: salve estado em `STATE.md` e aguarde novas instruções.
 
 ---
 
