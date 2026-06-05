@@ -1,3 +1,8 @@
+---
+name: lspec-clarify
+description: "Clarifica requisitos ambíguos antes da especificação formal. OPCIONAL — usar apenas quando houver ambiguidade real."
+---
+
 # lspec-clarify Skill
 
 ## Propósito
