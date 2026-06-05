@@ -49,6 +49,7 @@ Discovery → [Discuss] → Specify → [Clarify] → [Design] → Tasks → Exe
 - ❌ **pular tarefas** — implementar todas as tarefas listadas
 - ❌ **features em fixes/** — toda estrutura vai em `features/`
 - ❌ **editar sem Compliance Gate** — verificar checklist antes de cada edit
+- ❌ **não salvar STATE.md** — autosave é obrigatório, não opcional
 
 ---
 
@@ -129,9 +130,54 @@ features/
 
 ---
 
-## Autosave de Estado
+## Autosave de Estado — OBRIGATÓRIO
 
-**Após cada fase do Execute, salvar estado em STATE.md:**
+**State saving NÃO é opcional.** É parte do pipeline, não uma nota pessoal.
+
+### GATE: Estado Salvo Entre Fases
+
+**Antes de iniciar qualquer fase nova, verificar se a fase anterior salvou STATE.md:**
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  GATE: STATE SAVED — antes de iniciar nova fase                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║  □  features/<feature>/STATE.md existe ║
+║  □  Última fase registrada (ex: "Execute T[X] completo")       ║
+║  □  Pendências atualizadas                                      ║
+║  □  Commits feitos (se aplicável)                               ║
+╠══════════════════════════════════════════════════════════════════╣
+║ ⚠️  Se ANY □ = false → SALVA ANTES de iniciar nova fase.      ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+**Se qualquer □ = false:**
+- Parar
+- Salvar STATE.md com informações da fase atual
+- Só então prosseguir para próxima fase
+
+---
+
+### Passo Explícito de Save (em cada fase)
+
+**Ao final de cada fase, seguir este checklist:**
+
+```
+[Estado da Fase:<nome>]
+□ STATE.md atualizado com:
+  - Fase atual e status
+  - Tarefas completadas
+  - Pendências
+  - Arquivos alterados
+  - Commits (se houver)
+□ Arquivos stage/commitados no git (se aplicável)
+□ Próxima fase definida
+→ Fase seguinte pode começar
+```
+
+---
+
+### Template STATE.md
 
 ```markdown
 ## Execute Phase Status
@@ -156,7 +202,7 @@ features/
 - [hash] [message]
 ```
 
-**Autosave triggers:**
+**Autosave triggers (lembretes, não substituem save obrigatório):**
 1. Início de nova tarefa
 2. Commit feito
 3. Blocker identificado
@@ -322,11 +368,11 @@ git commit -m "<type>(<scope>): <description>
 - Include only files in task definition
 - Tests no mesmo commit se parte da tarefa
 
-### 8. Autosave de Estado
+### 8. Autosave de Estado — OBRIGATÓRIO
 
-Após commit, atualizar STATE.md:
+**APÓS CADA TAREFA, salvar estado em STATE.md:**
 
-```markdown
+```
 ## Execute Status Update
 
 **Completed:** T[X] - [date] - [commit hash]
@@ -334,6 +380,16 @@ Após commit, atualizar STATE.md:
 
 **Changes:**
 - [file] - [change summary]
+```
+
+**Este save é OBRIGATÓRIO.** Não é opcional. É parte do pipeline.
+
+**Checklist pós-tarefa:**
+```
+□ STATE.md atualizado com T[X] completo
+□ Pendências refletem próximo passo
+□ Commits registrados (se houver)
+→ Próxima tarefa pode começar
 ```
 
 ---
@@ -393,6 +449,12 @@ Após commit, atualizar STATE.md:
 
 - Hash: [git hash]
 - Files: [list]
+
+### Autosave — OBRIGATÓRIO
+
+- [x] STATE.md atualizado com T[X] completo
+- [x] Pendências refletem próximo passo
+- [x] Commits registrados
 
 **Status:** ✅ Complete | ❌ Blocked | ⚠️ Partial
 ```
