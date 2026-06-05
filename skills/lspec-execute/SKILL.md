@@ -48,6 +48,38 @@ Discovery → [Discuss] → Specify → [Clarify] → [Design] → Tasks → Exe
 - ❌ **auto-sizing** — não redimensionar automaticamente sem aprovação
 - ❌ **pular tarefas** — implementar todas as tarefas listadas
 - ❌ **features em fixes/** — toda estrutura vai em `features/`
+- ❌ **editar sem Compliance Gate** — verificar checklist antes de cada edit
+
+---
+
+## COMPLIANCE GATE — ANTES DE QUALQUER EDIT
+
+**Este gate é BLOQUEANTE.** Roda **antes de cada tarefa** do ciclo de implementação. Não é uma vez só no início do Execute — é por tarefa.
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  GATE: COMPLIANCE CHECK — antes de cada tarefa                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║  □  features/<feature>/spec.md existe ║
+║  □  spec.md foi lida e compreendida ("Contexto lido")         ║
+║  □  Arquivos a editar estão listados na spec ou tasks          ║
+║  □  Mudança proposta NÃO foge do escopo da spec                ║
+║  □  features/<feature>/STATE.md foi atualizado na última fase ║
+╠══════════════════════════════════════════════════════════════════╣
+║ ⚠️  Se ANY □ = false → BLOQUEIA. Não edita. Pergunta.        ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+**Verificar cada item explicitamente.** Não presumir. Ler os arquivos, conferir.
+
+**Se qualquer □ = false:**
+- Parar imediatamente
+- Reportar qual item falhou
+- Perguntar o que fazer antes de prosseguir
+- **Não fazer nenhum edit até resolver**
+
+**Se todos □ = true:**
+- Prosseguir com ciclo de implementação
 
 ---
 
@@ -134,7 +166,23 @@ features/
 
 ## Processo de Implementação
 
-### 0. Verificar Pré-condições
+### 0. COMPLIANCE GATE — antes de cada tarefa
+
+**Este gate é BLOQUEANTE.** Verificar antes de cada edit:
+
+```
+[GATE: Compliance Check] ✓
+□ spec.md existe
+□ Contexto lido
+□ Arquivos listados
+□ Dentro do escopo
+□ State atualizado
+→ Prosseguindo para ciclo de implementação
+```
+
+Se qualquer □ = false → **para e pergunta antes de editar**.
+
+### 1. Verificar Pré-condições
 
 ```markdown
 ## Pre-Implementation Check
@@ -295,8 +343,19 @@ Após commit, atualizar STATE.md:
 ```markdown
 ## Implementing T[X]: [Task Title]
 
+### 0. COMPLIANCE GATE
+
+[GATE: Compliance Check] ✓/✗
+□ spec.md existe
+□ Contexto lido
+□ Arquivos listados
+□ Dentro do escopo
+□ State atualizado
+→ [Prosseguindo / BLOQUEADO — aguardando decisão]
+
 **Dependencies:** ✅ [all done] | ❌ Blocked by TY
 **Tests:** [type]
+**Gate:** [full/build] — NEVER quick
 **Gate:** [full/build] — NEVER quick
 
 ### Pre-Implementation (MANDATORY)
