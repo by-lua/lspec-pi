@@ -358,46 +358,28 @@ The skill is designed to work within context limits:
 **Target:** <40k tokens loaded (20% of context)
 **Reserve:** 160k+ tokens for work, reasoning, outputs
 
-When context exceeds 40k tokens, the skill displays a status indicator and suggests optimizations.
+## Skills Disponíveis
 
-## PI Package Integrations
+| Skill | Descrição |
+|----------------------- | ---------------------------------------------------------------------- |
+| `lspec-discovery`      | Discovery adaptativo (BUG/FEATURE/NOVO)                               |
+| `lspec-discuss`        | Capturar contexto em áreas cinzentas                                  |
+| `lspec-specify`        | Requisitos com IDs rastreáveis                                        |
+| `lspec-clarify`        | Resolver ambiguidades antes de especificar                            |
+| `lspec-design`         | Arquitetura e design de componentes                                   |
+| `lspec-tasks`          | Decomposição em tarefas atômicas                                      |
+| `lspec-execute`        | Implementação + verificação + commits atômicos                        |
+| `lspec-auto`           | Ciclo completo automático (todas as fases)                           |
+| `lspec-ask`            | Fazer perguntas durante o processo                                    |
+| `lspec-pause`          | Salvar checkpoint para continuar depois                               |
+| `lspec-resume`         | Retomar de onde parou                                                 |
+| `lspec-map`            | Mapear codebase existente (brownfield)                                |
+| `lspec-reverse`        | Engenharia reversa: código → .specs                                   |
+| `lspec-validate`       | Validação de feature e UAT interativo                                 |
 
-L-Spec PI detecta e delega para PI packages quando instalados:
+## Contentores Inline
 
-| Package | Instalação | Propósito |
-|---------|-----------|-----------|
-| `pi-cymbal` | `pi install npm:pi-cymbal` | Navegação nativa de código |
-| `@davehardy20/pi-lsp-tools` | `pi install npm:@davehardy20/pi-lsp-tools` | LSP (go-to-definition, refs, símbolos) |
-| `pi-mermaid` | `pi install npm:pi-mermaid` | Renderiza diagramas Mermaid em ASCII |
-| `@dreki-gg/pi-context7` | `pi install npm:@dreki-gg/pi-context7` | Documentação de libs atualizada |
-| `context-mode` | `pi install npm:context-mode` | Redução agressiva de contexto |
-| `pi-ask-user` | `pi install npm:pi-ask-user` | Ask_user interativo com UI |
-
-**Verificar instalados:** `pi list | grep -E 'cymbal|lsp|mermaid|context7|ask-user'`
-
-O skill detecta automaticamente packages instalados e delega tarefas especializadas. Se não instalado, cai graciosamente para alternativas nativas.
-
-## 📚 Reference Files
-
-The skill includes detailed reference documentation loaded on-demand:
-
-| File                    | Purpose                                                                |
-| ----------------------- | ---------------------------------------------------------------------- |
-| `project-init.md`       | Project initialization process and template                            |
-| `roadmap.md`            | Roadmap creation and milestone tracking                                |
-| `brownfield-mapping.md` | Comprehensive codebase analysis (7 docs)                               |
-| `concerns.md`           | Tech debt, risks, and fragile area documentation                       |
-| `specify.md`            | Requirements gathering with traceable IDs                              |
-| `discuss.md`            | Gray area discussion and context capture                               |
-| `design.md`             | Architecture, research, and component design                           |
-| `tasks.md`              | Granular task breakdown methodology                                    |
-| `implement.md`          | Execute: implementation + verification + atomic commits                |
-| `validate.md`           | Feature validation and interactive UAT                                 |
-| `session-handoff.md`    | Pause/resume work process                                              |
-| `state-management.md`   | Persistent memory: decisions, blockers, lessons, todos, deferred ideas |
-| `coding-principles.md`  | Behavioral guidelines for implementation                               |
-| `context-limits.md`     | Token budget and monitoring                                            |
-| `code-analysis.md`      | Available tools and fallbacks                                          |
+Todo o conteúdo foi distribuído inline nas skills — sem referências externas.
 
 ## ⚡ Tips for Best Results
 

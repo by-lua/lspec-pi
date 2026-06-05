@@ -31,14 +31,32 @@ O SDD reduz esse desperdício definindo o que será feito **antes** da implement
 
 ## Fluxo
 
-`DISCOVERY → SPECIFY → (CLARIFY opcional) → (DESIGN opcional) → TASKS → EXECUTE`
+```
+DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUTE
+```
 
-- Sem quick mode
-- Sem autosize
-- Tudo passa por discovery adaptativo
-- Autosave de estado
-- Pause/Resume work
-- Ask para perguntas durante o processo
+```
+┌────────────┬──────────────────────────────────────────────────────────┐
+│ FASE       │ QUANDO RODA                                             │
+├────────────┼──────────────────────────────────────────────────────────┤
+│ Discovery  │ SEMPRE                                                  │
+│ Discuss    │ OPCIONAL — só se área cinzenta/ambígua                  │
+│ Specify    │ SEMPRE (OBRIGATÓRIO)                                    │
+│ Clarify    │ OPCIONAL — só se ambiguidade nos requisitos             │
+│ Design     │ OPCIONAL — só se necessidade arquitetural              │
+│ Tasks      │ SEMPRE                                                  │
+│ Execute    │ SEMPRE                                                  │
+└────────────┴──────────────────────────────────────────────────────────┘
+```
+
+**Auto-detecção:**
+- `BUG` → Discovery curto (3 perguntas) → Tasks → Execute
+- `FEATURE` → Discovery focado → Specify → Tasks → Execute
+- `NOVO` → 6 fases completas
+
+**Regras:**
+- NUNCA: quick mode, auto-sizing, pular fases
+- SEMPRE: autosave de estado, confirmar antes de avançar
 
 ## Instalação
 
