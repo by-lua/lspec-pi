@@ -93,6 +93,11 @@ DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] �
         └── tasks.md      # Tarefas atômicas
 ```
 
+**Notas:**
+- Bugs e ajustes usam prefixo `fix-` ou `bug-` no nome da pasta em `features/`
+- Se feature já existe, atualiza docs existentes e segue pipeline
+- **NÃO existe pasta `fixes/`** — tudo em `features/`
+
 ---
 
 ## Artifact Enforcement
