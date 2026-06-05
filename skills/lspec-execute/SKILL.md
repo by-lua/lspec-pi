@@ -53,22 +53,27 @@ Discovery → [Discuss] → Specify → [Clarify] → [Design] → Tasks → Exe
 
 ## PI Packages — Navegação de Código
 
-**Antes de navegar/codificar, verifique ferramentas disponíveis:**
+**Code Navigation — NUNCA use bash grep/find**
 
-```bash
-pi list | grep -E 'cymbal|lsp-tools'
-```
+Use SOMENTE tools cymbal_* nativas do pi-cymbal (quando instalado):
+- `cymbal_map` → estrutura do repo (arquivos, diretórios, módulos)
+- `cymbal_search` → buscar símbolos/texto em todo o código
+- `cymbal_outline` → symbols de um arquivo (classes, funções, métodos)
+- `cymbal_show` → ler por símbolo ou linha específica
+- `cymbal_refs` → encontrar todas as referências a um símbolo
+- `cymbal_impact` → impacto a montante (upstream callers)
 
-| Package | Uso |
-|---------|-----|
-| `pi-cymbal` | Delegate navegação de código para ele |
-| `pi-lsp-tools` | Use LSP para go-to-definition, refs, rename |
-| Nenhum instalado | Use ferramentas nativas + recomende instalação |
+Se `pi-lsp-tools` instalado → use LSP para go-to-definition, refs, rename.
 
-**Recomendação:**
+Bash grep/find SOLO quando:
+- cymbal_* não está disponível (pacote não instalado)
+- cymbal_* falha para um caso específico
+- Precisa de output pipeado para outro comando
+
+Se nenhum instalado → recomende instalar:
 ```bash
 pi install npm:pi-cymbal
-pi install install npm:@davehardy20/pi-lsp-tools
+pi install npm:@davehardy20/pi-lsp-tools
 ```
 
 **Fallback com agent-lsp:**
