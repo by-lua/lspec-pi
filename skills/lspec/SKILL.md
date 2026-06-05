@@ -4,7 +4,7 @@ description: "LSpec PI — Spec-Driven Development. Pipeline SEQUENCIAL: /lspec 
 license: CC-BY-4.0
 metadata:
   author: Lua - github.com/by-lua
-  version: 3.4.0
+  version: 3.5.0
 ---
 
 # LSpec PI — Hub
@@ -67,11 +67,15 @@ DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] �
 - ❌ Ir direto para código
 - ❌ Implementar sem spec
 - ❌ Editar sem passar pelo pipeline
+- ❌ Criar spec duplicada — verificar se já existe em `.specs/features/[name]/`
+- ❌ Ignorar design reference — se `.specs/features/[name]/design.md` existir, LER e SEGUIR
 
 **SEMPRE:**
 - ✓ Salvar estado após cada fase
 - ✓ Próxima fase usa artifact da anterior
 - ✓ Fases opcionais ativadas quando necessário
+- ✓ Mudanças estruturais → atualizar `.specs/project/{PROJECT.md, ROADMAP.md}`
+- ✓ SPEC Enforcement: mudança ocorre → verificar se spec existe. Se sim → atualizar. Se não → criar.
 
 ---
 
