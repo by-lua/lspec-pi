@@ -206,6 +206,7 @@ T8 → T9
 **Tools:**
 - MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
 - NUNCA use bash grep/find para navegação de código
+- Se nenhum instalado → usa tools nativas (read_file, search_files), NÃO BLOQUEIA
 - Skill: NONE
 
 **Done when:**
@@ -228,6 +229,7 @@ T8 → T9
 **Tools:**
 - MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
 - NUNCA use bash grep/find para navegação de código
+- Se nenhum instalado → usa tools nativas (read_file, search_files), NÃO BLOQUEIA
 - Skill: NONE
 
 **Done when:**

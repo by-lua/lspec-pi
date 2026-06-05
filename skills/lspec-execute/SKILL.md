@@ -65,24 +65,14 @@ Use SOMENTE tools cymbal_* nativas do pi-cymbal (quando instalado):
 
 Se `pi-lsp-tools` instalado → use LSP para go-to-definition, refs, rename.
 
-Bash grep/find SOLO quando:
-- cymbal_* não está disponível (pacote não instalado)
-- cymbal_* falha para um caso específico
-- Precisa de output pipeado para outro comando
+**Se nenhum instalado → processo normal:**
+- Use tools nativas (read_file, search_files, terminal com ls/cd)
+- NÃO BLOQUEIA — continua o fluxo normalmente
+- Recomende instalação apenas uma vez: `pi install npm:pi-cymbal && pi install npm:@davehardy20/pi-lsp-tools`
 
-Se nenhum instalado → recomende instalar:
-```bash
-pi install npm:pi-cymbal
-pi install npm:@davehardy20/pi-lsp-tools
-```
-
-**Fallback com agent-lsp:**
-```markdown
-<!-- agent-lsp:rules:start -->
-[Usar tools agent-lsp para código: list_symbols, find_symbol, inspect_symbol, 
- find_references, find_callers, blast_radius, etc]
-<!-- agent-lsp:rules:end -->
-```
+**Bash grep/find SOLO quando:**
+- Precisa de output pipeado para outro comando shell
+- Casos pontuais que cymbal_* não cobre
 
 ---
 
