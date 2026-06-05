@@ -204,7 +204,8 @@ T8 → T9
 **Requirement:** [REQ]-01
 
 **Tools:**
-- MCP: `pi-lsp-tools` / `filesystem` / NONE
+- MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
+- NUNCA use bash grep/find para navegação de código
 - Skill: NONE
 
 **Done when:**
@@ -225,7 +226,8 @@ T8 → T9
 **Reuses:** `src/services/BaseService.ts` patterns
 
 **Tools:**
-- MCP: `pi-cymbal` / `pi-lsp-tools`
+- MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
+- NUNCA use bash grep/find para navegação de código
 - Skill: NONE
 
 **Done when:**

@@ -285,7 +285,7 @@ Good triggers for research: new libraries, unfamiliar APIs, performance-sensitiv
 
 #### 2. Define Architecture
 
-Overview of how components interact. Use mermaid diagrams when helpful. Before creating any diagrams, check if `pi-mermaid` is installed.
+Overview of how components interact. Use mermaid diagrams when helpful. Use `pi-mermaid` if installed (renders ASCII in TUI), otherwise use inline mermaid blocks and recommend: `pi install npm:pi-mermaid`
 
 #### 3. Identify Code Reuse
 
@@ -415,7 +415,7 @@ interface AnotherModel {
 - **Research when uncertain** — 5 minutes of research prevents hours of rework
 - **Reuse is king** — Every component should reference existing patterns
 - **Interfaces first** — Define contracts before implementation
-- **Keep it visual** — Diagrams save 1000 words (check pi-mermaid)
+- **Keep it visual** — Diagrams save 1000 words. Use `pi-mermaid` if installed, otherwise inline mermaid blocks
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
 

@@ -26,10 +26,9 @@ warning: |
 
 **Entrada:** `features/[name]/spec.md` e `features/[name]/context.md` (se existir)
 
-**PI Packages:**
-- Antes de criar diagramas: `pi list | grep mermaid`
-- Se `pi-mermaid` instalado → delegate para renderizar em ASCII no TUI
-- Se não instalado → use blocos mermaid inline e recomende: `pi install npm:pi-mermaid`
+**PI Packages — Diagramas (pi-mermaid):**
+- Para diagramas, use `pi-mermaid` se instalado → renderiza em ASCII no TUI
+- Se não instalado → blocos mermaid inline e recomende: `pi install npm:pi-mermaid`
 
 ---
 
