@@ -6,13 +6,7 @@ metadata:
   pipeline: Discovery → Research → Specify → Design → Tasks → Execute
   artifact: features/[name]/research.md
   tools: cymbal_*, mcp_agent_lsp_*
-warning: |
-  ⚠️ REGRAS ABSOLUTAS:
-  - Research É OBRIGATÓRIO — nunca pule esta fase
-  - NUNCA use quick mode ou auto-sizing
-  - Output vai para `features/[name]/research.md`
-  - Autosave de estado em cada transição de fase
-  - Specify NÃO pode rodar sem research.md
+---
 
 # Research — Análise do Codebase
 
@@ -35,7 +29,7 @@ Specify **NÃO PODE rodar** se o artifact de Research não existir.
 
 ```
 ╔══════════════════════════════════════════════════════════════════════╗
-║  GATE: ARTIFACT CHECK — antes de iniciar Specify                   ║
+║  GATE: ARTIFACT CHECK — antes de iniciar Specify ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║                                                                      ║
 ║  Specify depende de: features/[name]/research.md (de Research)     ║
@@ -217,7 +211,7 @@ Salvar em `features/[name]/STATE.md`:
 - ❌ NÃO especifique sem analisar codebase
 - ❌ NÃO "invente" soluções sem verificar se existem
 - ❌ NÃO ignore patterns existentes
-- ❌ NÃOprossiga se houver dúvidas sobre o código
+- ❌ NÃO prossiga se houver dúvidas sobre o código
 
 ---
 
@@ -278,7 +272,7 @@ Salvar em `features/[name]/STATE.md`:
 ║  □  research.md existe em features/[name]/                           ║
 ║  □  STATE.md atualizado                                              ║
 ║  □  Findings respondem às 5 questões                                 ║
-║  □  Citations (file:line) presentes                                  ║
+║  □  Citations (file:line) presentes ║
 ║                                                                      ║
 ║  → PRÓXIMO: /lspec specify                                           ║
 ╚══════════════════════════════════════════════════════════════════════╝
