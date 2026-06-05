@@ -11,32 +11,30 @@ description: "Especificação de feature — OBRIGATÓRIO no pipeline."
 - CONFIRME cada fase antes de avançar
 - NUNCA pule para implementação durante Specify
 
-**Pipeline:** Discovery → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
+**Pipeline:** Discovery → Research → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
-## ⚠️ ARTIFACT ENFORCEMENT — Specify precisa de Discovery
+## ⚠️ ARTIFACT ENFORCEMENT — Specify precisa de research.md
 
 **"The artifact one writes is the next one's input."**
 
-Specify **NÃO PODE rodar** se o artifact de Discovery não existir (para projeto novo).
+Specify **NÃO PODE rodar** se o artifact de Research não existir.
 
 ```
 ╔══════════════════════════════════════════════════════════════════════╗
-║  GATE: ARTIFACT CHECK — antes de iniciar Specify                  ║
+║  GATE: ARTIFACT CHECK — antes de iniciar Specify                   ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║                                                                      ║
-║  Specify depende de: .specs/project/STATE.md (de Discovery)        ║
-║  Para PROJETO NOVO: Discovery é obrigatório primeiro               ║
-║  Para FEATURE em projeto existente: pode começar direto            ║
+║  Specify depende de: features/[name]/research.md (de Research)     ║
 ║                                                                      ║
-║  □  Contexto do projeto existe (PROJECT.md, ROADMAP.md ou STATE.md) ║
-║  □  Feature a ser especificada está clara                           ║
-║  □  Escopo definido (dentro vs fora)                               ║
+║  □  research.md existe em features/[name]/                          ║
+║  □  research.md foi lido e compreendido                             ║
+║  □  Findings respondem às questões de pesquisa                       ║
 ║                                                                      ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║  ⚠️  Se nenhum contexto existe E é projeto novo → BLOQUEIA.        ║
-║  ⚠️  Mensagem: "Specify requer contexto. Execute /lspec discovery." ║
+║  ⚠️  Se research.md NÃO EXISTE → BLOQUEIA.                           ║
+║  ⚠️  Mensagem: "Specify requer research.md. Execute /lspec research."║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 

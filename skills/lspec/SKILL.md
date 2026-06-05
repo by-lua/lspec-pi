@@ -1,6 +1,6 @@
 ---
 name: lspec
-description: "LSpec PI — Spec-Driven Development adaptativo. Pipeline: Discovery → Discuss → Specify → Clarify → Design → Tasks → Execute. Sem quick mode, sem auto-sizing. Autosave de estado, Pause/Resume."
+description: "LSpec PI — Spec-Driven Development adaptativo. Pipeline: Discovery → Research → Specify → Design → Tasks → Execute. Research obrigatório. Sem quick mode, sem auto-sizing. Autosave de estado, Pause/Resume."
 license: CC-BY-4.0
 metadata:
   author: Lua - github.com/by-lua
@@ -12,7 +12,7 @@ metadata:
 ## Pipeline Adaptativo
 
 ```
-DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUTE
+DISCOVERY → RESEARCH → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUTE
 ```
 
 ```
@@ -20,6 +20,7 @@ DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUT
 │ FASE       │ QUANDO RODA                                             │
 ├────────────┼──────────────────────────────────────────────────────────┤
 │ Discovery  │ SEMPRE                                                  │
+│ Research   │ SEMPRE (OBRIGATÓRIO) — análise do codebase              │
 │ Discuss    │ OPCIONAL — só se área cinzenta/ambígua                  │
 │ Specify    │ SEMPRE (OBRIGATÓRIO)                                    │
 │ Clarify    │ OPCIONAL — só se ambiguidade nos requisitos             │
@@ -32,13 +33,14 @@ DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUT
 **NUNCA:**
 - Quick mode
 - Auto-sizing
-- Pular fases
+- Pular fases (especialmente Research!)
 - Parar no meio do fluxo
 
 **SEMPRE:**
 - Autosave de estado em cada fase
 - Confirmar antes de avançar
 - Atualizar STATE.md
+- Analyze codebase ANTES de especificar
 
 ---
 
@@ -47,16 +49,19 @@ DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUT
 | Comando | Descrição |
 |---------|-----------|
 | `/lspec discovery` | Iniciar/finalizar Discovery (adaptativo) |
+| `/lspec research` | Analisar codebase antes de Specify |
 | `/lspec discuss` | Capturar contexto em áreas cinzentas |
-| `/lspec specify` | Especificar requisitos (OBRIGATÓRIO) |
-| `/lspec clarify` | Resolver ambiguidades |
+| `/lspec specify` | Especificar feature (OBRIGATÓRIO) |
+| `/lspec clarify` | Resolver ambiguidades nos requisitos |
 | `/lspec design` | Decisões arquiteturais |
-| `/lspec tasks` | Decompor em tarefas |
-| `/lspec execute` | Implementar |
-| `/lspec ask` | Fazer perguntas durante o processo |
-| `/lspec pause` | Salvar estado |
-| `/lspec resume` | Continuar de onde parou |
-| `/lspec reverse` | Mapear projeto existente (brownfield) |
+| `/lspec tasks` | Quebrar em tarefas granulares |
+| `/lspec execute` | Implementar código |
+| `/lspec validate` | Validar implementação |
+| `/lspec pause` | Pausar e salvar estado |
+| `/lspec resume` | Retomar de onde parou |
+| `/lspec map` | Mapear projeto existente (brownfield) |
+| `/lspec auto` | Executar fluxo completo automático |
+| `/lspec help` | Mostrar ajuda |
 
 ---
 
@@ -64,17 +69,17 @@ DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUT
 
 **PROJETO NOVO:**
 ```
-Discovery (completo) → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
+Discovery (completo) → Research → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
 ```
 
 **BUG:**
 ```
-Discovery (curto) → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
+Discovery (curto) → Research → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
 ```
 
 **FEATURE:**
 ```
-Discovery (focado) → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
+Discovery → Research → Specify → Clarify? → Design? → Tasks → Execute
 ```
 
 **PROJETO EXISTENTE (sem .specs/):**
@@ -117,7 +122,8 @@ Cada fase **PRODUZ um artifact** que a próxima **PRECISA**. Sem artifact, não 
 ║                                                                      ║
 ║  Pipeline → Produz → Feeds → Próxima                               ║
 ║                                                                      ║
-║  Discovery  → .specs/project/STATE.md  → Specify                     ║
+║  Discovery  → .specs/project/STATE.md  → Research                   ║
+║  Research   → features/[name]/research.md → Specify                  ║
 ║  Specify    → features/[name]/spec.md  → Tasks                       ║
 ║  Tasks      → features/[name]/tasks.md → Execute                     ║
 ║  Execute    → working-tree changes     → Validate                   ║
