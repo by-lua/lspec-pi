@@ -15,6 +15,33 @@ description: "Especificação de feature — OBRIGATÓRIO no pipeline."
 
 ---
 
+## ⚠️ ARTIFACT ENFORCEMENT — Specify precisa de Discovery
+
+**"The artifact one writes is the next one's input."**
+
+Specify **NÃO PODE rodar** se o artifact de Discovery não existir (para projeto novo).
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║  GATE: ARTIFACT CHECK — antes de iniciar Specify                  ║
+╠══════════════════════════════════════════════════════════════════════╣
+║                                                                      ║
+║  Specify depende de: .specs/project/STATE.md (de Discovery)        ║
+║  Para PROJETO NOVO: Discovery é obrigatório primeiro               ║
+║  Para FEATURE em projeto existente: pode começar direto            ║
+║                                                                      ║
+║  □  Contexto do projeto existe (PROJECT.md, ROADMAP.md ou STATE.md) ║
+║  □  Feature a ser especificada está clara                           ║
+║  □  Escopo definido (dentro vs fora)                               ║
+║                                                                      ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  ⚠️  Se nenhum contexto existe E é projeto novo → BLOQUEIA.        ║
+║  ⚠️  Mensagem: "Specify requer contexto. Execute /lspec discovery." ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
 ## AUTO-DETECÇÃO
 
 Primeiro, verifique se existe contexto prévio:

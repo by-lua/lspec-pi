@@ -104,6 +104,59 @@ Discovery (curto) → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
+## ⚠️ REGRA CRÍTICA — ARTIFACT ENFORCEMENT
+
+**"The artifact one writes is the next one's input."**
+
+Cada fase **PRODUZ um artifact** que a próxima **PRECISA**. Sem artifact, não avanza.
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║  GATE: ARTIFACT CHECK — antes de iniciar próxima fase               ║
+╠══════════════════════════════════════════════════════════════════════╣
+║                                                                      ║
+║  Pipeline → Produz → Feeds → Próxima                               ║
+║                                                                      ║
+║  Discovery  → .specs/project/STATE.md  → Specify                     ║
+║  Specify    → features/[name]/spec.md  → Tasks                       ║
+║  Tasks      → features/[name]/tasks.md → Execute                     ║
+║  Execute    → working-tree changes     → Validate                   ║
+║                                                                      ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  ⚠️  Se artifact da fase anterior NÃO EXISTE → BLOQUEIA.            ║
+║  ⚠️  Não pergunta. Não pula. Não implementa.                        ║
+║  ⚠️  Cria o artifact primeiro, depois avanza.                       ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+### Exemplo de Enforcement
+
+**Situação:** Usuário pede para implementar direto sem fazer Discovery.
+
+```
+[ENFORCED] ✗ BLOQUEADO
+
+Artifact necessário: .specs/project/STATE.md (de Discovery)
+Artifact encontrado: ❌ NÃO EXISTE
+
+Mensagem: "Discovery é obrigatório. artifact .specs/project/STATE.md não existe.
+Execute /lspec discovery primeiro para criar o artifact."
+```
+
+**Situação:** Usuário pede para executar Tasks sem spec.
+
+```
+[ENFORCED] ✗ BLOQUEADO
+
+Artifact necessário: features/[name]/spec.md (de Specify)
+Artifact encontrado: ❌ NÃO EXISTE
+
+Mensagem: "Specify é obrigatório. artifact features/[name]/spec.md não existe.
+Execute /lspec specify primeiro para criar o artifact."
+```
+
+---
+
 ## Autosave de Estado
 
 **Em cada fase, AO FINALIZAR:**

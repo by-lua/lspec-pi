@@ -33,6 +33,43 @@ Discovery → [Discuss] → Specify → [Clarify] → [Design] → Tasks → Exe
 
 ---
 
+## ⚠️ ARTIFACT ENFORCEMENT — Execute precisa de tasks.md
+
+**"The artifact one writes is the next one's input."**
+
+Execute **NÃO PODE rodar** se o artifact de Tasks não existir.
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║  GATE: ARTIFACT CHECK — antes de iniciar Execute                  ║
+╠══════════════════════════════════════════════════════════════════════╣
+║                                                                      ║
+║  Execute depende de: features/[name]/tasks.md (de Tasks)            ║
+║                                                                      ║
+║  □  tasks.md existe em features/[name]/                            ║
+║  □  tasks.md foi lido e compreendido                               ║
+║  □  Tarefas estão ordenadas e priorizadas                           ║
+║                                                                      ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  ⚠️  Se tasks.md NÃO EXISTE → BLOQUEIA.                             ║
+║  ⚠️  Mensagem: "Execute requer tasks.md. Execute /lspec tasks."    ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+### Exemplo de Bloqueio
+
+```
+[ENFORCED] ✗ Execute BLOQUEADO
+
+Artifact necessário: features/minha-feature/tasks.md (de Tasks)
+Artifact encontrado: ❌ NÃO EXISTE
+
+⚠️  Execute não pode rodar sem tasks.md.
+⚠️  Execute /lspec tasks primeiro para criar o artifact.
+```
+
+---
+
 ## Regra Absoluta
 
 ```

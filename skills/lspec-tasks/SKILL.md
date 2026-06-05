@@ -23,6 +23,31 @@ Discovery → [Discuss (opcional)] → Specify → [Clarify (opcional)] → [Des
 
 ---
 
+## ⚠️ ARTIFACT ENFORCEMENT — Tasks precisa de spec.md
+
+**"The artifact one writes is the next one's input."**
+
+Tasks **NÃO PODE rodar** se o artifact de Specify não existir.
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║  GATE: ARTIFACT CHECK — antes de iniciar Tasks                     ║
+╠══════════════════════════════════════════════════════════════════════╣
+║                                                                      ║
+║  Tasks depende de: features/[name]/spec.md (de Specify)            ║
+║                                                                      ║
+║  □  spec.md existe em features/[name]/                              ║
+║  □  spec.md foi lido e compreendido                                 ║
+║  □  Requirements (R1, R2, R3...) estão identificados                 ║
+║                                                                      ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  ⚠️  Se spec.md NÃO EXISTE → BLOQUEIA.                              ║
+║  ⚠️  Mensagem: "Tasks requer spec.md. Execute /lspec specify."      ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
 ## Por que Tarefas Granulares?
 
 | Tarefa Vazia (Ruim) | Tarefas Granulares (Bom) |
