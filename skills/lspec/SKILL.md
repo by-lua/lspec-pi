@@ -4,7 +4,7 @@ description: "LSpec PI — Spec-Driven Development. Pipeline SEQUENCIAL: /lspec 
 license: CC-BY-4.0
 metadata:
   author: Lua - github.com/by-lua
-  version: 3.3.0
+  version: 3.4.0
 ---
 
 # LSpec PI — Hub
@@ -113,19 +113,52 @@ Tasks      → tasks.md       → Execute
 
 ---
 
-## Comandos
+## Modos de Operação
 
-| Comando | Uso |
-|---------|-----|
-| `/lspec [request]` | Iniciar pipeline completo (única entrada) |
-| `/lspec pause` | Pausar e salvar estado |
-| `/lspec resume` | Retomar de onde parou |
-| `/lspec map` | Mapear projeto existente |
-| `/lspec help` | Mostrar ajuda |
+### Modo: Forward (padrão)
+```
+/lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute
+```
+Para: projeto novo, feature, bug, melhoria
+
+**Discovery adaptativo:**
+- Bug: perguntas curtas (1-3)
+- Feature: perguntas médias (5-8)
+- Projeto novo: perguntas completas (10-15)
+
+### Modo: Reverse
+```
+/lspec reverse → Mapear código existente → SPEC.md
+```
+Para: analisar código existente e gerar spec
+
+**Quando usar:**
+- Projeto sem documentação
+- Código legado para entender
+- "Como esse projeto funciona?"
+
+### Modo: Map (brownfield)
+```
+/lspec map → Analisar codebase → 7 docs de arquitetura
+```
+Para: projetos existentes precisam de mapa
 
 ---
 
-## Fluxo Completo
+## Comandos
+
+| Comando | Modo | Uso |
+|---------|------|-----|
+| `/lspec [request]` | Forward | Pipeline completo |
+| `/lspec reverse` | Reverse | Mapear código → spec |
+| `/lspec map` | Map | Analisar projeto existente |
+| `/lspec pause` | - | Pausar e salvar estado |
+| `/lspec resume` | - | Retomar de onde parou |
+| `/lspec help` | - | Mostrar ajuda |
+
+---
+
+## Fluxo Forward Completo
 
 **Você diz:** `/lspec quero adicionar autenticação por JWT`
 
