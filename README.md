@@ -4,7 +4,7 @@
 
 Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
 
-> **Spec-Driven Development** — nunca edite sem spec. O pipeline sequencial com gates bloqueantes verifica spec, contexto, blast radius e estado **antes** de qualquer mudança. Funciona em **projetos novos** (forward) e **código existente** (reverse engineering). Research obrigatório — o agente pergunta, nunca inventa. Nada pula fase.
+> **Spec-Driven Development** — nunca edite sem spec. O pipeline sequencial com gates bloqueantes verifica spec, contexto, blast radius e estado **antes** de qualquer mudança. Funciona em **projetos novos** (forward) e **código existente** (map). Research obrigatório — o agente pergunta, nunca inventa. Nada pula fase.
 
 ## Instalação, Atualizar, Desinstalar
 
@@ -48,7 +48,7 @@ Basta dizer o que você quer:
 
 O L-Spec detecta automaticamente o contexto:
 
-- **Código existente, sem spec** → Reverse Engineering: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir
+- **Código existente, sem spec** → Map: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir
 - **Código existente, com spec** → executa o fluxo normal: verifica estado, propõe mudanças, aplica com gates
 - **Projeto novo** → Discovery abrangente: faz perguntas estratégicas para descobrir features, define escopo e estrutura
 
