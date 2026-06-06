@@ -1,5 +1,5 @@
 {
-  "name": "@by-lua/lspec-pi",
+  "name": "lspec-pi",
   "version": "1.0.0",
   "description": "L-Spec PI — Spec-Driven Development pipeline para PI.dev. Pipeline SEQUENCIAL: Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute. Com Compliance Gate bloqueante e autosave obrigatório.",
   "keywords": ["pi-package", "pi-skill", "skill", "lspec", "sdd", "spec-driven", "fdd", "rpiv", "pipeline"],
