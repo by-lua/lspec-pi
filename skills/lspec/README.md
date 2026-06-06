@@ -403,46 +403,6 @@ Todo o conteúdo foi distribuído inline nas skills — sem referências externa
 >
 > For cost optimization, the skill will suggest when lighter models are sufficient for simple tasks like validation or session handoff.
 
-## 🤖 Compatibility
-
-This skill works with **any AI coding agent** that supports skills or custom instructions.
-
-**Tested and verified on:**
-
-| Agent                | Status    |
-| -------------------- | --------- |
-| Antigravity (Gemini) | ✅ Tested |
-| Claude Code          | ✅ Tested |
-| GitHub Copilot       | ✅ Tested |
-| Cursor               | ✅ Tested |
-| Opencode             | ✅ Tested |
-
-> **Note:** If your agent supports loading custom instructions or skills, this skill should work. The agents above are simply where it has been actively tested.
-
-## ❓ FAQ
-
-**Q: What if my project already has code?**
-A: Use `"Map codebase"` first. This creates 7 documents analyzing your existing architecture, conventions, stack, and concerns before you start adding features.
-
-**Q: How does requirement traceability work?**
-A: Each requirement gets a unique ID (e.g., `AUTH-01`) in spec.md. Tasks reference these IDs, and validation checks which requirements are verified. You get a clear trail from spec → design → task → commit.
-
-**Q: What are atomic git commits?**
-A: Each task produces exactly one commit following [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/). This means clean git history, easy bisect for debugging, and simple rollbacks when needed.
-
-**Q: What happens if I close my session mid-task?**
-A: Say `"Pause work"` before ending your session. This creates a handoff document. Next session, say `"Resume work"` to continue exactly where you left off.
-
-**Q: Does this work with any tech stack?**
-A: Yes! The skill is completely stack-agnostic. It works with any language, framework, or architecture.
-
 **Q: What if the agent invents an API or pattern that doesn't exist?**
 A: The skill enforces a strict **Knowledge Verification Chain**: codebase → project docs → Context7 MCP → web search → flag as uncertain. It NEVER fabricates information. If the agent can't find documentation, it will say "I don't know" instead of guessing.
 
-## 📄 License
-
-CC-BY-4.0 © [Tech Lead's Club](https://github.com/tech-leads-club)
-
-<p align="center">
-  <sub>Built with ❤️ by the Tech Lead's Club community</sub>
-</p>
