@@ -5,7 +5,7 @@ metadata:
   version: 1.0.0
   pipeline: Discovery → Research → Specify → Design → Tasks → Execute
   artifact: features/[name]/research.md
-  tools: cymbal_*, mcp_agent_lsp_*
+  tools: cymbal_*, lsp_*, read, bash
 ---
 
 # Research — Análise do Codebase
@@ -109,16 +109,17 @@ Use ferramentas de navegação para coletar informações:
 
 **Para encontrar arquivos:**
 ```bash
-cymbal_ls <dir>
-cymbal_grep <pattern>
-cymbal_read <file>
+cymbal_map <dir>      # estrutura do repo
+cymbal_search <term>  # buscar símbolos/texto
+read<file>           # ler arquivo
 ```
 
 **Para entender estrutura:**
 ```bash
-cymbal_find_def <symbol>
-cymbal_find_refs <symbol>
-cymbal_list_symbols <file>
+cymbal_outline <file>    # symbols de um arquivo
+cymbal_refs <symbol>     # referências a um símbolo
+lsp_goto_definition     # ir para definição
+lsp_find_references    # usos de um símbolo
 ```
 
 **Para mapear dependências:**

@@ -412,13 +412,17 @@ Codebase → Project docs → Context7 MCP → Web search → Flag as uncertain
 - `/lsp-safe-edit` — Wrap edits with preview
 - `/lsp-verify` — Three-layer verification (LSP + build + tests)
 
-### PI Packages (opcionais)
+### PI Packages (built-in no PI.dev)
 
-```bash
-pi install npm:pi-cymbal
-pi install npm:@davehardy20/pi-lsp-tools
-pi install npm:pi-mermaid
-```
+PI.dev fornece tools nativas de navegação — nenhuma instalação necessária:
+
+**cymbal_* — navegação estrutural:**
+- `cymbal_map`, `cymbal_search`, `cymbal_outline`, `cymbal_show`, `cymbal_refs`, `cymbal_impact`, `cymbal_importers`, `cymbal_impls`
+
+**lsp_* — precisão técnica:**
+- `lsp_goto_definition`, `lsp_find_references`, `lsp_diagnostics`, `lsp_symbols`, `lsp_rename`
+
+Use diretamente — são parte do runtime PI.dev.
 
 ---
 

@@ -73,29 +73,25 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/update.sh | ba
 curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/uninstall.sh | bash
 ```
 
-## 🧩 Pacotes PI recomendados (melhor funcionamento)
+## 🧩 Ferramentas de Navegação (built-in no PI.dev)
 
-No nosso projeto, esses 3 trazem ganho direto no dia a dia:
+PI.dev fornece tools nativas de navegação — nenhuma instalação necessária:
 
-- `pi-cymbal` → camada nativa de navegação e busca de código para agente (code navigation/search), acelerando entendimento e mudanças com menos tentativa/erro.
-- `@davehardy20/pi-lsp-tools` → navegação via LSP (go to definition, referências, diagnósticos, símbolos e rename), dando precisão técnica na implementação.
-- `pi-mermaid` → renderiza Mermaid em ASCII no TUI, deixando arquitetura/fluxo visível durante a sessão sem depender de ferramenta externa.
+**cymbal_* — navegação estrutural:**
+- `cymbal_map`, `cymbal_search`, `cymbal_outline`, `cymbal_show`, `cymbal_refs`, `cymbal_impact`, `cymbal_importers`, `cymbal_impls`
 
-```bash
-pi install npm:pi-cymbal
-pi install npm:@davehardy20/pi-lsp-tools
-pi install npm:pi-mermaid
-```
+**lsp_* — precisão técnica:**
+- `lsp_goto_definition`, `lsp_find_references`, `lsp_diagnostics`, `lsp_symbols`, `lsp_rename`
 
 ## ➕ Pacotes PI opcionais (fortemente recomendados)
 
-| Pacote | Instalar | Por quê |
+|| Pacote | Instalar | Por quê |
 |---|---|---|
-| `@dreki-gg/pi-context7` | `pi install npm:@dreki-gg/pi-context7` | Documentação de libs atualizada via Context7 (referência recomendada pela base TLC) |
-| `context-mode` | `pi install npm:context-mode` | Redução agressiva de contexto (FTS5 KB, sandbox, busca por intenção) |
-| `pi-mcp-adapter` | `pi install npm:pi-mcp-adapter` | Executa servidores MCP como ferramentas nativas no PI |
-| `pi-web-access` | `pi install npm:pi-web-access` | Web search, fetch de URL, clone de GitHub, extração de PDF e YouTube |
-| `pi-ask-user` | `pi install npm:pi-ask-user` | Ask_user interativo com UI em split panel e múltipla escolha |
+| `pi-lens` | `pi install npm:pi-lens` | LSP, linters, formatters, type-checking, análise estrutural |
+| `pi-hermes-memory` | `pi install npm:pi-hermes-memory` | Memória persistente + session search + secret scanning |
+| `@gotgenes/pi-subagents` | `pi install npm:@gotgenes/pi-subagents` | Subagentes autônomos estilo Claude Code |
+
+> **Diagramas Mermaid:** PI.dev não tem package nativo. Use blocos `mermaid` inline no markdown — renders em qualquer viewer que suporte Mermaid.
 
 ## 🤖 Recomendado: L-Spec Subagents (by-lua)
 

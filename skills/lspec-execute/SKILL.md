@@ -125,20 +125,28 @@ Artifact encontrado: ❌ NÃO EXISTE
 
 **Code Navigation — NUNCA use bash grep/find**
 
-Use SOMENTE tools cymbal_* nativas do pi-cymbal (quando instalado):
+PI.dev fornece tools nativas de navegação — use-as diretamente:
+
+**cymbal_* — navegação estrutural:**
 - `cymbal_map` → estrutura do repo (arquivos, diretórios, módulos)
 - `cymbal_search` → buscar símbolos/texto em todo o código
 - `cymbal_outline` → symbols de um arquivo (classes, funções, métodos)
 - `cymbal_show` → ler por símbolo ou linha específica
 - `cymbal_refs` → encontrar todas as referências a um símbolo
 - `cymbal_impact` → impacto a montante (upstream callers)
+- `cymbal_importers` → arquivos que importam outro
+- `cymbal_impls` → implementações de interfaces
 
-Se `pi-lsp-tools` instalado → use LSP para go-to-definition, refs, rename.
+**lsp_* — precisão técnica:**
+- `lsp_goto_definition` → ir para definição
+- `lsp_find_references` → referências cruzadas
+- `lsp_diagnostics` → erros/warnings
+- `lsp_symbols` → símbolos de um arquivo
+- `lsp_rename` → renomear símbolo em todo workspace
 
-**Se nenhum instalado → processo normal:**
-- Use tools nativas (read_file, search_files, terminal com ls/cd)
+**Fallback (se tools nativas falharem):**
+- Use `read`, `search_files`, `terminal` com `ls`/`cd`
 - NÃO BLOQUEIA — continua o fluxo normalmente
-- Recomende instalação apenas uma vez: `pi install npm:pi-cymbal && pi install npm:@davehardy20/pi-lsp-tools`
 
 **Bash grep/find SOLO quando:**
 - Precisa de output pipeado para outro comando shell

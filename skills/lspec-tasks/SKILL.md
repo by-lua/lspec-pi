@@ -229,9 +229,9 @@ T8 → T9
 **Requirement:** [REQ]-01
 
 **Tools:**
-- MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
+- Built-in: `cymbal_*` (navegação estrutural) + `lsp_*` (precisão técnica)
 - NUNCA use bash grep/find para navegação de código
-- Se nenhum instalado → usa tools nativas (read_file, search_files), NÃO BLOQUEIA
+- Fallback: `read`, `search_files` — NÃO BLOQUEIA
 - Skill: NONE
 
 **Done when:**
@@ -252,9 +252,9 @@ T8 → T9
 **Reuses:** `src/services/BaseService.ts` patterns
 
 **Tools:**
-- MCP: `pi-cymbal` (code navigation) + `@davehardy20/pi-lsp-tools` (LSP precision)
+- Built-in: `cymbal_*` (navegação estrutural) + `lsp_*` (precisão técnica)
 - NUNCA use bash grep/find para navegação de código
-- Se nenhum instalado → usa tools nativas (read_file, search_files), NÃO BLOQUEIA
+- Fallback: `read`, `search_files` — NÃO BLOQUEIA
 - Skill: NONE
 
 **Done when:**
