@@ -1,4 +1,4 @@
-# L-Spec PI
+# L-Spec PI (Beta)
 
 **SDD (Spec-Driven Development) para PI.dev** — projetos novos E existentes.
 
