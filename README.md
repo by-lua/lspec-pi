@@ -29,34 +29,436 @@ O SDD reduz esse desperdício definindo o que será feito **antes** da implement
 > No L-Spec PI, o conhecimento do projeto fica versionado no repositório.  
 > Qualquer agente pode continuar de onde parou, sem depender da memória de uma sessão específica.
 
-## Fluxo
+## Fluxo Completo com Gates
 
 ```
-DISCOVERY → DISCUSS* → SPECIFY → CLARIFY* → DESIGN* → TASKS → EXECUTE
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        L-SPEC PI PIPELINE COM GATES                           │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    │
+│  │DISCOVERY │───▶│ RESEARCH │───▶│ SPECIFY  │───▶│ TASKS   │───▶│ EXECUTE  │    │
+│  └──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘    │
+│       │              │              │                           │              │
+│       ▼              ▼              ▼                           ▼              │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐              ┌──────────┐ │
+│  │ DISCUSS* │    │ DISCUSS* │    │ CLARIFY* │              │  GATE    │         │
+│  └──────────┘    └──────────┘    └──────────┘ │ CHECK │         │
+│ │              │              │                      └──────────┘         │
+│       ▼              ▼              ▼                           │ │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐                  ▼              │
+│  │  STATE │    │  STATE   │    │  STATE   │              ┌──────────┐       │
+│  │ GATE    │    │  GATE    │    │  GATE    │              │  COMMIT  │       │
+│  └──────────┘    └──────────┘    └──────────┘              └──────────┘       │
+│                                                                                 │
+│  (*) OPCIONAL — só se área cinzenta/ambígua ou necessidade arquitetural        │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+### Tabela de Fases
 
 ```
 ┌────────────┬──────────────────────────────────────────────────────────┐
 │ FASE       │ QUANDO RODA                                             │
 ├────────────┼──────────────────────────────────────────────────────────┤
 │ Discovery  │ SEMPRE                                                  │
-│ Discuss    │ OPCIONAL — só se área cinzenta/ambígua                  │
-│ Specify    │ SEMPRE (OBRIGATÓRIO)                                    │
-│ Clarify    │ OPCIONAL — só se ambiguidade nos requisitos             │
-│ Design     │ OPCIONAL — só se necessidade arquitetural              │
+│ Research   │ SEMPRE (OBRIGATÓRIO antes de Specify)                   │
+│ Discuss*   │ OPCIONAL — só se área cinzenta/ambígua                  │
+│ Specify │ SEMPRE (OBRIGATÓRIO)                                    │
+│ Clarify*   │ OPCIONAL — só se ambiguidade nos requisitos             │
+│ Design*    │ OPCIONAL — só se necessidade arquitetural              │
 │ Tasks      │ SEMPRE                                                  │
 │ Execute    │ SEMPRE                                                  │
 └────────────┴──────────────────────────────────────────────────────────┘
 ```
 
-**Auto-detecção:**
-- `BUG` → Discovery curto (3 perguntas) → Tasks → Execute
-- `FEATURE` → Discovery focado → Specify → Tasks → Execute
-- `NOVO` → 6 fases completas
+### Auto-detecção
+
+- `BUG` → Discovery curto (3 perguntas) → Research → Tasks → Execute
+- `FEATURE` → Discovery focado → Research → Specify → Tasks → Execute
+- `NOVO` → 6 fases completas + Research
+
+---
+
+## Gates e Travamentos (Enforcement)
+
+O L-Spec PI usa **gates bloqueantes** para garantir qualidade. Cada gate deve passar antes de avançar.
+
+### 1. Compliance Gate (Bloqueante)
+
+**Antes de QUALQUER edit no código**, execute o checklist:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ COMPLIANCE GATE CHECKLIST │
+├────────────────────────────────────────────────────────────────┤
+│ [ ] 1. Discovery completo — contexto coletado                  │
+│ [ ] 2. Requirements claros — spec.md existente                  │
+│ [ ] 3. Design verificado — design.md existe (se aplicável)     │
+│ [ ] 4. Tasks aprovadas — tasks.md com artefatos definidas │
+│ [ ] 5. State atualizado — STATE.md reflete estado atual        │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Se qualquer item ❌ → BLOQUEIA. Resolva antes de editar.**
+
+### 2. State Saved Gate (Bloqueante)
+
+**Entre cada fase**, verifique:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ STATE SAVED GATE                                               │
+├────────────────────────────────────────────────────────────────┤
+│ [ ] STATE.md existe para esta feature                          │
+│ [ ] Última fase completada está marcada │
+│ [ ] Progresso atualizado (ROADMAP.md)                          │
+│ [ ] Decisões documentadas (AD-NNN)                             │
+│ [ ] Blockers identificados (B-NNN)                              │
+└────────────────────────────────────────────────────────────────┘
+```
+
+###3. Design Reference Enforcement
+
+**Antes de implementar (Execute)**, se Design foi executado:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ DESIGN REFERENCE ENFORCEMENT                                   │
+├────────────────────────────────────────────────────────────────┤
+│ [ ] design.md existe em features/[name]/                         │
+│ [ ] Design foi aprovado pelo usuário                           │
+│ [ ] Componentes definidos no design │
+│ [ ] Interfaces documentadas                                    │
+│ [ ] Code reuse identificado │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 4. Artifact Enforcement
+
+Cada fase produz **artefatos** que a próxima fase precisa. Sem artefato = bloqueia.
+
+```
+┌────────────┬────────────────────────┬─────────────────────────────┐
+│ FASE       │ PRODUZ │ PRÓXIMA FASE PRECISA        │
+├────────────┼────────────────────────┼─────────────────────────────┤
+│ Discovery  │ PROJECT.md, ROADMAP.md  │ Research, Specify │
+│ Research   │ findings documentados  │ Design, Specify              │
+│ Specify    │ spec.md                │ Tasks, Design                │
+│ Design     │ design.md              │ Tasks │
+│ Tasks │ tasks.md               │ Execute                      │
+│ Execute    │ código + commits │ validação final              │
+└────────────┴────────────────────────┴─────────────────────────────┘
+```
+
+**Sem artefato da fase anterior → Execute bloqueado.**
+
+### 5. Gate Check (Verify)
+
+Durante Execute, cada tarefa tem um **gate level**:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ TIERED GATE CHECKS                                             │
+├────────────────────────────────────────────────────────────────┤
+│ Task com unit tests          │ Gate: QUICK  (unit only)        │
+│ Task com e2e/integration     │ Gate: FULL (unit + e2e)       │
+│ Última task da fase │ Gate: BUILD (build + lint + all)│
+│ Task sem testes │ Gate: BUILD (build + lint only) │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Regra: Nunca prossiga com gate vermelho.**
+
+---
+
+## Enforcement Pattern
+
+O padrão de enforcement combina **Compliance Gate + State Saved Gate**:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ ENFORCEMENT PATTERN (OBRIGATÓRIO) │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ANTES DE CADA FASE: │
+│  ┌──────────────────┐    ┌──────────────────┐                   │
+│  │ Compliance Gate  │ AND │ State Saved Gate │                   │
+│  │ (5 itens)        │     │ (verificação)    │                   │
+│  └────────┬─────────┘    └────────┬─────────┘                   │
+│           │                       │                              │
+│           └───────────┬───────────┘                              │
+│                       ▼                                          │
+│              ┌──────────────┐                                    │
+│              │ AVANÇAR?    │                                    │
+│              └──────────────┘                                    │
+│                                                                  │
+│  AMBOS gates devem passar para prosseguir.                      │
+│  Se um falhar → BLOQUEIA e resolve antes. │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## NUNCA Rules (Completas)
+
+**NUNCA:**
+- Quick mode
+- Auto-sizing
+- Pular fases obrigatórias
+- Parar no meio do fluxo
+- Editar código fora do spec/design
+- Pular Autosave de estado
+- Prosseguir com gate vermelho
+- Criar estrutura `fixes/` (tudo é feature)
+- Fabricar informação (se não sabe, diga "não sei")
+- Modificar testes escritos no RED
+- Enfraquecer asserções para passar
+- "While I'm here" durante implementação
+
+**SEMPRE:**
+- Pipeline completo (mesmo em BUG flow)
+- Autosave de estado em cada fase
+- Confirmar antes de avançar
+- Atualizar STATE.md
+- Verificar design.md antes de implementar
+- Testes primeiro (RED phase)
+- Gate check após cada tarefa
+- Commit atômico por tarefa
+- Reuse de código existente
+
+---
+
+## Fluxo por Tipo
+
+**PROJETO NOVO:**
+```
+Discovery (completo) → Research → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
+```
+
+**BUG:**
+```
+Discovery (curto) → Research → Specify → Tasks → Execute
+```
+
+**FEATURE:**
+```
+Discovery (focado) → Research → Specify → Clarify? → Tasks → Execute
+```
+
+**PROJETO EXISTENTE (sem .specs/):**
+```
+Discovery (curto) → Research → Specify → Clarify? → Design? → Tasks → Execute
+```
+
+---
+
+## Pesquisa (Research)
+
+Fase **OBRIGATÓRIA** entre Discovery e Specify.
+
+**Quando executar:**
+- Feature envolve tecnologia unfamiliar
+- Integrações com sistemas novos
+- Padrões não usados anteriormente neste codebase
+
+**Knowledge Verification Chain (ordem estrita):**
+```
+Codebase → Project docs → Context7 MCP → Web search → Flag as uncertain
+```
+
+**CRITICAL: NUNCA assuma ou fabrication informação.** Se não conseguir encontrar resposta, diga "Eu não sei" ou "Não consegui encontrar documentação para isso". Informação inventada propaga através de design → tasks → implementação e causa falhas em cascata.
+
+---
+
+## Estrutura de Projeto
+
+```
+.specs/
+├── project/
+│   ├── PROJECT.md       # Visão, objetivos, stack
+│   ├── ROADMAP.md       # Features e milestones
+│   └── STATE.md         # Decisões, blockers, estado atual
+└── features/
+    └── [feature]/
+        ├── spec.md      # Requisitos testáveis
+        ├── context.md   # Decisões de áreas cinzentas (opcional)
+        ├── design.md    # Decisões arquiteturais (opcional)
+        └── tasks.md     # Tarefas atômicas
+```
+
+**Nota:** Bugs são registrados como features em `features/` — prefixo `fix-` ou `bug-` no nome.
+
+---
+
+## Autosave de Estado
+
+**Em cada fase, AO FINALIZAR:**
+1. Salvar decisões em STATE.md
+2. Atualizar progresso em ROADMAP.md
+3. Persistir contexto para próxima sessão
+
+**STATE.md atualizado:**
+- AD-NNN: decisões
+- B-NNN: blockers
+- L-NNN: aprendizados
+- Todos pendentes
+- Deferred ideas
+
+---
+
+## Git Workflow
+
+**Onde editar:**
+1. Clone o repositório git do projeto
+2. Edite no clone local
+3. Commit atômico por tarefa
+4. Push quando gate passar
+
+**NUNCA edite skills localmente.** Skills vivem no repositório git, não no filesystem local do agente.
+
+**Formato de commit (Conventional Commits 1.0.0):**
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types permitidos:**
+- `feat` — New feature
+- `fix` — Bug fix
+- `refactor` — Code change (no bug fix, no feature)
+- `docs` — Documentation
+- `test` — Tests
+- `style` — Formatting
+- `perf` — Performance
+- `build` — Build system
+- `ci` — CI config
+- `chore` — Maintenance
 
 **Regras:**
-- NUNCA: quick mode, auto-sizing, pular fases
-- SEMPRE: autosave de estado, confirmar antes de avançar
+- One task = one commit
+- Description = o que foi FEITO, não planejado
+- Include only files in task definition
+- Tests no mesmo commit se parte da tarefa
+
+---
+
+## Ferramentas Recomendadas
+
+### Hermes (agent-lsp)
+
+**Hermes usa `agent-lsp` para navegação de código.** Não `pi-cymbal`.
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ agent-lsp Skills (66 tools + 23 workflow skills)              │
+├────────────────────────────────────────────────────────────────┤
+│ Antes de editar:     blast_radius — blast-radius analysis    │
+│ Antes de aplicar: preview_edit — preview diagnostic delta │
+│ Depois de mudar:      get_diagnostics, run_build, run_tests  │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Task-to-tool mapping:**
+
+| Task | Use this | Not this |
+|------|----------|----------|
+| See file structure | `list_symbols` | Read + manual scanning |
+| Find a symbol by name | `find_symbol` | Grep across files |
+| Find all usages | `find_references` | Grep for the name |
+| Understand a symbol | `inspect_symbol` | Read the file |
+| What calls this function | `find_callers` | Grep for the name |
+| Replace a function body | `replace_symbol_body` | Edit with text matching |
+| Delete unused symbol | `safe_delete_symbol` | Edit to remove lines |
+
+**Skills disponíveis via `/lsp-*`:**
+- `/lsp-architecture` — Structural overview
+- `/lsp-concurrency-audit` — Concurrency safety
+- `/lsp-cross-repo` — Cross-repository analysis
+- `/lsp-dead-code` — Dead code detection
+- `/lsp-edit-export` — Safe workflow for public APIs
+- `/lsp-refactor` — End-to-end safe refactor
+- `/lsp-rename` — Two-phase safe rename
+- `/lsp-safe-edit` — Wrap edits with preview
+- `/lsp-verify` — Three-layer verification (LSP + build + tests)
+
+### PI Packages (opcionais)
+
+```bash
+pi install npm:pi-cymbal
+pi install npm:@davehardy20/pi-lsp-tools
+pi install npm:pi-mermaid
+```
+
+---
+
+## Pitfalls Críticos
+
+###1. Fabricação de Informação
+```
+❌ "Provavelmente funciona assim..."
+✅ "Não sei, vou pesquisar"
+```
+
+### 2. Pular Gates
+```
+❌ "Vou pular o gate check, parece ok"
+✅ "Gate vermelho = para e resolve"
+```
+
+### 3. Scope Creep
+```
+❌ "Enquanto estou aqui, já vou fazer X"
+✅ "Is this in my task definition? If no, don't touch it"
+```
+
+### 4. Silenciar Testes
+```
+❌ "Vou desabilitar esse teste temporariamente"
+✅ "Teste falhando = problema real, resolve"
+```
+
+### 5. Auto-sizing
+```
+❌ "Parece que é só isso, vou ajustar"
+✅ "Verificar blast radius manualmente"
+```
+
+### 6. Saltar Autosave
+```
+❌ "Vou lembrar do estado mentalmente"
+✅ "STATE.md atualizado após cada fase"
+```
+
+### 7. Testes Fracos
+```
+❌ "Teste passa sem implementação = ok"
+✅ "Teste deve falhar no RED, passar no GREEN"
+```
+
+### 8. SPEC_DEVIATION Silenciosa
+```
+❌ "Implementation divergiu, mas tudo bem"
+✅ "// SPEC_DEVIATION: [what diverged] // Reason: [why]"
+```
+
+---
+
+## Regras de Ouro
+
+1. **SEMPRE Pipeline Completo** — nenhuma exceção
+2. **Autosave** — estado salvo em cada fase
+3. **Confirmar** — antes de avançar para próxima fase
+4. **Nunca Fabricar** — se não sabe, diga "não sei"
+5. **Spec é Verdade** — código desvia = SPEC_DEVIATION marker
+6. **Gate é Determinístico** — o test runner decide, não o agente
+7. **Reuse é Rei** — copiar padrões existentes, não reinventar
+8. **Commit Atômico** — um task = um commit
+
+---
 
 ## Instalação
 
@@ -76,45 +478,28 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/update.sh | ba
 curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/uninstall.sh | bash
 ```
 
-## Pacotes PI recomendados
-
-Use esses 3 no nosso projeto porque eles aumentam qualidade de execução sem complicar o fluxo:
-
-- `pi-cymbal` → camada nativa de navegação e busca de código para agente (code navigation/search), acelerando entendimento e mudanças com menos tentativa/erro.
-- `@davehardy20/pi-lsp-tools` → navegação via LSP (go to definition, referências, diagnósticos, símbolos e rename), dando precisão técnica na implementação.
-- `pi-mermaid` → renderiza Mermaid em ASCII no TUI, deixando arquitetura/fluxo visível durante a sessão sem depender de ferramenta externa.
-
-```bash
-pi install npm:pi-cymbal
-pi install npm:@davehardy20/pi-lsp-tools
-pi install npm:pi-mermaid
-```
-
-## Pacotes PI opcionais (recomendados)
-
-- `pi install npm:@dreki-gg/pi-context7`
-- `pi install npm:context-mode`
-- `pi install npm:pi-mcp-adapter`
-- `pi install npm:pi-web-access`
-- `pi install npm:pi-ask-user`
-
-## Recomendado: L-Spec Subagents (by-lua)
-
-Extensão para delegação por especialidade:
-
-- Opus como orquestrador
-- Gemini como designer
-- GPT como executor
-
-Repo: https://github.com/by-lua/lspec-subagents
+---
 
 ## Referências internas
 
 - `skills/lspec/README.md`
-- `skills/lspec/references/pi-version-setup.md`
-- `skills/lspec/references/pi-packages-guide.md`
-- `skills/lspec/references/pi-v2-architecture.md`
-- `skills/lspec/references/subagent-context-budget.md`
+- `skills/lspec/SKILL.md`
+- `skills/lspec-discovery/SKILL.md`
+- `skills/lspec-specify/SKILL.md`
+- `skills/lspec-design/SKILL.md`
+- `skills/lspec-tasks/SKILL.md`
+- `skills/lspec-execute/SKILL.md`
+- `skills/lspec-auto/SKILL.md`
+- `skills/lspec-next/SKILL.md`
+- `skills/lspec-validate/SKILL.md`
+- `skills/lspec-resume/SKILL.md`
+- `skills/lspec-pause/SKILL.md`
+- `references/pi-version-setup.md`
+- `references/pi-packages-guide.md`
+- `references/pi-v2-architecture.md`
+- `references/subagent-context-budget.md`
+
+---
 
 ## Créditos
 
