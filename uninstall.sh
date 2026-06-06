@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # LSpec PI — Desinstalar
-# Método recomendado: pi uninstall npm:lspec-pi
+# Método recomendado: pi uninstall npm:@by-lua/lspec-pi
 
 set -euo pipefail
 
@@ -11,5 +11,5 @@ echo ""
 echo "lspec-pi removido (skills locais)."
 
 # Se instalado via npm, usar:
-echo "Para remover completamente: pi uninstall npm:lspec-pi"
+echo "Para remover completamente: pi uninstall npm:@by-lua/lspec-pi"
 echo ""

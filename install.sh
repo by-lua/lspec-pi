@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # LSpec PI — Instalador
-# Método recomendado: pi install npm:lspec-pi
+# Método recomendado: pi install npm:@by-lua/lspec-pi
 
 set -euo pipefail
 
@@ -11,7 +11,7 @@ echo ""
 echo "Este script é para instalação manual via Git."
 echo "Para instalação padrão, use:"
 echo ""
-echo "  pi install npm:lspec-pi"
+echo "  pi install npm:@by-lua/lspec-pi"
 echo ""
 echo "Docs: https://github.com/by-lua/lspec-pi"
 echo ""

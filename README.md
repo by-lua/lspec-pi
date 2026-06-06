@@ -4,13 +4,13 @@
 
 ```bash
 # Instalar
-pi install npm:lspec-pi
+pi install npm:@by-lua/lspec-pi
 
 # Atualizar
-pi update npm:lspec-pi
+pi update npm:@by-lua/lspec-pi
 
 # Desinstalar
-pi uninstall npm:lspec-pi
+pi uninstall npm:@by-lua/lspec-pi
 ```
 
 > Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
