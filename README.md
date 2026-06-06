@@ -1,10 +1,23 @@
 # L-Spec PI
 
-> **Instalar, atualizar ou desinstalar:** `pi install npm:lspec-pi` | `pi update npm:lspec-pi` | `pi uninstall npm:lspec-pi`
->
+## Instalação, Atualizar, Desinstalar
+
+```bash
+# Instalar
+pi install npm:lspec-pi
+
+# Atualizar
+pi update npm:lspec-pi
+
+# Desinstalar
+pi uninstall npm:lspec-pi
+```
+
+> Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
+
 > **Recomendado:** [`@gotgenes/pi-subagents`](https://www.npmjs.com/package/@gotgenes/pi-subagents) — agentes especializados (explorer, fixer, oracle) que usam as mesmas tools do L-Spec PI.
 
-SDD (Spec-Driven Development) para PI.dev — **projetos novos E existentes**.
+---
 
 Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
 
