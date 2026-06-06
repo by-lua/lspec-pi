@@ -48,7 +48,7 @@ Basta dizer o que você quer:
 
 O L-Spec detecta automaticamente o contexto:
 
-- **Código existente, sem spec** → Map: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir
+- **Código existente, sem spec** → Map: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir. Use `/lspec reverse` para acionar.
 - **Código existente, com spec** → executa o fluxo normal: verifica estado, propõe mudanças, aplica com gates
 - **Projeto novo** → Discovery abrangente: faz perguntas estratégicas para descobrir features, define escopo e estrutura
 
