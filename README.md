@@ -19,34 +19,6 @@ pi uninstall npm:lspec-pi
 
 ---
 
-Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
-
-## O que é SDD?
-
-SDD é desenvolver por especificação primeiro e código depois.
-No L-Spec PI isso significa: discovery adaptativo, requisitos claros, tarefas atômicas e execução verificável.
-
-## Por que SDD existe (e o que você perde sem ele)?
-
-A maioria das sessões com IA perde 40–60% dos tokens com retrabalho: ambiguidade, reescrita e "achei que era isso".
-O SDD reduz esse desperdício definindo o que será feito **antes** da implementação.
-
-### Sem SDD você perde
-
-- Clareza de escopo (o projeto vai crescendo no improviso)
-- Rastreabilidade (fica difícil provar o que foi validado)
-- Continuidade entre sessões (cada conversa recomeça do zero)
-- Qualidade de entrega (mais bug, mais retrabalho, commits confusos)
-
-### Com L-Spec PI você ganha
-
-- Discovery adaptativo + requisitos claros antes de codar
-- Execução por tarefas atômicas e verificáveis
-- Menos reescrita, menos bugs e commits mais limpos
-- **Contexto vivendo no projeto (`.specs/`) e não só na memória do agente**
-
-> No L-Spec PI, o conhecimento do projeto fica versionado no repositório.  
-> Qualquer agente pode continuar de onde parou, sem depender da memória de uma sessão específica.
 
 ## Fluxo Completo com Gates
 
@@ -98,6 +70,87 @@ O SDD reduz esse desperdício definindo o que será feito **antes** da implement
 - `NOVO` → 6 fases completas + Research
 
 ---
+
+Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
+## Como Funciona (igual RPIV)
+
+```
+Você: /lspec [request]
+
+→ Discovery (pergunta o que você quer)
+→ SALVA estado
+→ Research (analisa o código)
+→ SALVA estado
+→ [Discuss?] (se há ambiguidade)
+→ SALVA estado
+→ Specify (especifica requisitos)
+→ SALVA estado
+→ [Clarify?] (se há ambiguidade)
+→ SALVA estado
+→ [Design?] (se há decisão arquitetural)
+→ SALVA estado
+→ Tasks (quebra em tarefas)
+→ SALVA estado
+→ Execute (implementa)
+→ SALVA estado
+→ Pronto
+```
+
+**ÚNICO comando:** `/lspec [o que você quer]`
+
+O sistema executa TODO o pipeline em ordem, salvando após cada fase. Nunca pergunta qual fase executar. Nunca pula. Nunca vai direto para código.
+
+---
+
+
+
+## O que é SDD?
+
+SDD é desenvolver por especificação primeiro e código depois.
+No L-Spec PI isso significa: discovery adaptativo, requisitos claros, tarefas atômicas e execução verificável.
+
+## Por que SDD existe (e o que você perde sem ele)?
+
+A maioria das sessões com IA perde 40–60% dos tokens com retrabalho: ambiguidade, reescrita e "achei que era isso".
+O SDD reduz esse desperdício definindo o que será feito **antes** da implementação.
+
+### Sem SDD você perde
+
+- Clareza de escopo (o projeto vai crescendo no improviso)
+- Rastreabilidade (fica difícil provar o que foi validado)
+- Continuidade entre sessões (cada conversa recomeça do zero)
+- Qualidade de entrega (mais bug, mais retrabalho, commits confusos)
+
+### Com L-Spec PI você ganha
+
+- Discovery adaptativo + requisitos claros antes de codar
+- Execução por tarefas atômicas e verificáveis
+- Menos reescrita, menos bugs e commits mais limpos
+- **Contexto vivendo no projeto (`.specs/`) e não só na memória do agente**
+
+> No L-Spec PI, o conhecimento do projeto fica versionado no repositório.  
+> Qualquer agente pode continuar de onde parou, sem depender da memória de uma sessão específica.
+
+---
+## Artifact Enforcement
+
+Cada fase produz um artifact que a próxima usa:
+
+```
+Discovery  → STATE.md       → Research
+Research   → research.md     → Discuss?
+Discuss    → discuss.md      → Specify
+Specify    → spec.md        → Clarify?
+Clarify    → clarify.md      → Design?
+Design     → design.md       → Tasks
+Tasks      → tasks.md       → Execute
+```
+
+**Sem artifact = bloqueia.** A fase não começa sem o artifact da anterior.
+
+---
+
+
 
 ## Gates e Travamentos (Enforcement)
 
@@ -218,6 +271,26 @@ O padrão de enforcement combina **Compliance Gate + State Saved Gate**:
 ```
 
 ---
+## Regras Absolutas
+
+**NUNCA:**
+- ❌ Pular fase obrigatória (Discovery, Research, Specify, Tasks, Execute)
+- ❌ Ir direto para código
+- ❌ Implementar sem spec
+- ❌ Editar sem passar pelo pipeline
+- ❌ Criar spec duplicada — verificar se já existe em `.specs/features/[name]/`
+- ❌ Ignorar design reference — se design.md existir, LER e SEGUIR
+
+**SEMPRE:**
+- ✓ Salvar estado após cada fase
+- ✓ Próxima fase usa artifact da anterior
+- ✓ Fases opcionais ativadas quando necessário
+- ✓ Mudanças estruturais → atualizar `.specs/project/{PROJECT.md, ROADMAP.md}`
+- ✓ SPEC Enforcement: mudança ocorre → verificar se spec existe. Se sim → atualizar. Se não → criar.
+
+---
+
+
 
 ## NUNCA Rules (Completas)
 
@@ -247,6 +320,39 @@ O padrão de enforcement combina **Compliance Gate + State Saved Gate**:
 - Reuse de código existente
 
 ---
+## Modos de Operação
+
+### Modo: Forward (padrão)
+```
+/lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute
+```
+Para: projeto novo, feature, bug, melhoria
+
+**Discovery adaptativo:**
+- Bug: perguntas curtas (1-3)
+- Feature: perguntas médias (5-8)
+- Projeto novo: perguntas completas (10-15)
+
+### Modo: Reverse
+```
+/lspec reverse → Mapear código existente → SPEC.md
+```
+Para: analisar código existente e gerar spec
+
+**Quando usar:**
+- Projeto sem documentação
+- Código legado para entender
+- "Como esse projeto funciona?"
+
+### Modo: Map (brownfield)
+```
+/lspec map → Analisar codebase → 7 docs de arquitetura
+```
+Para: projetos existentes precisam de mapa
+
+---
+
+
 
 ## Qual Comando Usar
 
@@ -296,6 +402,58 @@ Discovery (curto) → Research → Specify → Clarify? → Design? → Tasks �
 ```
 
 ---
+## Fluxo Forward Completo
+
+**Você diz:** `/lspec quero adicionar autenticação por JWT`
+
+**Sistema faz:**
+
+```
+1. Discovery
+   → "Que tipo de autenticação?"
+   → Salva .specs/project/STATE.md
+
+2. Research
+   → Analisa: existe auth no projeto?
+   → Analisa: qual stack de auth?
+   → Analisa: onde integrar?
+   → Salva features/jwt-auth/research.md
+
+3. Discuss? (se há ambiguidade)
+   → Captura área cinzenta
+   → Salva features/jwt-auth/discuss.md
+
+4. Specify
+   → Usa Discovery + Research
+   → Escreve spec.md com requisitos
+   → Salva features/jwt-auth/spec.md
+
+5. Clarify? (se há ambiguidade)
+   → Resolve ambiguidade
+   → Salva features/jwt-auth/clarify.md
+
+6. Design? (se há decisão arquitetural)
+   → Decisões de arquitetura
+   → Salva features/jwt-auth/design.md
+
+7. Tasks
+   → Usa spec.md
+   → Quebra em tarefas
+   → Salva features/jwt-auth/tasks.md
+
+8. Execute
+   → Usa tasks.md
+   → Implementa código
+   → Salva mudanças
+
+→ Pronto!
+```
+
+**Você não precisa chamar cada fase manualmente. O sistema avança sozinho.**
+
+---
+
+
 
 ## Pesquisa (Research)
 
@@ -507,21 +665,6 @@ Use diretamente — são parte do runtime PI.dev.
 8. **Commit Atômico** — um task = um commit
 
 ---
-
-## Instalação, Atualizar, Desinstalar
-
-```bash
-# Instalar
-pi install npm:lspec-pi
-
-# Atualizar
-pi update npm:lspec-pi
-
-# Desinstalar
-pi uninstall npm:lspec-pi
-```
-
-> Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
 
 ---
 
