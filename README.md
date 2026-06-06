@@ -229,7 +229,32 @@ O padrão de enforcement combina **Compliance Gate + State Saved Gate**:
 
 ---
 
-## Fluxo por Tipo
+## Qual Comando Usar
+
+### Single Entry Point — `/lspec`
+
+O comando `/lspec` é o **único ponto de entrada**. Ele auto-detecta o tipo de projeto e executa o pipeline completo.
+
+**Não precisa escolher comando por fase.** O sistema avança automaticamente.
+
+| Cenário | Comando | O que acontece |
+|---------|---------|----------------|
+| Projeto novo | `/lspec criar um sistema de...` | Discovery completo (17 perguntas) → Research → Specify → ... |
+| Feature em projeto existente | `/lspec adicionar login com...` | Discovery focado → Research → Specify → ... |
+| Bug em projeto existente | `/lspec corrigir erro de...` | Discovery curto (3 perguntas) → Research → Tasks → Execute |
+| Projeto existente sem specs | `/lspec mapear o código atual` | **Reverse mode** — survey do código → spec gerada automaticamente |
+
+### Reverse — Quando Usar
+
+Use `/lspec reverse` (ou `/lspec mapear`) quando:
+
+- Projeto existe mas **não tem `.specs/`**
+- Precisa entender estrutura antes de mexer
+- Vai接手 projeto de outra pessoa
+
+O reverse escaneia o código, gera `.specs/project/` e `.specs/features/[name]/` automaticamente.
+
+### Fluxo por Tipo
 
 **PROJETO NOVO:**
 ```
