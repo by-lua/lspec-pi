@@ -48,7 +48,7 @@ Basta dizer o que você quer:
 
 O L-Spec detecta automaticamente o contexto:
 
-- **Código existente, sem spec** → Map: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir. Use `/lspec reverse` para acionar.
+- **Código existente, sem spec** → Map: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir. Use `/lspec map` para acionar.
 - **Código existente, com spec** → executa o fluxo normal: verifica estado, propõe mudanças, aplica com gates
 - **Projeto novo** → Discovery abrangente: faz perguntas estratégicas para descobrir features, define escopo e estrutura
 
@@ -369,9 +369,9 @@ Para: projeto novo, feature, bug, melhoria
 - Feature: perguntas médias (5-8)
 - Projeto novo: perguntas completas (10-15)
 
-### Modo: Reverse
+### Modo: Map
 ```
-/lspec reverse → Mapear código existente → SPEC.md
+/lspec map → Mapear código existente → SPEC.md
 ```
 Para: analisar código existente e gerar spec
 
@@ -403,17 +403,17 @@ O comando `/lspec` é o **único ponto de entrada**. Ele auto-detecta o tipo de 
 | Projeto novo | `/lspec criar um sistema de...` | Discovery completo (17 perguntas) → Research → Specify → ... |
 | Feature em projeto existente | `/lspec adicionar login com...` | Discovery focado → Research → Specify → ... |
 | Bug em projeto existente | `/lspec corrigir erro de...` | Discovery curto (3 perguntas) → Research → Tasks → Execute |
-| Projeto existente sem specs | `/lspec mapear o código atual` | **Reverse mode** — survey do código → spec gerada automaticamente |
+| Projeto existente sem specs | `/lspec mapear o código atual` | **Map mode** — survey do código → spec gerada automaticamente |
 
-### Reverse — Quando Usar
+### Map — Quando Usar
 
-Use `/lspec reverse` (ou `/lspec mapear`) quando:
+Use `/lspec map` (ou `/lspec mapear`) quando:
 
 - Projeto existe mas **não tem `.specs/`**
 - Precisa entender estrutura antes de mexer
 - Vai接手 projeto de outra pessoa
 
-O reverse escaneia o código, gera `.specs/project/` e `.specs/features/[name]/` automaticamente.
+O map escaneia o código, gera `.specs/project/` e `.specs/features/[name]/` automaticamente.
 
 ### Fluxo por Tipo
 
