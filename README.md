@@ -1,5 +1,9 @@
 # L-Spec PI
 
+**SDD (Spec-Driven Development) para PI.dev** — projetos novos E existentes.
+
+Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
+
 > **Spec-Driven Development** — nunca edite sem spec. O pipeline sequencial com gates bloqueantes verifica spec, contexto, blast radius e estado **antes** de qualquer mudança. Funciona em **projetos novos** (forward) e **código existente** (reverse engineering). Research obrigatório — o agente pergunta, nunca inventa. Nada pula fase.
 
 ## Instalação, Atualizar, Desinstalar
