@@ -15,7 +15,7 @@ pi uninstall npm:lspec-pi
 
 > Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
 
-> **Recomendado:** [`@gotgenes/pi-subagents`](https://www.npmjs.com/package/@gotgenes/pi-subagents) — agentes especializados (explorer, fixer, oracle) que usam as mesmas tools do L-Spec PI.
+> **Subagentes:** [`by-lua/lspec-subagents`](https://github.com/by-lua/lspec-subagents) — agentes especializados (explorer, fixer, oracle) que usam as mesmas tools do L-Spec PI e executam tarefas em paralelo.
 
 ---
 
