@@ -277,3 +277,26 @@ Para: projetos existentes precisam de mapa
 ```
 
 **Você não precisa chamar cada fase manualmente. O sistema avança sozinho.**
+
+---
+
+## 🤖 Compatibility
+
+This skill works with any AI coding agent that supports skills or custom instructions.
+
+Tested and verified on:
+
+| Agent | Status |
+|---|---|
+| Antigravity (Gemini) | ✅ Tested |
+| Claude Code | ✅ Tested |
+| GitHub Copilot | ✅ Tested |
+| Cursor | ✅ Tested |
+| Opencode | ✅ Tested |
+
+Note: If your agent supports loading custom instructions or skills, this skill should work. The agents above are simply where it has been actively tested.
+
+---
+
+📄 License: CC-BY-4.0 © Tech Lead's Club
+Built with ❤️ by the Tech Lead's Club community
