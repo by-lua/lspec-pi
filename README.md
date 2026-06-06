@@ -20,6 +20,36 @@ pi uninstall npm:lspec-pi
 ---
 
 
+
+## O que é SDD?
+
+SDD é desenvolver por especificação primeiro e código depois.
+No L-Spec PI isso significa: discovery adaptativo, requisitos claros, tarefas atômicas e execução verificável.
+
+## Por que SDD existe (e o que você perde sem ele)?
+
+A maioria das sessões com IA perde 40–60% dos tokens com retrabalho: ambiguidade, reescrita e "achei que era isso".
+O SDD reduz esse desperdício definindo o que será feito **antes** da implementação.
+
+### Sem SDD você perde
+
+- Clareza de escopo (o projeto vai crescendo no improviso)
+- Rastreabilidade (fica difícil provar o que foi validado)
+- Continuidade entre sessões (cada conversa recomeça do zero)
+- Qualidade de entrega (mais bug, mais retrabalho, commits confusos)
+
+### Com L-Spec PI você ganha
+
+- Discovery adaptativo + requisitos claros antes de codar
+- Execução por tarefas atômicas e verificáveis
+- Menos reescrita, menos bugs e commits mais limpos
+- **Contexto vivendo no projeto (`.specs/`) e não só na memória do agente**
+
+> No L-Spec PI, o conhecimento do projeto fica versionado no repositório.  
+> Qualquer agente pode continuar de onde parou, sem depender da memória de uma sessão específica.
+
+---
+
 ## Fluxo Completo com Gates
 
 ```
@@ -99,37 +129,6 @@ Você: /lspec [request]
 **ÚNICO comando:** `/lspec [o que você quer]`
 
 O sistema executa TODO o pipeline em ordem, salvando após cada fase. Nunca pergunta qual fase executar. Nunca pula. Nunca vai direto para código.
-
----
-
-
-
-## O que é SDD?
-
-SDD é desenvolver por especificação primeiro e código depois.
-No L-Spec PI isso significa: discovery adaptativo, requisitos claros, tarefas atômicas e execução verificável.
-
-## Por que SDD existe (e o que você perde sem ele)?
-
-A maioria das sessões com IA perde 40–60% dos tokens com retrabalho: ambiguidade, reescrita e "achei que era isso".
-O SDD reduz esse desperdício definindo o que será feito **antes** da implementação.
-
-### Sem SDD você perde
-
-- Clareza de escopo (o projeto vai crescendo no improviso)
-- Rastreabilidade (fica difícil provar o que foi validado)
-- Continuidade entre sessões (cada conversa recomeça do zero)
-- Qualidade de entrega (mais bug, mais retrabalho, commits confusos)
-
-### Com L-Spec PI você ganha
-
-- Discovery adaptativo + requisitos claros antes de codar
-- Execução por tarefas atômicas e verificáveis
-- Menos reescrita, menos bugs e commits mais limpos
-- **Contexto vivendo no projeto (`.specs/`) e não só na memória do agente**
-
-> No L-Spec PI, o conhecimento do projeto fica versionado no repositório.  
-> Qualquer agente pode continuar de onde parou, sem depender da memória de uma sessão específica.
 
 ---
 ## Artifact Enforcement
