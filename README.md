@@ -1,6 +1,8 @@
 # L-Spec PI
 
-SDD (Spec-Driven Development) para PI.dev, mantendo o fluxo completo de especificação antes da execução.
+SDD (Spec-Driven Development) para PI.dev — **projetos novos E existentes**.
+
+Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
 
 ## O que é SDD?
 
