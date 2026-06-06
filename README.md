@@ -1,5 +1,7 @@
 # L-Spec PI
 
+> **Spec-Driven Development** — pipeline sequencial com gates bloqueantes que trava qualquer edit antes de verificar spec, contexto, blast radius e estado. Funciona em **projetos novos** (forward) e **código existente** (reverse/map). Research obrigatório. Agente nunca preenche Discovery sozinho — faz perguntas. Nada pula fase.
+
 ## Instalação, Atualizar, Desinstalar
 
 ```bash
