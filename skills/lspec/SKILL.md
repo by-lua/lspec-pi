@@ -9,7 +9,7 @@ metadata:
 
 # LSpec PI — Hub
 
-## Como Funciona (igual RPIV)
+## Como Funciona
 
 ```
 Você: /lspec [request]

@@ -72,7 +72,7 @@ pi uninstall npm:lspec-pi
 ---
 
 Não sabe por onde começar? O L-Spec mapeia o código existente, constrói a documentação e só então implementa. Tudo começa com spec, nunca com código.
-## Como Funciona (igual RPIV)
+## Como Funciona
 
 ```
 Você: /lspec [request]
