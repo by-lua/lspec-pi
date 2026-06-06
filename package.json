@@ -1,8 +1,18 @@
 {
-  "name": "lspec-pi",
-  "version": "1.0.0",
-  "description": "L-Spec PI — Spec-Driven Development pipeline para PI.dev. Pipeline SEQUENCIAL: Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute. Com Compliance Gate bloqueante e autosave obrigatório.",
-  "keywords": ["pi-package", "pi-skill", "skill", "lspec", "sdd", "spec-driven", "fdd", "rpiv", "pipeline"],
+  "name": "@by-lua/lspec-pi",
+  "version": "1.0.1",
+  "description": "L-Spec PI \u2014 Spec-Driven Development pipeline para PI.dev. Pipeline SEQUENCIAL: Discovery \u2192 Research \u2192 [Discuss?] \u2192 Specify \u2192 [Clarify?] \u2192 [Design?] \u2192 Tasks \u2192 Execute. Com Compliance Gate bloqueante e autosave obrigat\u00f3rio.",
+  "keywords": [
+    "pi-package",
+    "pi-skill",
+    "skill",
+    "lspec",
+    "sdd",
+    "spec-driven",
+    "fdd",
+    "rpiv",
+    "pipeline"
+  ],
   "repository": "https://github.com/by-lua/lspec-pi",
   "homepage": "https://github.com/by-lua/lspec-pi#readme",
   "bugs": {
