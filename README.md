@@ -31,8 +31,27 @@ pi uninstall npm:@by-lua/lspec-pi
 
 Cada agente usa as ferramentas disponíveis com fallback para grep/read se o pacote não estiver instalado.
 
----
+## Modo de Uso
 
+Basta dizer o que você quer:
+
+```
+/lspec preciso criar o módulo de auth
+/lspec tem um bug no login que não valida o token
+/lspec adicionar validação de email no form de cadastro
+/lspec refatorar o service de payments
+```
+
+O L-Spec detecta automaticamente o contexto:
+
+- **Código existente, sem spec** → Reverse Engineering: mapeia o código, entende a estrutura, cria a spec e te ajuda a prosseguir
+- **Código existente, com spec** → executa o fluxo normal: verifica estado, propõe mudanças, aplica com gates
+- **Projeto novo** → Discovery abrangente: faz perguntas estratégicas para descobrir features, define escopo e estrutura
+
+Não precisa configurar nada. Não precisa criar arquivos antes. Só falar o que quer ou o que está bugado — o fluxo se ajusta sozinho.
+
+
+---
 
 
 ## O que é SDD?
