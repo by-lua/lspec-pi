@@ -15,7 +15,7 @@ pi uninstall npm:@by-lua/lspec-pi
 
 > Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
 
-> **Subagentes:** [`by-lua/lspec-subagents`](https://github.com/by-lua/lspec-subagents) — agentes especializados (explorer, fixer, oracle) que usam as mesmas tools do L-Spec PI e executam tarefas em paralelo.
+> **Subagentes:** [`by-lua/lspec-subagents`](https://github.com/by-lua/lspec-subagents) — 5 agentes especializados (explorer, fixer, oracle, designer, orchestrator) que executam em paralelo via CodeX, Gemini ou qualquer modelo. Usa as mesmas tools nativas do L-Spec PI (cymbal_*, lsp_*). Ideais para research profundo, debugging paralelo, ou análise de codebase grande.
 
 ---
 
