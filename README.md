@@ -18,6 +18,12 @@ pi uninstall npm:@by-lua/lspec-pi
 > Alternativa (Git): `curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash`
 
 > **Subagentes:** [`by-lua/lspec-subagents`](https://github.com/by-lua/lspec-subagents) — **9 agentes especializados** para o fluxo L-Spec (orchestrator, explorer, fixer, oracle, designer, librarian, observer, council, councillor). Cada um com modelo otimizado (Claude Opus, Sonnet, GPT-4o-mini). Executam em paralelo via CodeX, Gemini ou qualquer provedor. Usa as mesmas tools nativas do L-Spec PI (cymbal_*, lsp_*). Ideais para research profundo, debugging paralelo, code review sênior, ou análise visual de imagens/PDFs.
+>
+> Os agentes usam estas ferramentas PI quando disponíveis:
+> `pi install npm:pi-cymbal` — Code navigation (explorer, oracle, fixer, orchestrator)
+> `pi install npm:@davehardy20/pi-lsp-tools` — LSP-powered code tools (explorer, fixer, oracle)
+> `pi install npm:pi-mermaid` — Mermaid diagrams (orchestrator, designer)
+> Cada agente usa as ferramentas disponíveis com fallback para grep/read se o pacote não estiver instalado.
 
 ---
 
