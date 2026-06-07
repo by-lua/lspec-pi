@@ -43,18 +43,13 @@ The system executes the ENTIRE pipeline in order, saving after each phase. Never
 
 ```
 DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] → TASKS → EXECUTE
+**FASES DO PIPELINE:**
+
+```
+Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute
 ```
 
-| PHASE | WHAT IT DOES | WHEN IT ENDS |
-|------|--------------|--------------|
-| Discovery | Asks what you want | Saves STATE.md |
-| Research | Analyzes existing code | Saves research.md |
-| Discuss | Captures gray areas | Saves discuss.md |
-| Specify | Specifies requirements | Saves spec.md |
-| Clarify | Resolves ambiguities | Saves clarify.md |
-| Design | Architectural decisions | Saves design.md |
-| Tasks | Breaks into tasks | Saves tasks.md |
-| Execute | Implements code | Saves changes |
+Cada fase carrega automaticamente o skill correspondente (`lspec-discovery`, `lspec-research`, etc). O hub só needca saber a ordem.
 
 **Phases in [] are OPTIONAL** — executed only when needed, but are part of the pipeline when activated.
 
@@ -66,16 +61,14 @@ DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] �
 ```
 1. No /lspec [request], verificar se .specs/ existe:
    if [ -d ".specs" ]; then
-     → Pipeline Normal (Forward)
+     → Pipeline Normal
    else
      → Verificar se tem conteúdo/codebase:
-       if [ has code files ]; then
-         → MAP PRIMEIRO (análise automática)
-         → Depois pergunta: "O que quer fazer?"
-         → Continua com pipeline escolhido
+       if [ has code ]; then
+         → MAP PRIMEIRO (carrega lspec-map)
+         → Depois pergunta o que quer fazer
        else
-         → NEW PROJECT
-         → Discovery (projeto novo)
+         → NEW PROJECT → Discovery (carrega lspec-discovery)
        fi
    fi
 ```
@@ -244,7 +237,7 @@ For: código existente sem specs — executado automaticamente
 **Auto-detecção:**
 - Projeto com `.specs/` → Forward
 - Projeto sem `.specs/` + tem código → MAP → pergunta o que quer fazer
-- Projeto sem `.specs/` + vazio → NEW PROJECT → Discovery
+- Projeto sem `.specs/` + vazio → NEW PROJECT → Discovery (6 fases)
 
 ---
 
