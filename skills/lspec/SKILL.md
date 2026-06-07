@@ -1,41 +1,40 @@
 ---
 name: lspec
-description: "LSpec PI — Spec-Driven Development. SEQUENTIAL PIPELINE: /lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute. Auto-advances. Saves state after each phase."
+description: "LSpec PI — Spec-Driven Development. Entry point. Auto-detects context then loads lspec-auto to execute the full pipeline: Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute."
 license: CC-BY-4.0
 metadata:
   author: Lua - github.com/by-lua
-  version: 3.6.0
+  version: 3.7.0
 ---
 
 # LSpec PI — Hub
 
+## Entry Point
+
+```
+/lspec [request]
+```
+
+After auto-detection → **load lspec-auto** to execute the pipeline.
+
 ## How It Works
 
 ```
-You: /lspec [request]
-
-→ Discovery (asks what you want)
-→ SAVE state
-→ Research (analyzes code)
-→ SAVE state
-→ [Discuss?] (if there's ambiguity)
-→ SAVE state
-→ Specify (specifies requirements)
-→ SAVE state
-→ [Clarify?] (if there's ambiguity)
-→ SAVE state
-→ [Design?] (if there's architectural decision)
-→ SAVE state
-→ Tasks (breaks into tasks)
-→ SAVE state
-→ Execute (implements)
-→ SAVE state
-→ Done
+/lspec [request]
+  → Auto-detects context (.specs/, code-only, or empty)
+  → load lspec-auto
+    → Discovery (adaptive: bug/feature/new)
+    → Research (analyzes code)
+    → [Discuss?] (if ambiguity)
+    → Specify (requirements)
+    → [Clarify?] (if ambiguity)
+    → [Design?] (if architectural decision)
+    → Tasks (break down)
+    → Execute (implement)
+    → SAVE state after each phase
 ```
 
-**SINGLE command:** `/lspec [what you want]`
-
-The system executes the ENTIRE pipeline in order, saving after each phase. Never asks which phase to run. Never skips. Never goes directly to code.
+The hub is just the entry point. All pipeline execution happens in lspec-auto.
 
 ---
 
@@ -59,18 +58,15 @@ Cada fase carrega automaticamente o skill correspondente (`lspec-discovery`, `ls
 
 **AUTO-DETECTION — CRÍTICO:**
 ```
-1. No /lspec [request], verificar se .specs/ existe:
-   if [ -d ".specs" ]; then
-     → Pipeline Normal
-   else
-     → Verificar se tem conteúdo/codebase:
-       if [ has code ]; then
-         → MAP PRIMEIRO (carrega lspec-map)
-         → Depois pergunta o que quer fazer
-       else
-         → NEW PROJECT → Discovery (carrega lspec-discovery)
-       fi
-   fi
+/lspec [request] → verificar contexto:
+  if [ tem .specs/ ]; then
+    → load lspec-auto (Forward)
+  elif [ tem código ]; then
+    → load lspec-map (mapeia codebase)
+    → depois load lspec-auto (pergunta o que fazer)
+  else
+    → load lspec-auto (Discovery completo)
+  fi
 ```
 
 **NEVER:**

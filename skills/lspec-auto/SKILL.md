@@ -13,7 +13,7 @@ Analyze the user's message to detect the task type:
 
 ```bash
 MSG="$1"
-if echo "$MSG" | grep -iE "bug|erro|falha|problema|não funciona|quebrou|falhar|fixar|corrigir" > /dev/null; then
+if echo "$MSG" | grep -iE "bug|erro|falha|problema|não funciona|quebrou|arrumar|consertar|corrigir|fixar" > /dev/null; then
   echo "BUG"
 elif echo "$MSG" | grep -iE "feature|melhoria|adicionar|novo|criar|implementar" > /dev/null; then
   echo "FEATURE"
