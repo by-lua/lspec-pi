@@ -1,6 +1,6 @@
 ---
 name: lspec
-description: "LSpec PI — Spec-Driven Development. Pipeline SEQUENCIAL: /lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute. Auto-avança. Salva estado após cada fase."
+description: "LSpec PI — Spec-Driven Development. SEQUENTIAL PIPELINE: /lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute. Auto-advances. Saves state after each phase."
 license: CC-BY-4.0
 metadata:
   author: Lua - github.com/by-lua
@@ -9,271 +9,271 @@ metadata:
 
 # LSpec PI — Hub
 
-## Como Funciona
+## How It Works
 
 ```
-Você: /lspec [request]
+You: /lspec [request]
 
-→ Discovery (pergunta o que você quer)
-→ SALVA estado
-→ Research (analisa o código)
-→ SALVA estado
-→ [Discuss?] (se há ambiguidade)
-→ SALVA estado
-→ Specify (especifica requisitos)
-→ SALVA estado
-→ [Clarify?] (se há ambiguidade)
-→ SALVA estado
-→ [Design?] (se há decisão arquitetural)
-→ SALVA estado
-→ Tasks (quebra em tarefas)
-→ SALVA estado
-→ Execute (implementa)
-→ SALVA estado
-→ Pronto
+→ Discovery (asks what you want)
+→ SAVE state
+→ Research (analyzes code)
+→ SAVE state
+→ [Discuss?] (if there's ambiguity)
+→ SAVE state
+→ Specify (specifies requirements)
+→ SAVE state
+→ [Clarify?] (if there's ambiguity)
+→ SAVE state
+→ [Design?] (if there's architectural decision)
+→ SAVE state
+→ Tasks (breaks into tasks)
+→ SAVE state
+→ Execute (implements)
+→ SAVE state
+→ Done
 ```
 
-**ÚNICO comando:** `/lspec [o que você quer]`
+**SINGLE command:** `/lspec [what you want]`
 
-O sistema executa TODO o pipeline em ordem, salvando após cada fase. Nunca pergunta qual fase executar. Nunca pula. Nunca vai direto para código.
+The system executes the ENTIRE pipeline in order, saving after each phase. Never asks which phase to run. Never skips. Never goes directly to code.
 
 ---
 
-## Pipeline Sequencial
+## Sequential Pipeline
 
 ```
 DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] → TASKS → EXECUTE
 ```
 
-| FASE | O QUE FAZ | QUANDO TERMINA |
-|------|-----------|----------------|
-| Discovery | Pergunta o que você quer | Salva STATE.md |
-| Research | Analisa o código existente | Salva research.md |
-| Discuss | Captura áreas cinzentas | Salva discuss.md |
-| Specify | Especifica requisitos | Salva spec.md |
-| Clarify | Resolve ambiguidades | Salva clarify.md |
-| Design | Decisões arquiteturais | Salva design.md |
-| Tasks | Quebra em tarefas | Salva tasks.md |
-| Execute | Implementa o código | Salva mudanças |
+| PHASE | WHAT IT DOES | WHEN IT ENDS |
+|------|--------------|--------------|
+| Discovery | Asks what you want | Saves STATE.md |
+| Research | Analyzes existing code | Saves research.md |
+| Discuss | Captures gray areas | Saves discuss.md |
+| Specify | Specifies requirements | Saves spec.md |
+| Clarify | Resolves ambiguities | Saves clarify.md |
+| Design | Architectural decisions | Saves design.md |
+| Tasks | Breaks into tasks | Saves tasks.md |
+| Execute | Implements code | Saves changes |
 
-**Fases entre [] são OPICIONAIS** — executadas só quando necessário, mas fazem parte do pipeline quando ativadas.
-
----
-
-## Regras Absolutas
-
-**NUNCA:**
-- ❌ Pular fase obrigatória (Discovery, Research, Specify, Tasks, Execute)
-- ❌ Ir direto para código
-- ❌ Implementar sem spec
-- ❌ Editar sem passar pelo pipeline
-- ❌ Criar spec duplicada — verificar se já existe em `.specs/features/[name]/`
-- ❌ Ignorar design reference — se `.specs/features/[name]/design.md` existir, LER e SEGUIR
-
-**SEMPRE:**
-- ✓ Salvar estado após cada fase
-- ✓ Próxima fase usa artifact da anterior
-- ✓ Fases opcionais ativadas quando necessário
-- ✓ Mudanças estruturais → atualizar `.specs/project/{PROJECT.md, ROADMAP.md}`
-- ✓ SPEC Enforcement: mudança ocorre → verificar se spec existe. Se sim → atualizar. Se não → criar.
+**Phases in [] are OPTIONAL** — executed only when needed, but are part of the pipeline when activated.
 
 ---
 
-## Gates Bloqueantes
+## Absolute Rules
 
-### Compliance Gate (antes de QUALQUER edit)
+**NEVER:**
+- ❌ Skip required phase (Discovery, Research, Specify, Tasks, Execute)
+- ❌ Go directly to code
+- ❌ Implement without spec
+- ❌ Edit without going through the pipeline
+- ❌ Create duplicate spec — verify if it already exists in `.specs/features/[name]/`
+- ❌ Ignore design reference — if `.specs/features/[name]/design.md` exists, READ and FOLLOW
+
+**ALWAYS:**
+- ✓ Save state after each phase
+- ✓ Next phase uses previous one's artifact
+- ✓ Optional phases activated when needed
+- ✓ Structural changes → update `.specs/project/{PROJECT.md, ROADMAP.md}`
+- ✓ SPEC Enforcement: change occurs → verify if spec exists. If yes → update. If no → create.
+
+---
+
+## Blocking Gates
+
+### Compliance Gate (before ANY edit)
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │ COMPLIANCE GATE CHECKLIST                                      │
 ├────────────────────────────────────────────────────────────────┤
-│ □ 1. Discovery completo — contexto coletado                    │
-│ □ 2. Requirements claros — spec.md existente                    │
-│ □ 3. Design verificado — design.md existe (se aplicável)       │
-│ □ 4. Tasks aprovadas — tasks.md com tarefas definidas          │
-│ □ 5. State atualizado — STATE.md reflete estado atual          │
+│ □ 1. Discovery complete — context collected                    │
+│ □ 2. Clear requirements — spec.md exists                      │
+│ □ 3. Design verified — design.md exists (if applicable)       │
+│ □ 4. Tasks approved — tasks.md with defined tasks             │
+│ □ 5. State updated — STATE.md reflects current state          │
 └────────────────────────────────────────────────────────────────┘
 ```
 
-Se qualquer □ = false → **BLOQUEIA**. Resolva antes de editar.
+If any □ = false → **BLOCKS. Resolve before editing.**
 
-### State Saved Gate (entre cada fase)
+### State Saved Gate (between each phase)
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │ STATE SAVED GATE                                               │
 ├────────────────────────────────────────────────────────────────┤
-│ □ STATE.md existe para esta feature                            │
-│ □ Última fase completada está marcada                          │
-│ □ Progresso atualizado (ROADMAP.md)                            │
-│ □ Decisões documentadas (AD-NNN)                              │
+│ □ STATE.md exists for this feature                            │
+│ □ Last completed phase is marked                              │
+│ □ Progress updated (ROADMAP.md)                              │
+│ □ Decisions documented (AD-NNN)                              │
 └────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## NUNCA Rules (Completas)
+## NUNCA Rules (Complete)
 
-**NUNCA:**
+**NEVER:**
 - ❌ Quick mode
 - ❌ Auto-sizing
-- ❌ Pular fases obrigatórias
-- ❌ Parar no meio do fluxo
-- ❌ Editar código fora do spec/design
-- ❌ Pular Autosave de estado
-- ❌ Prosseguir com gate vermelho
-- ❌ Criar estrutura `fixes/` (tudo é feature)
-- ❌ Fabricar informação (se não sabe, diga "não sei")
-- ❌ Modificar testes escritos no RED
-- ❌ Enfraquecer asserções para passar
-- ❌ "While I'm here" durante implementação
+- ❌ Skip required phases
+- ❌ Stop mid-flow
+- ❌ Edit code outside of spec/design
+- ❌ Skip State Autosave
+- ❌ Proceed with red gate
+- ❌ Create `fixes/` structure (everything is a feature)
+- ❌ Fabricate information (if you don't know, say "I don't know")
+- ❌ Modify tests written in RED
+- ❌ Weaken assertions to pass
+- ❌ "While I'm here" during implementation
 
-**SEMPRE:**
-- ✓ Pipeline completo (mesmo em BUG flow)
-- ✓ Autosave de estado em cada fase
-- ✓ Confirmar antes de avançar
-- ✓ Atualizar STATE.md
-- ✓ Verificar design.md antes de implementar
-- ✓ Testes primeiro (RED phase)
-- ✓ Gate check após cada tarefa
-- ✓ Commit atômico por tarefa
-- ✓ Reuse de código existente
+**ALWAYS:**
+- ✓ Complete pipeline (even in BUG flow)
+- ✓ State Autosave at each phase
+- ✓ Confirm before advancing
+- ✓ Update STATE.md
+- ✓ Verify design.md before implementing
+- ✓ Tests first (RED phase)
+- ✓ Gate check after each task
+- ✓ Atomic commit per task
+- ✓ Reuse existing code
 
 ---
 
-## Estrutura de Projeto
+## Project Structure
 
 ```
 .specs/
 ├── project/
-│   ├── STATE.md         # Estado atual do projeto
-│   ├── PROJECT.md       # Visão, objetivos, stack
-│   └── ROADMAP.md       # Features e milestones
+│   ├── STATE.md         # Current project state
+│   ├── PROJECT.md       # Vision, goals, stack
+│   └── ROADMAP.md       # Features and milestones
 └── features/
     └── [feature]/
-        ├── research.md   # Análise do código existente
-        ├── discuss.md    # Áreas cinzentas (se ativado)
-        ├── spec.md       # Requisitos testáveis
-        ├── clarify.md    # Ambiguidades resolvidas (se ativado)
-        ├── design.md     # Decisões arquiteturais (se ativado)
-        └── tasks.md      # Tarefas atômicas
+        ├── research.md   # Analysis of existing code
+        ├── discuss.md    # Gray areas (if activated)
+        ├── spec.md       # Testable requirements
+        ├── clarify.md    # Resolved ambiguities (if activated)
+        ├── design.md     # Architectural decisions (if activated)
+        └── tasks.md      # Atomic tasks
 ```
 
-**Notas:**
-- Bugs e ajustes usam prefixo `fix-` ou `bug-` no nome da pasta em `features/`
-- Se feature já existe, atualiza docs existentes e segue pipeline
-- **NÃO existe pasta `fixes/`** — tudo em `features/`
+**Notes:**
+- Bugs and adjustments use prefix `fix-` or `bug-` in the folder name under `features/`
+- If feature already exists, update existing docs and continue pipeline
+- **NO `fixes/` folder** — everything in `features/`
 
 ---
 
 ## Artifact Enforcement
 
-Cada fase produz um artifact que a próxima usa:
+Each phase produces an artifact that the next one uses:
 
 ```
 Discovery  → STATE.md       → Research
-Research   → research.md     → Discuss?
-Discuss    → discuss.md      → Specify
+Research   → research.md    → Discuss?
+Discuss    → discuss.md     → Specify
 Specify    → spec.md        → Clarify?
-Clarify    → clarify.md      → Design?
-Design     → design.md       → Tasks
+Clarify    → clarify.md     → Design?
+Design     → design.md     → Tasks
 Tasks      → tasks.md       → Execute
 ```
 
-**Sem artifact = bloqueia.** A fase não começa sem o artifact da anterior.
+**No artifact = blocks.** The phase doesn't start without the previous one's artifact.
 
 ---
 
-## Modos de Operação
+## Operation Modes
 
-### Modo: Forward (padrão)
+### Mode: Forward (default)
 ```
 /lspec [request] → Discovery → Research → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute
 ```
-Para: projeto novo, feature, bug, melhoria
+For: new project, feature, bug, improvement
 
-**Discovery adaptativo:**
-- Bug: perguntas curtas (1-3)
-- Feature: perguntas médias (5-8)
-- Projeto novo: perguntas completas (10-15)
+**Adaptive Discovery:**
+- Bug: short questions (1-3)
+- Feature: medium questions (5-8)
+- New project: complete questions (10-15)
 
-### Modo: Reverse
+### Mode: Reverse
 ```
-/lspec reverse → Mapear código existente → SPEC.md
+/lspec reverse → Map existing code → SPEC.md
 ```
-Para: analisar código existente e gerar spec
+For: analyze existing code and generate spec
 
-**Quando usar:**
-- Projeto sem documentação
-- Código legado para entender
-- "Como esse projeto funciona?"
+**When to use:**
+- Project without documentation
+- Legacy code to understand
+- "How does this project work?"
 
-### Modo: Map (brownfield)
+### Mode: Map (brownfield)
 ```
-/lspec map → Analisar codebase → 7 docs de arquitetura
+/lspec map → Analyze codebase → 7 architecture docs
 ```
-Para: projetos existentes precisam de mapa
+For: existing projects need a map
 
 ---
 
-## Comandos
+## Commands
 
-| Comando | Modo | Uso |
-|---------|------|-----|
-| `/lspec [request]` | Forward | Pipeline completo |
-| `/lspec reverse` | Reverse | Mapear código → spec |
-| `/lspec map` | Map | Analisar projeto existente |
-| `/lspec pause` | - | Pausar e salvar estado |
-| `/lspec resume` | - | Retomar de onde parou |
-| `/lspec help` | - | Mostrar ajuda |
+| Command | Mode | Usage |
+|---------|------|-------|
+| `/lspec [request]` | Forward | Complete pipeline |
+| `/lspec reverse` | Reverse | Map code → spec |
+| `/lspec map` | Map | Analyze existing project |
+| `/lspec pause` | - | Pause and save state |
+| `/lspec resume` | - | Resume from where you left off |
+| `/lspec help` | - | Show help |
 
 ---
 
-## Fluxo Forward Completo
+## Complete Forward Flow
 
-**Você diz:** `/lspec quero adicionar autenticação por JWT`
+**You say:** `/lspec I want to add JWT authentication`
 
-**Sistema faz:**
+**System does:**
 
 ```
 1. Discovery
-   → "Que tipo de autenticação?"
-   → Salva .specs/project/STATE.md
+   → "What type of authentication?"
+   → Saves .specs/project/STATE.md
 
 2. Research
-   → Analisa: existe auth no projeto?
-   → Analisa: qual stack de auth?
-   → Analisa: onde integrar?
-   → Salva features/jwt-auth/research.md
+   → Analyzes: does auth exist in project?
+   → Analyzes: what auth stack?
+   → Analyzes: where to integrate?
+   → Saves features/jwt-auth/research.md
 
-3. Discuss? (se há ambiguidade)
-   → Captura área cinzenta
-   → Salva features/jwt-auth/discuss.md
+3. Discuss? (if there's ambiguity)
+   → Captures gray area
+   → Saves features/jwt-auth/discuss.md
 
 4. Specify
-   → Usa Discovery + Research
-   → Escreve spec.md com requisitos
-   → Salva features/jwt-auth/spec.md
+   → Uses Discovery + Research
+   → Writes spec.md with requirements
+   → Saves features/jwt-auth/spec.md
 
-5. Clarify? (se há ambiguidade)
-   → Resolve ambiguidade
-   → Salva features/jwt-auth/clarify.md
+5. Clarify? (if there's ambiguity)
+   → Resolves ambiguity
+   → Saves features/jwt-auth/clarify.md
 
-6. Design? (se há decisão arquitetural)
-   → Decisões de arquitetura
-   → Salva features/jwt-auth/design.md
+6. Design? (if there's architectural decision)
+   → Architecture decisions
+   → Saves features/jwt-auth/design.md
 
 7. Tasks
-   → Usa spec.md
-   → Quebra em tarefas
-   → Salva features/jwt-auth/tasks.md
+   → Uses spec.md
+   → Breaks into tasks
+   → Saves features/jwt-auth/tasks.md
 
 8. Execute
-   → Usa tasks.md
-   → Implementa código
-   → Salva mudanças
+   → Uses tasks.md
+   → Implements code
+   → Saves changes
 
-→ Pronto!
+→ Done!
 ```
 
-**Você não precisa chamar cada fase manualmente. O sistema avança sozinho.**
+**You don't need to call each phase manually. The system advances on its own.**

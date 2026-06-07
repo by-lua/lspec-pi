@@ -7,7 +7,7 @@
 <h1 align="center">🎯 L-Spec PI</h1>
 
 <p align="center">
-  <strong>Spec-Driven Development para PI: discovery adaptativo, execução orientada a tarefas e continuidade real de sessão.</strong>
+  <strong>Spec-Driven Development for PI: adaptive discovery, task-oriented execution, and real session continuity.</strong>
 </p>
 
 <p align="center">
@@ -15,15 +15,15 @@
 </p>
 
 <p align="center">
-  <sub>Base conceitual inspirada no TLC Spec-Driven (Tech Lead's Club), com evolução prática e upgrades no ecossistema PI.</sub>
+  <sub>Conceptual base inspired by TLC Spec-Driven (Tech Lead's Club), with practical evolution and upgrades in the PI ecosystem.</sub>
 </p>
 
-## ✨ O que é SDD e o que é o L-Spec PI?
+## ✨ What is SDD and what is L-Spec PI?
 
-**SDD (Spec-Driven Development)** é desenvolver por especificação primeiro e código depois.
-No L-Spec PI, isso vira um fluxo prático de trabalho para IA: descoberta, definição, quebra em tarefas e execução verificável.
+**SDD (Spec-Driven Development)** is developing by specification first and code later.
+In L-Spec PI, this becomes a practical workflow for AI: discovery, definition, task breakdown, and verifiable execution.
 
-**L-Spec PI** organiza o trabalho em fluxo consistente, mantendo rigor e sem pular etapas essenciais.
+**L-Spec PI** organizes work in a consistent flow, maintaining rigor without skipping essential steps.
 
 ```
 ┌───────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
@@ -31,31 +31,31 @@ No L-Spec PI, isso vira um fluxo prático de trabalho para IA: descoberta, defin
 └───────────┘   └──────────┘   └──────────┘   └─────────┘   └─────────┘
    required        required       optional      optional      required      required
 
-* Opcional por contexto da tarefa
+* Optional by task context
 ```
 
-## ❓ Por que isso existe?
+## ❓ Why does this exist?
 
-A maioria das sessões de programação com IA desperdiça **40–60% dos tokens** em reescritas, esclarecimentos e "achei que você quisesse dizer...".
+Most AI programming sessions waste **40–60% of tokens** on rewrites, clarifications, and "I thought you meant...".
 
-O **L-Spec** resolve isso especificando o que deve ser feito **antes da codificação** — assim, cada token gera valor, e não palpite.
+**L-Spec** solves this by specifying what needs to be done **before coding** — so each token generates value, not guesswork.
 
-| Sem SDD | Com L-Spec |
+| Without SDD | With L-Spec |
 |---|---|
-| ❌ "Crie um login pra mim" → IA tenta → reescrever → reescrever | ✅ Primeiro discovery → a IA sabe exatamente o que você precisa |
-| ❌ Sem prova até o fim (ou nunca) | ✅ VERMELHO/VERDE/PORTÃO — cada feature é verificada antes de avançar |
-| ❌ Conhecimento se perde quando o contexto rola | ✅ `.specs/` fica no repositório — qualquer IA continua de onde parou |
-| ❌ Escopo cresce silenciosamente ("só mais uma coisa") | ✅ Fora de escopo é definido antes — mudanças viram decisões conscientes |
+| ❌ "Create a login for me" → AI tries → rewrite → rewrite | ✅ First discovery → AI knows exactly what you need |
+| ❌ No proof until the end (or never) | ✅ RED/GREEN/GATE — each feature is verified before advancing |
+| ❌ Knowledge is lost when context rolls | ✅ `.specs/` stays in the repository — any AI continues from where it left off |
+| ❌ Scope grows silently ("just one more thing") | ✅ Out of scope is defined first — changes become conscious decisions |
 
-**Resultado:** menos reescritas, menos bugs, commits mais limpos e projetos que sobrevivem entre sessões.
+**Result:** fewer rewrites, fewer bugs, cleaner commits, and projects that survive between sessions.
 
-## 🚀 Instalação, upgrade e remoção
+## 🚀 Install, upgrade, and removal
 
-### Pré-requisitos (obrigatório)
+### Prerequisites (required)
 
-- **PI.dev** instalado e funcional
+- **PI.dev** installed and functional
 
-### Instalar L-Spec
+### Install L-Spec
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/install.sh | bash
@@ -73,43 +73,43 @@ curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/update.sh | ba
 curl -fsSL https://raw.githubusercontent.com/by-lua/lspec-pi/main/uninstall.sh | bash
 ```
 
-## 🧩 Ferramentas de Navegação (built-in no PI.dev)
+## 🧩 Navigation Tools (built-in to PI.dev)
 
-PI.dev fornece tools nativas de navegação — nenhuma instalação necessária:
+PI.dev provides native navigation tools — no installation needed:
 
-**cymbal_* — navegação estrutural:**
+**cymbal_* — structural navigation:**
 - `cymbal_map`, `cymbal_search`, `cymbal_outline`, `cymbal_show`, `cymbal_refs`, `cymbal_impact`, `cymbal_importers`, `cymbal_impls`
 
-**lsp_* — precisão técnica:**
+**lsp_* — technical precision:**
 - `lsp_goto_definition`, `lsp_find_references`, `lsp_diagnostics`, `lsp_symbols`, `lsp_rename`
 
-## ➕ Pacotes PI opcionais (fortemente recomendados)
+## ➕ Optional PI packages (strongly recommended)
 
-|| Pacote | Instalar | Por quê |
+| Package | Install | Why |
 |---|---|---|
-| `pi-lens` | `pi install npm:pi-lens` | LSP, linters, formatters, type-checking, análise estrutural |
-| `pi-hermes-memory` | `pi install npm:pi-hermes-memory` | Memória persistente + session search + secret scanning |
-| `@gotgenes/pi-subagents` | `pi install npm:@gotgenes/pi-subagents` | Subagentes autônomos estilo Claude Code |
+| `pi-lens` | `pi install npm:pi-lens` | LSP, linters, formatters, type-checking, structural analysis |
+| `pi-hermes-memory` | `pi install npm:pi-hermes-memory` | Persistent memory + session search + secret scanning |
+| `@gotgenes/pi-subagents` | `pi install npm:@gotgenes/pi-subagents` | Autonomous subagents like Claude Code style |
 
-> **Diagramas Mermaid:** PI.dev não tem package nativo. Use blocos `mermaid` inline no markdown — renders em qualquer viewer que suporte Mermaid.
+> **Mermaid Diagrams:** PI.dev doesn't have a native package. Use inline `mermaid` blocks in markdown — renders in any viewer that supports Mermaid.
 
-## 🤖 Recomendado: L-Spec Subagents (by-lua)
+## 🤖 Recommended: L-Spec Subagents (by-lua)
 
-Se você quer extrair mais qualidade da execução, use também a extensão:
+If you want to extract more quality from execution, also use the extension:
 
 - **Repo:** https://github.com/by-lua/lspec-subagents
 
-Com ela, você consegue delegar por especialidade, por exemplo:
+With it, you can delegate by specialty, for example:
 
-- **Opus** como **orquestrador** (coordena estratégia e divisão de trabalho)
-- **Gemini** como **designer** (UX, estrutura visual, direção de interface)
-- **GPT** como **executor** (implementação e entrega técnica)
+- **Opus** as **orchestrator** (coordinates strategy and work division)
+- **Gemini** as **designer** (UX, visual structure, interface direction)
+- **GPT** as **executor** (implementation and technical delivery)
 
-Esse modelo multiagente encaixa muito bem com o L-Spec PI porque mantém discovery/spec centralizados e distribui execução com papéis claros.
+This multi-agent model fits very well with L-Spec PI because it keeps discovery/spec centralized and distributes execution with clear roles.
 
-## 📚 Informações Adicionais
+## 📚 Additional Information
 
-Para configuração do PI.dev e packages, consulte a documentação oficial do lspec-pi no GitHub.
+For PI.dev configuration and packages, see the official lspec-pi documentation on GitHub.
 
 ### First Commands
 
@@ -152,7 +152,7 @@ The skill creates a `.specs/` directory to organize all project documentation:
 │
 ```
 
-## 🔄 Fluxo L-Spec PI
+## 🔄 L-Spec PI Flow
 
 ### Specify (always)
 
@@ -188,7 +188,7 @@ The agent acts as a thinking partner — not an interviewer. It asks clarifying 
 
 **Goal:** Break into GRANULAR, ATOMIC tasks with clear dependencies.
 
-Tasks sempre existe como etapa formal antes de Execute.
+Tasks always exists as a formal step before Execute.
 
 | ❌ Vague Task | ✅ Atomic Tasks                   |
 | ------------- | --------------------------------- |
@@ -354,28 +354,28 @@ The skill is designed to work within context limits:
 **Target:** <40k tokens loaded (20% of context)
 **Reserve:** 160k+ tokens for work, reasoning, outputs
 
-## Skills Disponíveis
+## Available Skills
 
-| Skill | Descrição |
+| Skill | Description |
 |----------------------- | ---------------------------------------------------------------------- |
-| `lspec-discovery`      | Discovery adaptativo (BUG/FEATURE/NOVO)                               |
-| `lspec-discuss`        | Capturar contexto em áreas cinzentas                                  |
-| `lspec-specify`        | Requisitos com IDs rastreáveis                                        |
-| `lspec-clarify`        | Resolver ambiguidades antes de especificar                            |
-| `lspec-design`         | Arquitetura e design de componentes                                   |
-| `lspec-tasks`          | Decomposição em tarefas atômicas                                      |
-| `lspec-execute`        | Implementação + verificação + commits atômicos                        |
-| `lspec-auto`           | Ciclo completo automático (todas as fases)                           |
-| `lspec-ask`            | Fazer perguntas durante o processo                                    |
-| `lspec-pause`          | Salvar checkpoint para continuar depois                               |
-| `lspec-resume`         | Retomar de onde parou                                                 |
-| `lspec-map`            | Mapear codebase existente (brownfield)                                |
-| `lspec-reverse`        | Engenharia reversa: código → .specs                                   |
-| `lspec-validate`       | Validação de feature e UAT interativo                                 |
+| `lspec-discovery`      | Adaptive discovery (BUG/FEATURE/NEW)                               |
+| `lspec-discuss`        | Capture context in gray areas                                  |
+| `lspec-specify`        | Requirements with traceable IDs                                        |
+| `lspec-clarify`        | Resolve ambiguities before specifying                            |
+| `lspec-design`         | Architecture and component design                                   |
+| `lspec-tasks`          | Decomposition into atomic tasks                                      |
+| `lspec-execute`        | Implementation + verification + atomic commits                        |
+| `lspec-auto`           | Complete automatic cycle (all phases)                           |
+| `lspec-ask`            | Ask questions during the process                                    |
+| `lspec-pause`          | Save checkpoint to continue later                               |
+| `lspec-resume`         | Resume from where you left off                                                 |
+| `lspec-map`            | Map existing codebase (brownfield)                                |
+| `lspec-reverse`        | Reverse engineering: code → .specs                                   |
+| `lspec-validate`       | Feature validation and interactive UAT                                 |
 
-## Contentores Inline
+## Inline Containers
 
-Todo o conteúdo foi distribuído inline nas skills — sem referências externas.
+All content has been distributed inline in the skills — no external references.
 
 ## ⚡ Tips for Best Results
 
@@ -405,4 +405,3 @@ Todo o conteúdo foi distribuído inline nas skills — sem referências externa
 
 **Q: What if the agent invents an API or pattern that doesn't exist?**
 A: The skill enforces a strict **Knowledge Verification Chain**: codebase → project docs → Context7 MCP → web search → flag as uncertain. It NEVER fabricates information. If the agent can't find documentation, it will say "I don't know" instead of guessing.
-
