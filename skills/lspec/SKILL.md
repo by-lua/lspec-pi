@@ -62,6 +62,18 @@ DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] �
 
 ## Absolute Rules
 
+**AUTO-DETECTION — CRITICAL:**
+```
+1. On /lspec [request], check if .specs/ exists:
+   if [ -d ".specs" ]; then
+     → Normal Forward Pipeline
+   else
+     → AUTO-ACTIVATE MAP FIRST
+     → Map analyzes codebase → generates .specs/
+     → Then continue with requested pipeline
+   fi
+```
+
 **NEVER:**
 - ❌ Skip required phase (Discovery, Research, Specify, Tasks, Execute)
 - ❌ Go directly to code
@@ -277,3 +289,34 @@ For: existing projects need a map
 ```
 
 **You don't need to call each phase manually. The system advances on its own.**
+
+---
+
+## Map Flow (Brownfield Mapping)
+
+**Trigger:** `/lspec map` OR `/lspec [request]` on project WITHOUT `.specs/`
+
+**Auto-detection behavior:**
+- `/lspec [request]` + no `.specs/` → **auto-activates MAP first**
+- MAP runs → generates `.specs/codebase/` with 7 docs
+- Then continues with the requested pipeline
+
+**What it does:**
+1. Detects project type (CODE_ONLY vs EXISTING)
+2. If CODE_ONLY (no `.specs/` folder but has code):
+   - Explores directory structure
+   - Identifies technology stack
+   - Maps architecture and patterns
+   - Documents conventions
+   - Catalogs integrations
+   - Identifies concerns (tech debt, bugs, security, performance)
+3. Outputs 7 files in `.specs/codebase/`:
+   - `STACK.md` — tech stack from dependency manifests
+   - `ARCHITECTURE.md` — structure and components
+   - `CONVENTIONS.md` — coding patterns and rules
+   - `STRUCTURE.md` — directory layout
+   - `TESTING.md` — test setup and coverage
+   - `INTEGRATIONS.md` — external services/APIs
+   - `CONCERNS.md` — tech debt, risks, bottlenecks
+
+**No questions asked.** Analyzes the codebase automatically. Just run `/lspec map` and it produces the 7 docs.
