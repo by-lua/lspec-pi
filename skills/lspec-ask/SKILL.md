@@ -1,26 +1,26 @@
 ---
 name: lspec-ask
-description: "Faz pergunta sobre o projeto, decisão ou contexto técnico. Determina qual fase do pipeline ativar."
+description: "Asks a question about the project, decision, or technical context. Determines which pipeline phase to activate."
 ---
 
 # ask
 
-Faz pergunta para entender contexto, determinar tipo de trabalho e ativar a fase correta do pipeline.
+Asks a question to understand context, determine type of work, and activate the correct pipeline phase.
 
-**Aviso CRÍTICO:**
-- Responda APENAS com perguntas da fase atual
-- NUNCA pule fases ou despeje todas perguntas de uma vez
-- CONFIRME antes de continuar para próxima fase
-- NUNCA pule para implementação durante Discovery
+**CRITICAL WARNING:**
+- Respond ONLY with questions from the current phase
+- NEVER skip phases or dump all questions at once
+- CONFIRM before continuing to the next phase
+- NEVER skip to implementation during Discovery
 
-**Pipeline:** Discovery → Discuss (OPCIONAL) → Specify → Clarify (OPCIONAL) → Design (OPCIONAL) → Tasks → Execute
+**Pipeline:** Discovery → Discuss (OPTIONAL) → Specify → Clarify (OPTIONAL) → Design (OPTIONAL) → Tasks → Execute
 
 ---
 
-## AUTO-DETECÇÃO (rode primeiro)
+## AUTO-DETECTION (run first)
 
 ```bash
-# Verificar tipo de projeto
+# Check project type
 if [ -f ".specs/project/PROJECT.md" ]; then
   echo "EXISTING"
 elif [ -d ".specs/features" ]; then
@@ -32,102 +32,102 @@ else
 fi
 ```
 
-**Matriz de decisões:**
+**Decision matrix:**
 
-| Contexto | Ação |
+| Context | Action |
 |----------|------|
-| EXISTING + bug na msg | Bug Flow — descubra o bug |
-| EXISTING + feature na msg | Feature Flow — descubra a feature |
-| EXISTING + sem contexto | "Ouvindo..." — escute o usuário |
-| CODE_ONLY | Sugira `/lspec reverse` primeiro |
-| NEW | 6 fases completas |
+| EXISTING + bug in msg | Bug Flow — discover the bug |
+| EXISTING + feature in msg | Feature Flow — discover the feature |
+| EXISTING + no context | "Listening..." — listen to the user |
+| CODE_ONLY | Suggest `/lspec reverse` first |
+| NEW | 6 complete phases |
 
 ---
 
-## Fluxo Adaptativo
+## Adaptive Flow
 
-**PROJETO NOVO:** 6 fases completas
+**NEW PROJECT:** 6 complete phases
 
-**BUG:** 3 fases curtas (foco no problema)
+**BUG:** 3 short phases (focus on the problem)
 
-**FEATURE:** 4 fases focadas
-
----
-
-## Bug Flow (curto)
-
-1. O que não está funcionando?
-2. Qual o comportamento esperado vs atual?
-3. Como reproduzir o bug?
-
-→ Gera `features/bug-[nome]/spec.md`
+**FEATURE:** 4 focused phases
 
 ---
 
-## Feature Flow (focado)
+## Bug Flow (short)
 
-1. O que a feature deve fazer?
-2. Quem vai usar?
-3. Como você sabe que está pronto?
+1. What is not working?
+2. What is the expected vs current behavior?
+3. How to reproduce the bug?
 
-→ Gera `features/[feature]/spec.md`
-
----
-
-## Projeto Novo — 6 Fases
-
-### Fase 1: Contexto e Problema
-
-1. Qual o objetivo do projeto?
-2. Que problema resolve? Quem tem esse problema?
-3. Como sabe que é problema real?
-4. O que acontece se não construir?
-
-> CONFIRME antes de continuar
-
-### Fase 2: Visão e Escopo
-
-5. Como define sucesso?
-6. O que é o MVP?
-7. O que está fora do escopo?
-8. Quem é o usuário-alvo?
-
-> CONFIRME antes de continuar
-
-### Fase 3: Stack Técnica
-
-9. Qual linguagem/framework?
-10. Código existente para integrar?
-11. Restrições (orçamento, equipe, prazo)?
-
-> CONFIRME antes de continuar
-
-### Fase 4: Referências
-
-12. Alguma referência de design?
-
-Se houver: criar `.specs/design-references/`
-
-> CONFIRME antes de continuar
-
-### Fase 5: Riscos
-
-13. O que já foi tentado antes?
-14. Qual o maior risco?
-15. Parte mais difícil?
-
-> CONFIRME antes de continuar
-
-### Fase 6: Marcos
-
-16. Como dividir em etapas?
-17. Primeira coisa que funciona?
-
-→ Gera `PROJECT.md`
+→ Generates `features/bug-[name]/spec.md`
 
 ---
 
-## Discuss (OPCIONAL)
+## Feature Flow (focused)
+
+1. What should the feature do?
+2. Who will use it?
+3. How do you know it's done?
+
+→ Generates `features/[feature]/spec.md`
+
+---
+
+## New Project — 6 Phases
+
+### Phase 1: Context and Problem
+
+1. What is the project goal?
+2. What problem does it solve? Who has this problem?
+3. How do you know it's a real problem?
+4. What happens if you don't build it?
+
+> CONFIRM before continuing
+
+### Phase 2: Vision and Scope
+
+5. How do you define success?
+6. What is the MVP?
+7. What is out of scope?
+8. Who is the target user?
+
+> CONFIRM before continuing
+
+### Phase 3: Technical Stack
+
+9. What language/framework?
+10. Existing code to integrate?
+11. Constraints (budget, team, deadline)?
+
+> CONFIRM before continuing
+
+### Phase 4: References
+
+12. Any design reference?
+
+If there is: create `.specs/design-references/`
+
+> CONFIRM before continuing
+
+### Phase 5: Risks
+
+13. What has been tried before?
+14. What is the biggest risk?
+15. Hardest part?
+
+> CONFIRM before continuing
+
+### Phase 6: Milestones
+
+16. How to divide into stages?
+17. First thing that works?
+
+→ Generates `PROJECT.md`
+
+---
+
+## Discuss (OPTIONAL)
 
 **Goal:** Capture HOW the user envisions the feature when the spec has ambiguous areas. This is NOT a separate phase — it's triggered within Specify when the agent detects gray areas that need user input.
 
@@ -259,37 +259,37 @@ When user suggests scope creep: "That sounds like a separate feature. I'll note 
 
 ---
 
-## Clarify (OPCIONAL)
+## Clarify (OPTIONAL)
 
-Revisão e esclarecimento do spec.
+Spec review and clarification.
 
 **Checklist:**
-- [ ] Todos os termos definidos?
-- [ ] TODOS os critérios de aceite são testáveis?
-- [ ] Out of scope claro?
-- [ ] IDs de requisito únicos?
+- [ ] All terms defined?
+- [ ] ALL acceptance criteria are testable?
+- [ ] Out of scope clear?
+- [ ] Unique requirement IDs?
 
-**Corrigir vagueza:**
-- Substituir "deve ser rápido" → "SHALL responder em <200ms"
-- Substituir "boa UX" → critérios específicos
-- Substituir "seguro" → controles específicos
+**Fix vagueness:**
+- Replace "must be fast" → "SHALL respond in <200ms"
+- Replace "good UX" → specific criteria
+- Replace "secure" → specific controls
 
 ---
 
-## Design (OPCIONAL)
+## Design (OPTIONAL)
 
-Decisões de design técnicas (API, schema, fluxo).
+Technical design decisions (API, schema, flow).
 
-**Se necessário:**
-- Diagrama de fluxo
+**If necessary:**
+- Flow diagram
 - API endpoints
 - Data model
 - Dependencies
 
-**Quando PULAR esta fase:**
-- Mudança direta — sem decisões arquiteturais, sem novos padrões
-- Feature simples que pode ser implementada inline durante Execute
-- Apenas ajustes em código existente sem mudanças estruturais
+**When to SKIP this phase:**
+- Direct change — no architectural decisions, no new patterns
+- Simple feature that can be implemented inline during Execute
+- Only adjustments to existing code without structural changes
 
 ---
 
@@ -303,15 +303,15 @@ features/
 
 ---
 
-## Regras
+## Rules
 
-**NUNCA:**
+**NEVER:**
 - quick mode
 - auto-sizing
-- pular fases obrigatórias
+- skip required phases
 
-**SEMPRE:**
-- autosave em cada transição de fase
-- confirmar antes de avançar
+**ALWAYS:**
+- autosave at each phase transition
+- confirm before advancing
 
-**Estrutura:** tudo em `features/`, sem `fixes/`
+**Structure:** everything in `features/`, no `fixes/`

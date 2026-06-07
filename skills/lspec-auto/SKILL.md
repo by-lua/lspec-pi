@@ -1,15 +1,15 @@
 ---
 name: lspec-auto
-description: "Executa ciclo completo automatico: Discovery, Specify, Design, Tasks, Execute"
+description: "Executes complete automatic cycle: Discovery, Specify, Design, Tasks, Execute"
 ---
 
 # lspec-auto
 
-Executa ciclo completo de desenvolvimento de features: Discovery → Discuss* → Specify → Clarify* → Design* → Tasks → Execute.
+Executes complete feature development cycle: Discovery → Discuss* → Specify → Clarify* → Design* → Tasks → Execute.
 
-## AUTO-DETECÇÃO (rode primeiro)
+## AUTO-DETECTION (run first)
 
-Analise a mensagem do usuário para detectar o tipo de tarefa:
+Analyze the user's message to detect the task type:
 
 ```bash
 MSG="$1"
@@ -24,75 +24,74 @@ else
 fi
 ```
 
-**Ações por tipo:**
+**Actions by type:**
 
-|| Tipo | Fluxo |
-||------|-------|
-|| BUG | Discovery curto (3 perguntas) → Specify → Tasks → Execute |
-|| FEATURE | Discovery focado → Specify → Clarify? → Tasks → Execute |
-|| MAP | Use `lspec-map` diretamente |
-|| GENERAL | Discovery completo → Todas as fases |
+| Type | Flow |
+|------|-------|
+| BUG | Short Discovery (3 questions) → Specify → Tasks → Execute |
+| FEATURE | Focused Discovery → Specify → Clarify? → Tasks → Execute |
+| MAP | Use `lspec-map` directly |
+| GENERAL | Complete Discovery → All phases |
 
-## Regras de Uso
+## Usage Rules
 
-- **NUNCA** utilizar quick mode
-- **NUNCA** utilizar auto-sizing
-- **Estrutura**: apenas `features/`, **nunca** `fixes/`
-- **Autosave**: estado salvo em cada fase
+- **NEVER** use quick mode
+- **NEVER** use auto-sizing
+- **Structure**: only `features/`, **never** `fixes/`
+- **Autosave**: state saved at each phase
 
-## Fluxo de Execução
+## Execution Flow
 
-**APÓS CADA FASE, SEMPRE PERGUNTE:**
+**AFTER EACH PHASE, ALWAYS ASK:**
 
 ```
-✅ [Fase atual] completa
-→ Deseja avançar para [próxima fase]? (Opcional/Obrigatório)
+✅ [Current phase] complete
+→ Do you want to advance to [next phase]? (Optional/Required)
 ```
 
-**Regras de confirmação:**
-- **OBRIGATÓRIO**: "Avançar para [próxima]?" → usuário responde sim/não
-- **OPCIONAL**: "Há áreas cinzentas a discutir?" → usuário decide se pula
-- Se OPCIONAL e usuário diz "não precisa" → salve estado e pule
-- Se OBRIGATÓRIO → usuário deve confirmar, senão continua refinement
+**Confirmation rules:**
+- **REQUIRED**: "Advance to [next]?" → user responds yes/no
+- **OPTIONAL**: "Are there gray areas to discuss?" → user decides whether to skip
+- If OPTIONAL and user says "not needed" → save state and skip
+- If REQUIRED → user must confirm, otherwise continue with refinement
 
 ---
 
-## FASE 1: DISCOVERY
+## PHASE 1: DISCOVERY
 
-**OBRIGATÓRIO** — Sempre inicia aqui
+**REQUIRED** — Always starts here
 
-Collect: objetivo, problema, usuário-alvo, MVP, stack, referências, riscos, marcos
+Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 
-### Adaptar por Tipo:
+### Adapt by Type:
 
-**Se BUG detectado:**
-1. O que não está funcionando?
-2. Qual o comportamento esperado vs atual?
-3. Como reproduzir o bug?
+**If BUG detected:**
+1. What is not working?
+2. What is the expected vs current behavior?
+3. How to reproduce the bug?
 
-**Se FEATURE detectada:**
-1. O que a feature deve fazer?
-2. Quem vai usar?
-3. Como sabe que está pronto?
+**If FEATURE detected:**
+1. What should the feature do?
+2. Who will use it?
+3. How do you know it's done?
 
-**Se GENERAL/NOVO:**
-6 fases completas (ver lspec-discovery)
+**If GENERAL/NEW:**
+6 complete phases (see lspec-discovery)
 
-**Ao finalizar:** "Discovery completo. Deseja avançar para Discuss (opcional — áreas cinzentas)?"
-
----
-
-## FASE 2: DISCUSS
-
-**OPCIONAL** — Só se há ambiguidade
-
-Capturar contexto em áreas cinzentas (layout, interações, edge cases)
-
-**Ao finalizar:** "Discuss completo. Avançar para Specify (obrigatório)?"
+**When finished:** "Discovery complete. Do you want to advance to Discuss (optional — gray areas)?"
 
 ---
 
-## FASE 3: SPECIFY
+## PHASE 2: DISCUSS
+
+**OPTIONAL** — Only if there is ambiguity
+Capture context in gray areas (layout, interactions, edge cases)
+
+**When finished:** "Discuss complete. Advance to Specify (required)?"
+
+---
+
+## PHASE 3: SPECIFY
 
 **Goal**: Capture WHAT to build with testable, traceable requirements.
 
@@ -243,21 +242,21 @@ How we know the feature is successful:
 - **Edge cases matter** — What breaks? What's empty? What's huge?
 - **Out of Scope prevents creep** — If it's not here, it doesn't get built
 
-**Ao finalizar:** "Specify completo. Há ambiguidades a resolver em Clarify (opcional)?"
+**When finished:** "Specify complete. Are there ambiguities to resolve in Clarify (optional)?"
 
 ---
 
-## FASE 4: CLARIFY
+## PHASE 4: CLARIFY
 
-**OPCIONAL** — Só se há ambiguidade nos requisitos
+**OPTIONAL** — Only if there is ambiguity in requirements
 
-Resolver ambiguidades restantes nos requisitos
+Resolve remaining ambiguities in requirements
 
-**Ao finalizar:** "Clarify completo. Há decisões arquiteturais para Design (opcional)?"
+**When finished:** "Clarify complete. Are there architectural decisions for Design (optional)?"
 
 ---
 
-## FASE 5: DESIGN
+## PHASE 5: DESIGN
 
 **Goal**: Define HOW to build it. Architecture, components, what to reuse.
 
@@ -419,11 +418,11 @@ interface AnotherModel {
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
 
-**Ao finalizar:** "Design completo. Avançar para Tasks (obrigatório)?"
+**When finished:** "Design complete. Advance to Tasks (required)?"
 
 ---
 
-## FASE 6: TASKS
+## PHASE 6: TASKS
 
 **Goal**: Break into GRANULAR, ATOMIC tasks. Clear dependencies. Right tools. Parallel execution plan.
 
@@ -472,7 +471,7 @@ Read `.specs/codebase/TESTING.md` (if it exists) before creating tasks. The Test
 
 | Task creates...                           | Done When must include...                   |
 | ----------------------------------------- | ------------------------------------------- |
-| Code layer with "unit" requirement        | Unit test written + quick gate passes       |
+| Code layer with "unit" requirement        | Unit test written + quick gate passes |
 | Code layer with "e2e" requirement         | E2E test written + full gate passes        |
 | Code layer with "integration" requirement | Integration test written + full gate passes |
 | Code layer with "none" requirement        | Gate check at appropriate level             |
@@ -545,7 +544,7 @@ After foundation, these can run in parallel.
 
          ┌→ T4 ─┐
 
-    T3 ──┼→ T5 ─┼──→ T8
+ T3 ──┼→ T5 ─┼──→ T8
     └→ T6 ─┘
     T7 ──────→
 
@@ -580,7 +579,6 @@ Bringing it all together.
 
 **Tests**: [unit/e2e/integration/none — from coverage matrix]
 **Gate**: [quick/full/build — from gate check commands]
-
 ---
 
 ### T2: [Implement Y Service] [P]
@@ -689,7 +687,6 @@ When a task creates code that can't be tested until a later task completes, do N
 2. **Merge backward:** Absorb the blocking dependency into the current task so it becomes self-testable
 
 The goal: no task produces unverified code. If code can't be tested in the task that creates it, the task boundaries are wrong.
-```
 
 ### Tasks Tips
 
@@ -701,20 +698,17 @@ The goal: no task produces unverified code. If code can't be tested in the task 
 - **Requirement ID = Traceable** — Every task traces back to a spec requirement
 - **One commit per task** — Plan the commit message format in advance
 
-**Ao finalizar:** "Tasks completo. Deseja avançar para Execute (obrigatório)?"
+**When finished:** "Tasks complete. Do you want to advance to Execute (required)?"
 
 ---
 
-## FASE 7: EXECUTE
+## PHASE 7: EXECUTE
 
 **Goal**: Implement ONE task at a time. Surgical changes. Verify. Commit. Repeat.
-
 This is where code gets written. Every task follows the same cycle: plan → implement → verify → commit. Verification is built into every task, not a separate phase.
 
 ### MANDATORY: Before Starting Any Implementation
-
 **Read and state:**
-
 1. **Assumptions** - What am I assuming? Any uncertainty?
 2. **Files to touch** - List ONLY files this task requires
 3. **Success criteria** - How will I verify this works?
@@ -787,7 +781,6 @@ If the task does NOT include tests (e.g., entity-only, config-only), skip to Ste
 Write the minimum implementation needed to satisfy the task's success criteria: pass all relevant tests (when present) and meet the defined verification/gate checks when there are no direct tests.
 
 **HARD CONSTRAINTS:**
-
 - Do NOT modify tests written in Step 4. The tests are the spec — implementation conforms to them.
 - Do NOT weaken assertions (making them less specific to pass more easily)
 - Do NOT delete or skip test cases
@@ -867,9 +860,7 @@ Each task gets its own commit immediately after verification. Never batch multip
 | `chore`    | Maintenance tasks that don't modify src or test files   |
 
 **Scope:** Feature name or module area, lowercase, e.g., `auth`, `cart`, `api`
-
 **Description rules:**
-
 - Imperative mood ("add", not "added" or "adds")
 - Lowercase first letter
 - No period at the end
@@ -901,7 +892,6 @@ for reuse across multiple endpoints.
 ```
 
 **Rules:**
-
 - One task = one commit
 - Description references what was DONE, not what was planned
 - Include only files listed in the task — never sneak in "while I'm here" changes

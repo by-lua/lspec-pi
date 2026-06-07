@@ -1,24 +1,24 @@
 ---
 name: lspec-discovery
-description: "Descobre e documenta contexto inicial do projeto. Discovery adaptativo — profundidade varia por tipo (novo, bug, feature)."
+description: "Discovers and documents initial project context. Adaptive discovery — depth varies by type (new, bug, feature)."
 ---
 
-# Discovery — Contexto Inicial
+# Discovery — Initial Context
 
-**Aviso CRÍTICO:**
-- Responda APENAS com perguntas da fase atual
-- NUNCA pule fases ou despeje todas perguntas de uma vez
-- CONFIRME antes de continuar para próxima fase
-- NUNCA pule para implementação durante Discovery
+**CRITICAL WARNING:**
+- Respond ONLY with questions from the current phase
+- NEVER skip phases or dump all questions at once
+- CONFIRM before continuing to the next phase
+- NEVER skip to implementation during Discovery
 
 **Pipeline:** Discovery → Discuss? → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
-## AUTO-DETECÇÃO (rode primeiro)
+## AUTO-DETECTION (run first)
 
 ```bash
-# Verificar tipo de projeto
+# Check project type
 if [ -f ".specs/project/PROJECT.md" ]; then
   echo "EXISTING"
 elif [ -d ".specs/features" ]; then
@@ -30,118 +30,118 @@ else
 fi
 ```
 
-**Matriz de decisões:**
+**Decision matrix:**
 
-| Contexto | Ação |
+| Context | Action |
 |----------|------|
-| EXISTING + bug na msg | Bug Flow — descubra o bug |
-| EXISTING + feature na msg | Feature Flow — descubra a feature |
-| EXISTING + sem contexto | "Ouvindo..." — escute o usuário |
-| CODE_ONLY | Sugira `/lspec reverse` primeiro |
-| NEW | 6 fases completas |
+| EXISTING + bug in msg | Bug Flow — discover the bug |
+| EXISTING + feature in msg | Feature Flow — discover the feature |
+| EXISTING + no context | "Listening..." — listen to the user |
+| CODE_ONLY | Suggest `/lspec reverse` first |
+| NEW | 6 complete phases |
 
 ---
 
-## Fluxo Adaptativo
+## Adaptive Flow
 
-**PROJETO NOVO:** 6 fases completas
+**NEW PROJECT:** 6 complete phases
 
-**BUG:** 3 fases curtas (foco no problema)
+**BUG:** 3 short phases (focus on the problem)
 
-**FEATURE:** 4 fases focadas
-
----
-
-## Bug Flow (curto)
-
-1. O que não está funcionando?
-2. Qual o comportamento esperado vs atual?
-3. Como reproduzir o bug?
-
-→ Gera `features/bug-[nome]/spec.md`
-
-**Ao finalizar:** "Bug documentado. Deseja avançar para Tasks (obrigatório — corrigir o bug)?"
+**FEATURE:** 4 focused phases
 
 ---
 
-## Feature Flow (focado)
+## Bug Flow (short)
 
-1. O que a feature deve fazer?
-2. Quem vai usar?
-3. Como você sabe que está pronto?
+1. What is not working?
+2. What is the expected vs current behavior?
+3. How to reproduce the bug?
 
-→ Gera `features/[feature]/spec.md`
+→ Generates `features/bug-[name]/spec.md`
 
-**Ao finalizar:** "Feature documentada. Deseja avançar para Tasks (obrigatório)?"
-
----
-
-## Projeto Novo — 6 Fases
-
-### Fase 1: Contexto e Problema
-
-1. Qual o objetivo do projeto?
-2. Que problema resolve? Quem tem esse problema?
-3. Como sabe que é problema real?
-4. O que acontece se não construir?
-
-> CONFIRME antes de continuar
-
-### Fase 2: Visão e Escopo
-
-5. Como define sucesso?
-6. O que é o MVP?
-7. O que está fora do escopo?
-8. Quem é o usuário-alvo?
-
-> CONFIRME antes de continuar
-
-### Fase 3: Stack Técnica
-
-9. Qual linguagem/framework?
-10. Código existente para integrar?
-11. Restrições (orçamento, equipe, prazo)?
-
-> CONFIRME antes de continuar
-
-### Fase 4: Referências e Preferências
-
-12. Alguma referência de design? (Figma, screenshots, sites)
-
-Se houver: criar `design-references/`
-
-13. Tem preferências de design? (como quer que fique, estilo, tons, layout)
-
-Estas preferências serão capturadas na fase Design. Exemplo: "quero que tenha um ar minimalista" ou "prefiro cores escuras".
-
-> Design (opcional) capturará suas preferências em detalhes
-
-> CONFIRME antes de continuar
-
-### Fase 5: Riscos
-
-13. O que já foi tentado antes?
-14. Qual o maior risco?
-15. Parte mais difícil?
-
-> CONFIRME antes de continuar
-
-### Fase 6: Marcos
-
-16. Como dividir em etapas?
-17. Primeira coisa que funciona?
-
-→ Gera `PROJECT.md`
+**When finished:** "Bug documented. Do you want to advance to Tasks (required — fix the bug)?"
 
 ---
 
-## Fluxo de Continuação
+## Feature Flow (focused)
 
-**Discovery completo.**
+1. What should the feature do?
+2. Who will use it?
+3. How do you know it's done?
 
-→ Deseja avançar para **Discuss** (opcional — áreas cinzentas/ambiguidade)?
+→ Generates `features/[feature]/spec.md`
 
-Se não: salve estado em `STATE.md` e aguarde novas instruções.
+**When finished:** "Feature documented. Do you want to advance to Tasks (required)?"
+
+---
+
+## New Project — 6 Phases
+
+### Phase 1: Context and Problem
+
+1. What is the project goal?
+2. What problem does it solve? Who has this problem?
+3. How do you know it's a real problem?
+4. What happens if you don't build it?
+
+> CONFIRM before continuing
+
+### Phase 2: Vision and Scope
+
+5. How do you define success?
+6. What is the MVP?
+7. What is out of scope?
+8. Who is the target user?
+
+> CONFIRM before continuing
+
+### Phase 3: Technical Stack
+
+9. What language/framework?
+10. Existing code to integrate?
+11. Constraints (budget, team, deadline)?
+
+> CONFIRM before continuing
+
+### Phase 4: References and Preferences
+
+12. Any design reference? (Figma, screenshots, sites)
+
+If there is: create `design-references/`
+
+13. Any design preferences? (how you want it to look, style, tones, layout)
+
+These preferences will be captured in the Design phase. Example: "I want it to have a minimalist feel" or "I prefer dark colors".
+
+> Design (optional) will capture your preferences in detail
+
+> CONFIRM before continuing
+
+### Phase 5: Risks
+
+13. What has been tried before?
+14. What is the biggest risk?
+15. Hardest part?
+
+> CONFIRM before continuing
+
+### Phase 6: Milestones
+
+16. How to divide into stages?
+17. First thing that works?
+
+→ Generates `PROJECT.md`
+
+---
+
+## Continuation Flow
+
+**Discovery complete.**
+
+→ Do you want to advance to **Discuss** (optional — gray areas/ambiguity)?
+
+If not: save state in `STATE.md` and wait for new instructions.
 
 ---
 
@@ -162,8 +162,8 @@ Se não: salve estado em `STATE.md` e aguarde novas instruções.
 
 ## Validation Checklist
 
-- [ ] Visão em 1-2 frases
-- [ ] Problema com evidência
-- [ ] Escopo definido (in/out)
-- [ ] Métricas de sucesso
-- [ ] Primeiro marco definido
+- [ ] Vision in 1-2 sentences
+- [ ] Problem with evidence
+- [ ] Scope defined (in/out)
+- [ ] Success metrics
+- [ ] First milestone defined

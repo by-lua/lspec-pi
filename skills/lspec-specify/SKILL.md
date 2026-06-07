@@ -1,51 +1,51 @@
 ---
 name: lspec-specify
-description: "Especificação de feature — OBRIGATÓRIO no pipeline."
+description: "Feature specification — REQUIRED in the pipeline."
 ---
 
-# Specify — Especificação de Feature
+# Specify — Feature Specification
 
-**Aviso CRÍTICO:**
-- Specify é **OBRIGATÓRIO** — não pode ser pulado
-- NUNCA use "quick mode" ou auto-sizing
-- CONFIRME cada fase antes de avançar
-- NUNCA pule para implementação durante Specify
+**CRITICAL WARNING:**
+- Specify is **REQUIRED** — cannot be skipped
+- NEVER use "quick mode" or auto-sizing
+- CONFIRM each phase before advancing
+- NEVER skip to implementation during Specify
 
 **Pipeline:** Discovery → Research → Specify → Clarify? → Design? → Tasks → Execute
 
 ---
 
-## ⚠️ ARTIFACT ENFORCEMENT — Specify precisa de research.md
+## ⚠️ ARTIFACT ENFORCEMENT — Specify needs research.md
 
 **"The artifact one writes is the next one's input."**
 
-Specify **NÃO PODE rodar** se o artifact de Research não existir.
+Specify **CANNOT run** if the Research artifact does not exist.
 
 ```
 ╔══════════════════════════════════════════════════════════════════════╗
-║  GATE: ARTIFACT CHECK — antes de iniciar Specify                   ║
+║  GATE: ARTIFACT CHECK — before starting Specify                   ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║                                                                      ║
-║  Specify depende de: features/[name]/research.md (de Research)     ║
+║  Specify depends on: features/[name]/research.md (from Research)  ║
 ║                                                                      ║
-║  □  research.md existe em features/[name]/                          ║
-║  □  research.md foi lido e compreendido                             ║
-║  □  Findings respondem às questões de pesquisa                       ║
+║  □  research.md exists in features/[name]/                          ║
+║  □  research.md was read and understood                             ║
+║  □  Findings answer the research questions                           ║
 ║                                                                      ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║  ⚠️  Se research.md NÃO EXISTE → BLOQUEIA.                           ║
-║  ⚠️  Mensagem: "Specify requer research.md. Execute /lspec research."║
+║ ⚠️  If research.md DOES NOT EXIST → BLOCKS.                           ║
+║  ⚠️  Message: "Specify requires research.md. Run /lspec research."  ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 
 ---
 
-## AUTO-DETECÇÃO
+## AUTO-DETECTION
 
-Primeiro, verifique se existe contexto prévio:
+First, check if there is prior context:
 
 ```bash
-# Verificar estado atual
+# Check current state
 if [ -f ".specs/features/[name]/STATE.md" ]; then
   echo "HAS_STATE"
 elif [ -f ".specs/features/[name]/spec.md" ]; then
@@ -55,22 +55,22 @@ else
 fi
 ```
 
-**Matriz de decisões:**
+**Decision matrix:**
 
-| Contexto | Ação |
+| Context | Action |
 |----------|------|
-| FRESH + nome de feature | Criar spec do zero |
-| HAS_STATE | Continuar da fase salva |
-| HAS_SPEC | Oferecer revisão/evolução |
-| Discuss? completo | Usar contexto do Discuss |
+| FRESH + feature name | Create spec from scratch |
+| HAS_STATE | Continue from saved phase |
+| HAS_SPEC | Offer review/evolution |
+| Discuss? complete | Use Discuss context |
 
 ---
 
-## Autosave de Estado
+## State Autosave
 
-**OBRIGATÓRIO:** Salvar estado após cada fase.
+**REQUIRED:** Save state after each phase.
 
-Salvar em `features/[name]/STATE.md`:
+Save in `features/[name]/STATE.md`:
 
 ```markdown
 # State: [feature-name]
@@ -82,7 +82,7 @@ Salvar em `features/[name]/STATE.md`:
 [Phase name]
 
 ## Phase Data
-[Fase atual com respostas coletadas]
+[Current phase with collected answers]
 
 ## Progress
 - [x] Discovery
@@ -94,116 +94,116 @@ Salvar em `features/[name]/STATE.md`:
 - [ ] Execute
 
 ## Notes
-[Observações da sessão]
+[Session observations]
 ```
 
 ---
 
-## Fase 1: Define (OBRIGATÓRIO)
+## Phase 1: Define (REQUIRED)
 
-Coletar informação antes de escrever. Seja parceiro de pensamento.
+Collect information before writing. Be a thinking partner.
 
-**Perguntas-chave:**
+**Key questions:**
 
-1. Qual problema estamos resolvendo?
-2. Quem é o usuário e qual a dor?
-3. Como seria o sucesso?
-4. O que está fora do escopo?
+1. What problem are we solving?
+2. Who is the user and what is the pain?
+3. What would success look like?
+4. What is out of scope?
 
-**Desafie vagueza:**
-- "Bom" significa o que?
-- "Usuários" são quem?
-- "Simples" significa como?
-- "Me walk through usando isso"
-- "O que isso realmente parece?"
+**Challenge vagueness:**
+- "Good" means what?
+- "Users" means who?
+- "Simple" means how?
+- "Walk me through using this"
+- "What does that actually look like?"
 
-> **AUTOSAVE:** Salvar estado após completar Define
-
----
-
-## Fase 2: Discuss (OPCIONAL)
-
-Discussão em profundidade sobre detalhes técnicos ou escopo.
-
-**Perguntas quando necessário:**
-
-- Quais são as restrições (tempo, tech, recursos)?
-- O que já foi tentado antes?
-- Quais são os pontos de decisão?
-
-**Pular se:** Contexto do Discovery ou Discuss já cobriu isso.
-
-> **AUTOSAVE:** Salvar estado se passou por Discuss
+> **AUTOSAVE:** Save state after completing Define
 
 ---
 
-## Fase 3: Specify (OBRIGATÓRIO)
+## Phase 2: Discuss (OPTIONAL)
 
-Escrever spec completo com user stories e critérios de aceite.
+In-depth discussion about technical details or scope.
 
-### 3.1 User Stories com Prioridades
+**Questions when needed:**
 
-**P1 = MVP** (deve lançar), **P2** (deveria ter), **P3** (nice to have)
+- What are the constraints (time, tech, resources)?
+- What has been tried before?
+- What are the decision points?
 
-Cada story **DEVE** ser independente testável.
+**Skip if:** Discovery or Discuss context already covered this.
 
-### 3.2 Critérios de Aceitação
+> **AUTOSAVE:** Save state if you went through Discuss
 
-Formato **QUANDO/ENTÃO/SHALL**:
+---
 
-- QUANDO [evento/ação] ENTÃO [sistema] SHALL [resposta/comportamento]
+## Phase 3: Specify (REQUIRED)
+
+Write complete spec with user stories and acceptance criteria.
+
+### 3.1 User Stories with Priorities
+
+**P1 = MVP** (must ship), **P2** (should have), **P3** (nice to have)
+
+Each story **MUST** be independently testable.
+
+### 3.2 Acceptance Criteria
+
+**WHEN/THEN/SHALL** format:
+
+- WHEN [event/action] THEN [system] SHALL [response/behavior]
 
 ### 3.3 Edge Cases
 
-- O que quebra? O que está vazio? O que é enorme?
-- O que acontece com input inválido?
-- O que acontece com timeout?
+- What breaks? What is empty? What is huge?
+- What happens with invalid input?
+- What happens with timeout?
 
-> **AUTOSAVE:** Salvar estado com spec draft
+> **AUTOSAVE:** Save state with spec draft
 
 ---
 
-## Fase 4: Clarify (OPCIONAL)
+## Phase 4: Clarify (OPTIONAL)
 
-Revisão e esclarecimento do spec.
+Spec review and clarification.
 
 **Checklist:**
-- [ ] Todos os termos definidos?
-- [ ] TODOS os critérios de aceite são testáveis?
-- [ ] Out of scope claro?
-- [ ] IDs de requisito únicos?
+- [ ] All terms defined?
+- [ ] ALL acceptance criteria are testable?
+- [ ] Out of scope clear?
+- [ ] Unique requirement IDs?
 
-**Corrigir vagueza:**
-- Substituir "deve ser rápido" → "SHALL responder em <200ms"
-- Substituir "boa UX" → criteria específicos
-- Substituir "seguro" →具体的な controles
+**Fix vagueness:**
+- Replace "must be fast" → "SHALL respond in <200ms"
+- Replace "good UX" → specific criteria
+- Replace "secure" → specific controls
 
-> **AUTOSAVE:** Salvar estado com spec clarificado
+> **AUTOSAVE:** Save state with clarified spec
 
 ---
 
-## Fase 5: Design (OPCIONAL)
+## Phase 5: Design (OPTIONAL)
 
-Decisões de design técnicas (API, schema, fluxo).
+Technical design decisions (API, schema, flow).
 
-**Se necessário:**
-- Diagrama de fluxo
+**If necessary:**
+- Flow diagram
 - API endpoints
 - Data model
 - Dependencies
 
-> **AUTOSAVE:** Salvar estado com design decisions
+> **AUTOSAVE:** Save state with design decisions
 
 ---
 
-## Output Final
+## Final Output
 
 ```
 features/
 └── [name]/
-    ├── STATE.md      # Autosave em cada fase
-    ├── spec.md       # Especificação final
-    └── design/       # Opcional
+    ├── STATE.md      # Autosave at each phase
+    ├── spec.md       # Final specification
+    └── design/       # Optional
         └── [files]
 ```
 
@@ -308,34 +308,34 @@ How we know this is successful:
 
 ## Validation Checklist
 
-Antes de mover para Tasks:
+Before moving to Tasks:
 
-- [ ] User stories com prioridades P1/P2/P3
-- [ ] Todos os critérios de aceite em formato QUANDO/ENTÃO/SHALL
-- [ ] TODOS os critérios são testáveis
-- [ ] Edge cases documentados
-- [ ] Out of scope definido
-- [ ] IDs de requisito únicos
-- [ ] Estado salvo em STATE.md
-- [ ] **APROVAÇÃO do usuário obtida**
+- [ ] User stories with P1/P2/P3 priorities
+- [ ] All acceptance criteria in WHEN/THEN/SHALL format
+- [ ] ALL criteria are testable
+- [ ] Edge cases documented
+- [ ] Out of scope defined
+- [ ] Unique requirement IDs
+- [ ] State saved in STATE.md
+- [ ] **User approval obtained**
 
 ---
 
 ## Tips
-- **P1 = Vertical Slice** — demo-able, não só backend ou frontend
-- **Se não consegue testar, reescreva** — critérios não-testáveis = não-spec
-- **IDs obrigatórios** — rastreabilidade é crítica
-- **Autosave em cada fase** — nunca perca progresso
-- **Confirme antes de avançar** — usuário aprova spec
+- **P1 = Vertical Slice** — demo-able, not just backend or frontend
+- **If you can't test it, rewrite** — non-testable criteria = no spec
+- **IDs are mandatory** — traceability is critical
+- **Autosave at each phase** — never lose progress
+- **Confirm before advancing** — user approves spec
 
 ---
 
-## Fluxo de Continuação
+## Continuation Flow
 
-**Specify completo.** Spec aprovado e salvo em `features/[name]/spec.md`.
+**Specify complete.** Spec approved and saved in `features/[name]/spec.md`.
 
-→ Deseja avançar para **Tasks** (obrigatório)?
+→ Do you want to advance to **Tasks** (required)?
 
-Se não: salve estado em `STATE.md` e aguarde novas instruções.
+If not: save state in `STATE.md` and wait for new instructions.
 
 ---

@@ -1,48 +1,48 @@
 ---
 name: lspec-help
-description: "Mostra ajuda sobre comandos LSpec disponíveis."
+description: "Shows help about available LSpec commands."
 ---
 
 # help
 
-Este comando **apenas mostra informações** — não executa operações, não modifica arquivos, não altera código.
+This command **only shows information** — does not execute operations, does not modify files, does not change code.
 
-## Pipeline LSpec
+## LSpec Pipeline
 
-Discovery → Discuss (OPCIONAL) → Specify → Clarify (OPCIONAL) → Design (OPCIONAL) → Tasks → Execute
+Discovery → Discuss (OPTIONAL) → Specify → Clarify (OPTIONAL) → Design (OPTIONAL) → Tasks → Execute
 
-### Fases do Pipeline
+### Pipeline Phases
 
-| Fase | Descrição | Gatilho | Tipo |
+| Phase | Description | Trigger | Type |
 |------|-----------|---------|------|
-| `discovery` | Identifica o tipo de tarefa e carrega o contexto certo | novo projeto, bug, feature, teste | OBRIGATÓRIO |
-| `discuss` | Discussão inicial para alinhar expectativas | quando precisar explorar ideias | OPCIONAL |
-| `specify` | Captura requisitos e gera `features/[feature]/spec.md` | depois do discovery | OBRIGATÓRIO |
-| `clarify` | Faz perguntas para entender requisitos | quando algo está ambíguo | OPCIONAL |
-| `design` | Projeta arquitetura se necessário | quando precisa decidir estrutura | OPCIONAL |
-| `tasks` | Quebra em tarefas atômicas | depois de specify/design | OBRIGATÓRIO |
-| `execute` | Executa uma tarefa específica | quando receber tarefa | OBRIGATÓRIO |
+| `discovery` | Identifies task type and loads the right context | new project, bug, feature, test | REQUIRED |
+| `discuss` | Initial discussion to align expectations | when you need to explore ideas | OPTIONAL |
+| `specify` | Captures requirements and generates `features/[feature]/spec.md` | after discovery | REQUIRED |
+| `clarify` | Asks questions to understand requirements | when something is ambiguous | OPTIONAL |
+| `design` | Projects architecture if necessary | when you need to decide structure | OPTIONAL |
+| `tasks` | Breaks into atomic tasks | after specify/design | REQUIRED |
+| `execute` | Executes a specific task | when receiving a task | REQUIRED |
 
-### Comandos Auxiliares
+### Auxiliary Commands
 
-| Comando | Descrição | Gatilho |
+| Command | Description | Trigger |
 |---------|-----------|---------|
-| `ask` | Faz pergunta durante o processo | quando tiver dúvida |
-| `pause` | Salva checkpoint para continuar depois | antes de sair |
-| `resume` | Retoma de onde parou | ao voltar |
-| `next` | Mostra próxima tarefa | quando precisar saber o próximo passo |
-| `auto` | Autoavana se contexto estiver completo | quando quiser automação |
+| `ask` | Asks a question during the process | when you have a question |
+| `pause` | Saves checkpoint to continue later | before leaving |
+| `resume` | Resumes from where you left off | when returning |
+| `next` | Shows next task | when you need to know the next step |
+| `auto` | Auto-advances if context is complete | when you want automation |
 
-## Estrutura de Diretórios
+## Directory Structure
 
-- `features/` — todas as specs e artefatos de feature
-  - `features/[feature]/spec.md` — especificação da feature
-  - `features/[feature]/design.md` — design da feature (se aplicável)
-  - `features/[feature]/tasks.md` — tarefas da feature
+- `features/` — all specs and feature artifacts
+  - `features/[feature]/spec.md` — feature specification
+  - `features/[feature]/design.md` — feature design (if applicable)
+  - `features/[feature]/tasks.md` — feature tasks
 
-## Regras
+## Rules
 
-1. **NUNCA usar quick mode** — sempre seguir o pipeline completo
-2. **NUNCA usar auto-sizing** — respeitar tamanhos explícitos
-3. **features/ apenas** — não criar `fixes/`, usar `features/` para tudo
-4. Não executar nada — apenas mostrar esta tabela de ajuda
+1. **NEVER use quick mode** — always follow the complete pipeline
+2. **NEVER use auto-sizing** — respect explicit sizes
+3. **features/ only** — don't create `fixes/`, use `features/` for everything
+4. Don't execute anything — only show this help table

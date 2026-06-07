@@ -1,131 +1,131 @@
 ---
 name: lspec-discuss
-description: "Discussão colaborativa para explorar áreas cinzentas, trade-offs e ambiguidades antes de especificar."
+description: "Collaborative discussion to explore gray areas, trade-offs, and ambiguities before specifying."
 ---
 
 # discuss
 
-Fase de discussão colaborativa para explorar problemas complexos, trade-offs de design ou ambiguidades. Ativada **apenas quando há incerteza** que requer deliberação antes de Specification.
+Collaborative discussion phase to explore complex problems, design trade-offs, or ambiguities. Activated **only when there is uncertainty** that requires deliberation before Specification.
 
-## Quando Ativar
+## When to Activate
 
-- Decisões de design com múltiplas abordagens válidas
-- Trade-offs entre simplicidade, performance, manutenibilidade
-- Requisitos vagos ou conflitantes
-- Necessidade de alinhar expectativas entre stakeholders
-- Ambiguidades que podem afetar o escopo
+- Design decisions with multiple valid approaches
+- Trade-offs between simplicity, performance, maintainability
+- Vague or conflicting requirements
+- Need to align expectations between stakeholders
+- Ambiguities that could affect scope
 
-**NÃO usar quando:** o caminho está claro e não há ambiguidade real.
+**DO NOT use when:** the path is clear and there is no real ambiguity.
 
-## Pipeline Completo
+## Complete Pipeline
 
 ```
 Discovery → [Discuss?] → Specify → [Clarify?] → [Design?] → Tasks → Execute
                          ↑
-                         └── OPCIONAL — só quando necessário
+                         └── OPTIONAL — only when necessary
 ```
 
-### Fases Obrigatórias
-- **Discovery**: Sempre. Define o contexto e problema.
-- **Specify**: Sempre. Produz a especificação formal.
-- **Tasks**: Sempre. Gera itens executáveis.
-- **Execute**: Sempre. Realiza o trabalho.
+### Required Phases
+- **Discovery**: Always. Defines context and problem.
+- **Specify**: Always. Produces the formal specification.
+- **Tasks**: Always. Generates executable items.
+- **Execute**: Always. Does the work.
 
-### Fases Opcionais
-- **Discuss**: Apenas quando há áreas cinzentas, trade-offs não resolvidos ou ambiguidade.
-- **Clarify**: Apenas quando a especificação precisa de refinamento após discussão.
-- **Design**: Apenas quando decisões arquiteturais requerem documentação explícita.
+### Optional Phases
+- **Discuss**: Only when there are gray areas, unresolved trade-offs, or ambiguity.
+- **Clarify**: Only when the specification needs refinement after discussion.
+- **Design**: Only when architectural decisions require explicit documentation.
 
 ## Workflow
 
-### 1. Autosave de Estado
+### 1. State Autosave
 
-A cada transição de fase, salvar estado em `features/[name]/{phase}-state.md`:
+At each phase transition, save state in `features/[name]/{phase}-state.md`:
 
 ```markdown
 # {phase} — {timestamp}
 
-## Contexto
-Descrição do estado atual.
+## Context
+Description of current state.
 
-## Decisões Tomadas
+## Decisions Made
 - ...
 
-## Artefatos Gerados
+## Artifacts Generated
 - ...
 
-## Próximo Passo
-Proxima fase ou ação.
+## Next Step
+Next phase or action.
 ```
 
 ### 2. Content-Type: discuss.md
 
-Toda discussão produz `features/[name]/discuss.md`:
+Every discussion produces `features/[name]/discuss.md`:
 
 ```markdown
 # Discuss — {feature_name}
 
-## Contexto
-Problema ou decisão a ser deliberada.
+## Context
+Problem or decision to deliberate.
 
-## Opções Consideradas
-### Opção A: ...
-- Prós: ...
-- Contras: ...
+## Options Considered
+### Option A: ...
+- Pros: ...
+- Cons: ...
 
-### Opção B: ...
-- Prós: ...
-- Contras: ...
+### Option B: ...
+- Pros: ...
+- Cons: ...
 
-## Trade-offs Identificados
+## Trade-offs Identified
 - ...
 
-## Decisão Final
-Recomendação com justificativa.
+## Final Decision
+Recommendation with justification.
 
-## Riscos e Mitigações
+## Risks and Mitigations
 - ...
 ```
 
-### 3. Critérios para Ativar Discuss
+### 3. Criteria to Activate Discuss
 
-Responder: "Podemos especificar isso claramente?"
+Answer: "Can we specify this clearly?"
 
-| Resposta | Ação |
+| Answer | Action |
 |----------|------|
-| Sim, sem ambiguidade | Pular Discuss, ir direto para Specify |
-| Sim, mas múltiplas abordagens | Ativar Discuss |
-| Não, contexto insuficiente | Voltar para Discovery |
+| Yes, no ambiguity | Skip Discuss, go straight to Specify |
+| Yes, but multiple approaches | Activate Discuss |
+| No, insufficient context | Go back to Discovery |
 
-### 4. Transição para Specify
+### 4. Transition to Specify
 
-Discuss conclude com:
-- Decisão documentada em `discuss.md`
-- Estado salvo em `discuss-state.md`
-- Critérios claros para Specification
-- Forward-port de artefatos de Discovery relevantes
+Discuss concludes with:
+- Decision documented in `discuss.md`
+- State saved in `discuss-state.md`
+- Clear criteria for Specification
+- Forward-port of relevant Discovery artifacts
 
-## Estrutura de Diretórios
+## Directory Structure
 
 ```
 features/[name]/
-├── discovery-state.md    # Estado final do Discovery
-├── discuss-state.md      # Estado após Discuss (se aplicável)
-├── discuss.md            # Conteúdo da discussão
-├── specify-state.md      # Estado após Specify
-├── clarify-state.md      # Estado após Clarify (se aplicável)
-├── design-state.md       # Estado após Design (se aplicável)
-├── tasks-state.md        # Estado após Tasks
-├── SPEC.md               # Especificação formal
-└── tasks.md              # Lista de tarefas
+├── discovery-state.md    # Final state of Discovery
+├── discuss-state.md      # State after Discuss (if applicable)
+├── discuss.md            # Discussion content
+├── specify-state.md      # State after Specify
+├── clarify-state.md      # State after Clarify (if applicable)
+├── design-state.md       # State after Design (if applicable)
+├── tasks-state.md        # State after Tasks
+├── SPEC.md               # Formal specification
+└── tasks.md              # Task list
 ```
 
-## Regras
+## Rules
 
-- **NUNCA**: quick mode, auto-sizing, pular fases obrigatórias
-- **SEMPRE**: autosave em cada transição de fase
-- **Content-type**: discuss.md em features/[name]/ para discussões
-- **Estrutura**: tudo em features/, sem fixes/
+- **NEVER**: quick mode, auto-sizing, skip required phases
+- **ALWAYS**: autosave at each phase transition
+- **Content-type**: discuss.md in features/[name]/ for discussions
+- **Structure**: everything in features/, no fixes/
 
 ## Discuss Gray Areas
 

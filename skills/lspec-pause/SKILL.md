@@ -1,113 +1,120 @@
 ---
 name: lspec-pause
-description: "Pausa trabalho e cria checkpoint de handoff para continuidade."
+description: "Pauses feature work and saves state."
 ---
 
-warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Salve estado atual ANTES de qualquer outra ação
-  - Documente TODO o contexto necessário para ressumir
+# lspec-pause Skill
 
-# pause — Pausar Trabalho
+## Purpose
 
-**Trigger:** "Pause work", "End session", "Create handoff", "/lspec pause"
-
-**Purpose:** Criar checkpoint de estado para ressumir posteriormente.
+Pause feature work and save the current state for later resumption.
 
 ---
 
-## Pipeline
+## When to Use
 
-### Discovery
+Use Pause when:
+- User requests pause
+- Work needs to be interrupted
+- Waiting for external input
+- Context switch required
 
-Analisar estado atual do trabalho:
+---
 
-- Quais tarefas estão em progresso?
-- Quais arquivos estão modificados?
-- Quais decisões foram tomadas?
-- Qual o branch git atual?
-- Há changes não commitados?
+## Pause Process
 
-### Specify (OBRIGATÓRIO)
+### 1. Read Current State
 
-Documentar o estado no arquivo `features/`:
+Read `features/[name]/STATE.md` to understand current progress.
+
+### 2. Document Current Status
+
+Update STATE.md with pause information:
 
 ```markdown
-# Paused Feature
+# State: [feature-name]
 
-**Feature:** [nome da feature]
-**Data:** [ISO timestamp]
-**Branch:** [git branch]
+## Last Updated
+[ISO timestamp]
 
-## Estado Atual
+## Current Phase
+[Current phase]
 
-### Completo ✓
-- [item completo]
+## Pause Information
+Paused at: [ISO timestamp]
+Reason: [User-provided reason]
+Resume from: [Phase name]
 
-### Em Progresso
-- [work em andamento] — [percentual ou status]
-- Localização: [file:line]
+## Phase Data
+[Current phase data]
 
-### Pendente
-- [próximo passo]
-- [passo seguinte]
+## Progress
+- [x] Discovery
+- [ ] Discuss
+- [x] Research
+- [x] Specify
+- [ ] Clarify
+- [ ] Design
+- [ ] Tasks
+- [ ] Execute
 
-### Bloqueios
-- [descrição do bloqueio] — [impacto]
-
-## Contexto de Ressumição
-
-- Arquivos modificados: [lista]
-- Decisões: [referências a STATE.md]
-- Notas importantes: [contexto adicional]
+## Notes
+[Additional notes for resumption]
 ```
 
-### Tasks (OBRIGATÓRIO)
+### 3. Document Pending Items
 
-1. Criar/atualizar `.specs/HANDOFF.md` com estado documentado
-2. Confirmar que todos os arquivos estão salvos
-3. Listar próximo passo claro para ressumição
+Create or update `features/[name]/PENDING.md`:
 
-### Execute
+```markdown
+# Pending: [feature-name]
 
-Realizar ações de pause:
+## Paused At
+[ISO timestamp]
 
-```bash
-# Verificar estado do git
-git status
+## Pending Items
+- [ ] [Item 1]
+- [ ] [Item 2]
 
-# Criar checkpoint se necessário
-git add -A
-git commit -m "WIP: [feature name] - checkpoint before pause"
+## Blockers
+- [Blocker description]
 
-# Confirmar HANDOFF.md existe
-cat .specs/HANDOFF.md
+## Resume Instructions
+1. [Step 1]
+2. [Step 2]
+
+## Next Action
+[What to do next when resuming]
+```
+
+### 4. Save Context
+
+Ensure all artifacts are saved:
+- `features/[name]/STATE.md`
+- `features/[name]/PENDING.md`
+- `features/[name]/[current-phase].md`
+
+---
+
+## Pause Confirmation
+
+```
+Feature work PAUSED.
+
+Current Phase: [phase]
+Completed: [list]
+Paused at: [timestamp]
+
+Resume with: /lspec resume [feature-name]
+
+→ Ready for new instructions.
 ```
 
 ---
 
-## Estrutura de Arquivos
+## Integration with lspec
 
-```
-.specs/
-└── features/
-    └── [feature-name]/
-        └── HANDOFF.md
-```
-
-**NUNCA usar:**
-- `fixes/` — apenas `features/`
-- quick mode
-- auto-sizing
-
----
-
-## Tips
-
-- Foco em informação acionável para ressumição
-- Incluir referências específicas de file:line
-- Notar mudanças não commitadas explicitamente
-- Referenciar entradas de STATE.md quando aplicável
-- Manter HANDOFF.md conciso e preciso
-
-**Próximo passo:** `/lspec resume` para continuar de onde parou.
+This skill works together with:
+- `lspec-resume`: For resuming paused work
+- `lspec-next`: For determining next phase
+- All phase skills for saving state

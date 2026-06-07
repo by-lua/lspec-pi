@@ -1,127 +1,90 @@
 ---
 name: lspec-resume
-description: "Resume sessão de trabalho carregando estado de HANDOFF.md, identificando posição no pipeline e propondo próxima ação estruturada."
+description: "Resumes paused feature work."
 ---
 
-# lspec-resume
+# lspec-resume Skill
 
-Carrega `.specs/HANDOFF.md` e mostra posição atual no pipeline, propondo próxima ação.
+## Purpose
 
----
-
-## Session Handoff
-
-### Pause Work
-
-**Trigger:** "Pause work", "End session", "Create handoff"
-
-**Purpose:** Checkpoint current state for resumption.
-
-**Output:** `.specs/HANDOFF.md` (overwrites previous)
-
-**Size target:** ~500 tokens
-
-**Structure:**
-
-```markdown
-# Handoff
-
-**Date:** [ISO timestamp]
-**Feature:** [feature name]
-**Task:** [task identifier] - [brief status]
-
-## Completed ✓
-
-- [Completed work item]
-- [Completed work item]
-
-## In Progress
-
-- [Current work] ([percentage or status])
-- Specific location: [file:line if applicable]
-
-## Pending
-
-- [Next immediate step]
-- [Following step]
-
-## Blockers
-
-- [Blocker description] - [impact]
-
-## Context
-
-- Branch: [git branch if applicable]
-- Uncommitted: [files with changes]
-- Related decisions: [STATE.md references if applicable]
-```
-
-**Instructions:**
-
-- Focus on actionable information for resumption
-- Include specific file/line references where relevant
-- Note uncommitted changes explicitly
-- Reference related STATE.md entries if applicable
-
-### Resume Work
-
-**Trigger:** "Resume work", "Continue", "Load handoff"
-
-**Process:**
-
-1. Load HANDOFF.md
-2. Load STATE.md for context
-3. Summarize current position
-4. Propose next action
-
-**Response pattern:**
-
-- "Resuming [feature] at [task]"
-- "Completed: [summary]"
-- "Next: [immediate action]"
-- "Continue with [specific step]?"
+Resume previously paused feature work from saved state.
 
 ---
 
-## Pipeline de Sessão
+## When to Use
 
-```
-Discovery → Discuss (OPCIONAL) → Specify → Clarify (OPCIONAL) → Design (OPCIONAL) → Tasks → Execute
-```
-
-| Fase | Descrição |
-|------|-----------|
-| **Discovery** | Identificar objetivo e escopo da tarefa |
-| **Discuss** | Discutir requisitos com usuário (opcional) |
-| **Specify** | Especificar funcionalidades e estrutura |
-| **Clarify** | Esclarecer ambiguidades (opcional) |
-| **Design** | Criar design de código (opcional) |
-| **Tasks** | Decompor em tarefas executáveis |
-| **Execute** | Executar e entregar resultado |
+Use Resume when:
+- User requests to continue paused work
+- New instructions to resume feature
+- External input has been received
 
 ---
 
-## Estrutura de Saída
+## Resume Process
+
+### 1. Read Saved State
+
+Read `features/[name]/STATE.md` and `features/[name]/PENDING.md`.
+
+### 2. Analyze Pause Context
 
 ```
-## Posição Atual
-- Pipeline: [fase atual]
-- Última ação: [resumo]
-- Estado: [ativo/pausado/concluído]
+Paused at: [phase]
+Completed: [list]
+Pending items: [list]
+Blockers: [list]
+```
 
-## Próxima Ação Proposta
-- Fase: [próxima fase]
-- Ação: [descrição específica]
-- Opções:
-  1. [opção A]
-  2. [opção B]
+### 3. Check Blockers
+
+Verify that previously identified blockers have been resolved.
+
+### 4. Determine Resume Point
+
+```
+Blockers resolved?
+  → YES: Continue from paused phase
+  → NO: Address blockers first
+```
+
+### 5. Load Context
+
+Read all relevant artifacts:
+- `features/[name]/STATE.md`
+- `features/[name]/PENDING.md`
+- `features/[name]/[phase].md`
+
+---
+
+## Resume Confirmation
+
+```
+Feature work RESUMED.
+
+Feature: [name]
+Paused at: [phase]
+Resume from: [phase]
+
+Completed Phases:
+- [x] Discovery
+- [x] Research
+- [x] Specify
+
+Current Phase:
+- [ ] Tasks (resuming)
+
+Pending Items:
+- [ ] [Item 1]
+- [ ] [Item 2]
+
+→ Proceed with [next phase]?
 ```
 
 ---
 
-## Regras Obrigatórias
+## Integration with lspec
 
-- **NUNCA** usar quick mode
-- **NUNCA** usar auto-sizing
-- Estrutura: apenas `features/`, sem `fixes/`
-- Sempre ler HANDOFF.md antes de propor ação
+This skill works together with:
+- `lspec-pause`: For pausing work
+- `lspec-next`: For determining next phase
+- All phase skills for continuing work

@@ -1,30 +1,30 @@
 ---
 name: lspec-clarify
-description: "Clarifica requisitos ambíguos antes da especificação formal. OPCIONAL — usar apenas quando houver ambiguidade real."
+description: "Clarifies ambiguous requirements before formal specification. OPTIONAL — use only when there is real ambiguity."
 ---
 
 # lspec-clarify Skill
 
-## Propósito
+## Purpose
 
-Clarificar requisitos ambíguos antes da especificação formal. Este skill é **OPCIONAL** — use apenas quando houver ambiguidade real nos requisitos que impede avanço para Specify.
-
----
-
-## Fluxo de Fases
-
-```
-Discovery → Discuss (OPCIONAL) → Specify → Clarify (OPCIONAL) → Design (OPCIONAL) → Tasks → Execute
-```
-
-**Fases obrigatórias:** Discovery → Specify → Tasks → Execute
-**Fases opcionais:** Discuss, Clarify, Design
+Clarify ambiguous requirements before formal specification. This skill is **OPTIONAL** — use only when there is real ambiguity in requirements that prevents advancing to Specify.
 
 ---
 
-## Autosave de Estado
+## Phase Flow
 
-Após cada fase, salve o estado em `features/[name]/.state.json`:
+```
+Discovery → Discuss (OPTIONAL) → Specify → Clarify (OPTIONAL) → Design (OPTIONAL) → Tasks → Execute
+```
+
+**Required phases:** Discovery → Specify → Tasks → Execute
+**Optional phases:** Discuss, Clarify, Design
+
+---
+
+## State Autosave
+
+After each phase, save state in `features/[name]/.state.json`:
 
 ```json
 {
@@ -42,20 +42,20 @@ Após cada fase, salve o estado em `features/[name]/.state.json`:
 
 ---
 
-## Fases do Pipeline
+## Pipeline Phases
 
-### 1. Discovery (OBRIGATÓRIO)
+### 1. Discovery (REQUIRED)
 
-**Entrada:** Tema ou ideia inicial do usuário
-**Saída:** `features/[name]/discovery.md`
+**Input:** Theme or initial idea from user
+**Output:** `features/[name]/discovery.md`
 
-Reunir informações sobre o problema, contexto e necessidades.
+Gather information about the problem, context, and needs.
 
 ```
-1. Identificar escopo e nome da feature
-2. Documentar problema atual e dor
-3. Listar stakeholders/usuários afetados
-4. Coletar requisitos implícitos
+1. Identify scope and feature name
+2. Document current problem and pain
+3. List affected stakeholders/users
+4. Collect implicit requirements
 5. Autosave: completed_phases = ["discovery"]
 ```
 
@@ -63,35 +63,35 @@ Reunir informações sobre o problema, contexto e necessidades.
 ```markdown
 # Discovery: [name]
 
-## Problema
-[Descrição do problema atual]
+## Problem
+[Description of current problem]
 
-## Contexto
-[Contexto relevante]
+## Context
+[Relevant context]
 
 ## Stakeholders
-- [Lista de stakeholders]
+- [List of stakeholders]
 
-## Requisitos Implícitos
-- [Requisitos identificados]
+## Implicit Requirements
+- [Identified requirements]
 
-## Perguntas em Aberto
-- [Perguntas para clarificação]
+## Open Questions
+- [Questions for clarification]
 ```
 
 ---
 
-### 2. Discuss (OPCIONAL)
+### 2. Discuss (OPTIONAL)
 
-**Entrada:** Perguntas do Discovery
-**Saída:** `features/[name]/discuss.md`
+**Input:** Questions from Discovery
+**Output:** `features/[name]/discuss.md`
 
-Usar APENAS quando há necessidade de validação de requisitos com stakeholders ou alinhamento de entendimento.
+Use ONLY when there is need for requirement validation with stakeholders or alignment of understanding.
 
 ```
-1. Apresentar perguntas em aberto
-2. Coletar feedback/validação
-3. Documentar decisões
+1. Present open questions
+2. Collect feedback/validation
+3. Document decisions
 4. Autosave: completed_phases += ["discuss"]
 ```
 
@@ -99,30 +99,30 @@ Usar APENAS quando há necessidade de validação de requisitos com stakeholders
 ```markdown
 # Discuss: [name]
 
-## Perguntas Apresentadas
-[Perguntas enviadas para alinhamento]
+## Questions Presented
+[Questions sent for alignment]
 
-## Respostas e Decisões
-[Respostas coletadas]
+## Answers and Decisions
+[Collected answers]
 
-## Validações
-[Validações obtidas]
+## Validations
+[Obtained validations]
 ```
 
 ---
 
-### 3. Specify (OBRIGATÓRIO)
+### 3. Specify (REQUIRED)
 
-**Entrada:** Discovery (e Discuss se aplicável)
-**Saída:** `features/[name]/context.md`
+**Input:** Discovery (and Discuss if applicable)
+**Output:** `features/[name]/context.md`
 
-Formalizar os requisitos em uma especificação estruturada.
+Formalize requirements into a structured specification.
 
 ```
-1. Consolidar requisitos validados
-2. Definir escopo preciso da feature
-3. Especificar comportamento esperado
-4. Identificar critérios de aceitação
+1. Consolidate validated requirements
+2. Define precise scope of the feature
+3. Specify expected behavior
+4. Identify acceptance criteria
 5. Autosave: completed_phases += ["specify"]
 ```
 
@@ -131,49 +131,49 @@ Formalizar os requisitos em uma especificação estruturada.
 # Context: [name]
 
 ## Feature
-[Nome da feature]
+[Feature name]
 
-## Problema
-[Problema que resolve]
+## Problem
+[Problem it solves]
 
-## Solução Proposta
-[Descrição da solução]
+## Proposed Solution
+[Solution description]
 
-## Escopo
-### Dentro
-- [Itens incluídos]
+## Scope
+### In Scope
+- [Included items]
 
-### Fora
-- [Itens excluídos]
+### Out of Scope
+- [Excluded items]
 
-## Comportamento Esperado
-[Descrição detalhada do comportamento]
+## Expected Behavior
+[Detailed behavior description]
 
-## Critérios de Aceitação
-- [ ] [Critério 1]
-- [ ] [Critério 2]
+## Acceptance Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
 
-## Dependências
-[Dependências identificadas]
+## Dependencies
+[Identified dependencies]
 
-## Riscos
-[Riscos potenciais]
+## Risks
+[Potential risks]
 ```
 
 ---
 
-### 4. Clarify (OPCIONAL)
+### 4. Clarify (OPTIONAL)
 
-**Entrada:** context.md com ambiguidades identificadas
-**Saída:** `features/[name]/clarify.md`
+**Input:** context.md with identified ambiguities
+**Output:** `features/[name]/clarify.md`
 
-Usar APENAS quando houver ambiguidade nos requisitos que impede avanço para Design/Tasks.
+Use ONLY when there is ambiguity in requirements that prevents advancing to Design/Tasks.
 
 ```
-1. Identificar ambiguidades específicas
-2. Listar ambiguidades encontradas
-3. Propor resoluções ou confirmar com usuário
-4. Documentar esclarecimentos obtidos
+1. Identify specific ambiguities
+2. List found ambiguities
+3. Propose resolutions or confirm with user
+4. Document obtained clarifications
 5. Autosave: completed_phases += ["clarify"]
 ```
 
@@ -181,50 +181,50 @@ Usar APENAS quando houver ambiguidade nos requisitos que impede avanço para Des
 ```markdown
 # Clarify: [name]
 
-## Ambiguidades Identificadas
-[Lista de ambiguidades]
+## Identified Ambiguities
+[List of ambiguities]
 
-## Esclarecimentos
-[Esclarecimentos obtidos]
+## Clarifications
+[Obtained clarifications]
 
-## Decisões Tomadas
-[Decisões para resolver ambiguidades]
+## Decisions Made
+[Decisions to resolve ambiguities]
 
-## Impacto na Especificação
-[Atualizações necessárias em context.md]
+## Impact on Specification
+[Necessary updates to context.md]
 ```
 
 ---
 
-### 5. Design (OPCIONAL)
+### 5. Design (OPTIONAL)
 
-**Entrada:** context.md (e clarify.md se aplicável)
-**Saída:** `features/[name]/design.md`
+**Input:** context.md (and clarify.md if applicable)
+**Output:** `features/[name]/design.md`
 
-Definir arquitetura e abordagem técnica.
+Define architecture and technical approach.
 
 ```
-1. Definir componentes/estrutura
-2. Desenhar interações
-3. Especificar interfaces
-4. Documentar decisões de design
+1. Define components/structure
+2. Draw interactions
+3. Specify interfaces
+4. Document design decisions
 5. Autosave: completed_phases += ["design"]
 ```
 
 ---
 
-### 6. Tasks (OBRIGATÓRIO)
+### 6. Tasks (REQUIRED)
 
-**Entrada:** context.md (e clarify.md, design.md se aplicável)
-**Saída:** `features/[name]/tasks.md`
+**Input:** context.md (and clarify.md, design.md if applicable)
+**Output:** `features/[name]/tasks.md`
 
-Decompor em tarefas executáveis.
+Decompose into executable tasks.
 
 ```
-1. Listar todas as tarefas necessárias
-2. Priorizar tarefas
-3. Estimar esforço se aplicável
-4. Identificar blockers
+1. List all necessary tasks
+2. Prioritize tasks
+3. Estimate effort if applicable
+4. Identify blockers
 5. Autosave: completed_phases += ["tasks"]
 ```
 
@@ -233,44 +233,44 @@ Decompor em tarefas executáveis.
 # Tasks: [name]
 
 ## Backlog
-| ID | Tarefa | Prioridade | Status |
+| ID | Task | Priority | Status |
 |----|--------|------------|--------|
-| 001 | [Tarefa] | alta | pendente |
+| 001 | [Task] | high | pending |
 
-## Blocker
-[Blokers identificados]
+## Blockers
+[Identified blockers]
 ```
 
 ---
 
-### 7. Execute (OBRIGATÓRIO)
+### 7. Execute (REQUIRED)
 
-**Entrada:** tasks.md
-**Saída:** Feature implementada + testes
+**Input:** tasks.md
+**Output:** Feature implemented + tests
 
 ```
-1. Executar tarefas na ordem de prioridade
-2. Manter contexto atualizado
-3. Validar cada tarefa concluída
+1. Execute tasks in priority order
+2. Keep context updated
+3. Validate each completed task
 4. Autosave: completed_phases += ["execute"]
 ```
 
 ---
 
-## Estrutura de Diretórios
+## Directory Structure
 
 ```
 features/
 └── [name]/
-    ├── .state.json      # Autosave de estado
-    ├── discovery.md     # Resultado Discovery
-    ├── discuss.md       # Resultado Discuss (se aplicável)
-    ├── context.md       # Resultado Specify
-    ├── clarify.md       # Resultado Clarify (se aplicável)
-    ├── design.md        # Resultado Design (se aplicável)
-    └── tasks.md         # Resultado Tasks
+    ├── .state.json      # State autosave
+    ├── discovery.md     # Discovery result
+    ├── discuss.md       # Discuss result (if applicable)
+    ├── context.md       # Specify result
+    ├── clarify.md       # Clarify result (if applicable)
+    ├── design.md        # Design result (if applicable)
+    └── tasks.md         # Tasks result
 
-# NUNCA usar:
+# NEVER use:
 # - fixes/
 # - quick mode
 # - auto-sizing
@@ -278,32 +278,32 @@ features/
 
 ---
 
-## Regras de Execução
+## Execution Rules
 
-1. **Nunca use:** quick mode, auto-sizing
-2. **Nunca crie:** diretórios `fixes/`
-3. **Sempre:** autosave após cada fase em `.state.json`
-4. **Context output:** SEMPRE em `features/[name]/context.md`
-5. **Clarify é opcional:** Use apenas quando há ambiguidade real
-6. **Discuss é opcional:** Use apenas quando há necessidade de validação externa
-
----
-
-## Fluxo de Continuação
-
-**Clarify completo.** Requisitos ambíguos resolvidos e salvos em `features/[name]/clarify.md`.
-
-→ Deseja avançar para **Design** (opcional — decisões arquiteturais)?
-
-Se **não precisa** de design: → salve estado e avance direto para **Tasks** (obrigatório).
-
-Se **não avançar**: salve estado em `STATE.md` e aguarde novas instruções.
+1. **Never use:** quick mode, auto-sizing
+2. **Never create:** `fixes/` directories
+3. **Always:** autosave after each phase in `.state.json`
+4. **Context output:** ALWAYS in `features/[name]/context.md`
+5. **Clarify is optional:** Use only when there is real ambiguity
+6. **Discuss is optional:** Use only when there is need for external validation
 
 ---
 
-## Integração com lspec
+## Continuation Flow
 
-Este skill trabalha em conjunto com:
-- `lspec-discovery`: Para fase de descoberta
-- `lspec-tasks`: Para decomposição em tarefas
-- `lspec-execute`: Para execução das tarefas
+**Clarify complete.** Ambiguous requirements resolved and saved in `features/[name]/clarify.md`.
+
+→ Do you want to advance to **Design** (optional — architectural decisions)?
+
+If **no design needed**: → save state and advance directly to **Tasks** (required).
+
+If **not advancing**: save state in `STATE.md` and wait for new instructions.
+
+---
+
+## Integration with lspec
+
+This skill works together with:
+- `lspec-discovery`: For discovery phase
+- `lspec-tasks`: For task decomposition
+- `lspec-execute`: For task execution

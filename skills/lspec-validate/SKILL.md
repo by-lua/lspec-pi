@@ -1,177 +1,124 @@
 ---
 name: lspec-validate
-description: "Valida e verifica implementacao contra spec."
+description: "Validates implemented feature against specification."
 ---
 
-warning: |
-  ⚠️ REGRA ABSOLUTA:
-  - Verifique TODOS os criterios de aceitacao antes de declarar completo
-  - Execute gate check de nivel Build OBRIGATORIO
-  - Apresente resultado por tarefa e aguarde confirmacao do usuario
-  - NUNCA use quick mode ou auto-sizing
-  - Estrutura: features/ apenas, NAO use fixes/
+# lspec-validate Skill
 
-# validate — Validacao e Verificacao
+## Purpose
 
-**Goal:** Verificar que implementacao atende spec E principios de codigo.
+Validate the implemented feature against the specification. This skill verifies that all acceptance criteria are met.
 
 ---
 
-## Pipeline de Validacao
+## When to Use
 
-### FASE 1: Discovery
-
-Colete informacoes da feature:
-
-```
-.specs/features/[feature]/
-  - spec.md          (user stories + criterios)
-  - edge-cases.md    (casos limites se existir)
-```
-
-Verifique:
-- [ ] spec.md existe em `.specs/features/[feature]/`
-- [ ] user stories P1 estao definidas
-- [ ] criterios de aceitacao estao claros
-
-### FASE 2: Discuss (OPCIONAL)
-
-Se houver ambiguidade no spec:
-- Confirme interpretacao com usuario
-- Documente decisoes tomadas
-- Prossiga apenas apos alinhamento
-
-### FASE 3: Specify
-
-Para cada user story P1 (MVP):
-
-```
-### P1: [Story Title]
-
-**Acceptance Criteria:**
-1. WHEN [X] THEN [Y] → [PASS/FAIL]
-2. WHEN [X] THEN [Y] → [PASS/FAIL]
-```
-
-Registre criterios que serao validados.
-
-### FASE 4: Clarify (OPCIONAL)
-
-Se edge-cases.md existir:
-- Revise casos limites
-- Confirme handling implementado
-
-### FASE 5: Design (OPCIONAL)
-
-Se design.md existir:
-- Verifique implementacao segue estrutura definida
-- Confirme componentes/módulos estao corretos
-
-### FASE 6: Tasks
-
-Verifique tasks.md:
-- [ ] Todas as tarefas marcadas como done?
-- [ ] Alguma bloqueada ou parcial?
-- [ ] Nenhuma tarefa em fixes/
-
-### FASE 7: Execute
-
-Execute validacao completa:
-
-#### 1. Code Quality Check (OBRIGATORIO)
-
-Para cada arquivo modificado, verifique contra coding-principles.md:
-
-| Check | Pass? |
-| ----- | ----- |
-| Nao adicionou features alem do pedido | |
-| Nao criou abstrações para codigo single-use | |
-| Nao adicionou "flexibilidade" desnecessaria | |
-| Apenas tocou arquivos necessarios para task | |
-| Nao "melhorou" codigo nao relacionado | |
-| Matches existing patterns/style | |
-
-❌ Algum "No"? → Corrija antes de marcar completo.
-
-#### 2. Gate Check de Build (OBRIGATORIO)
-
-Rode o comando de gate check de nivel Build do TESTING.md.
-
-1. Run: `[build gate command from TESTING.md]`
-2. Non-zero exit code = STOP. Nao prossiga.
-3. Registre resultados:
-   - Total test count: [N]
-   - Passed: [N]
-   - Failed: [list]
+Use Validate when:
+- All tasks in Tasks phase are complete
+- User requests validation
+- Preparing for deployment
+- Closing a feature
 
 ---
 
-## Validation Report Template
+## Validation Process
+
+### 1. Read Specification
+
+Read `features/[name]/spec.md` to understand acceptance criteria.
+
+### 2. Verify Each Criterion
+
+For each acceptance criterion:
+
+```
+GIVEN [precondition]
+WHEN [action/event]
+THEN [expected outcome]
+
+Verification:
+- [ ] Automated test exists and passes
+- [ ] Manual test performed
+- [ ] Evidence documented
+```
+
+### 3. Check User Stories
+
+For each user story:
+
+```
+User Story: As a [role], I want [capability] so that [benefit]
+
+Verification:
+- [ ] All acceptance criteria met
+- [ ] Edge cases handled
+- [ ] Error states handled
+```
+
+### 4. Document Results
+
+Create validation report:
 
 ```markdown
-# [Feature] Validation
-
-**Date:** [YYYY-MM-DD]
-**Spec:** `.specs/features/[feature]/spec.md`
-
----
-
-## Task Completion
-
-| Task | Status | Notes |
-| ---- | ------ | ----- |
-| T1 | ✅ Done | - |
-| T2 | ⚠️ Partial | [Issue] |
-
----
-
-## User Story Validation
-
-### P1: [Story Title] ⭐ MVP
-
-| Criterion | Result |
-| --------- | ------ |
-| WHEN X THEN Y | ✅ PASS |
-| WHEN A THEN B | ❌ FAIL - [reason] |
-
----
-
-## Code Quality
-
-| Check | Pass? |
-| ----- | ----- |
-| No features beyond what was asked | ✅ |
-| No single-use abstractions | ✅ |
-| No unnecessary flexibility | ✅ |
-| Only touched required files | ✅ |
-| Matches existing patterns | ✅ |
-
----
-
-## Tests
-
-- **Gate command:** [full command]
-- **Result:** [X] passed, [Y] failed
-
----
+# Validation Report: [name]
 
 ## Summary
+[Pass/Fail with summary]
 
-**Overall:** ✅ Ready | ⚠️ Issues | ❌ Not Ready
+## Acceptance Criteria Verification
 
-**What works:** [List]
-**Issues found:** [Issue 1: How to fix]
-**Next steps:** [Action]
+| ID | Criterion | Status | Evidence |
+|----|-----------|--------|----------|
+| AC-01 | [Criterion] | ✅ PASS | [Test name/log] |
+| AC-02 | [Criterion] | ❌ FAIL | [Issue description] |
+
+## User Story Verification
+
+| ID | Story | Status | Notes |
+|----|-------|--------|-------|
+| US-01 | [Story] | ✅ PASS | [Notes] |
+| US-02 | [Story] | ⚠️ PARTIAL | [Notes] |
+
+## Issues Found
+
+### Critical
+- [Issue description]
+
+### High
+- [Issue description]
+
+### Medium
+- [Issue description]
+
+### Low
+- [Issue description]
+
+## Recommendations
+
+- [ ] Ready for deployment
+- [ ] Needs fixes before deployment
+- [ ] Requires re-specification
 ```
 
 ---
 
-## Tips
+## Validation Checklist
 
-- **P1 first** — MVP deve funcionar antes de P2/P3
-- **WHEN/THEN = Test** — Cada criterio e um test case
-- **Be specific** — "Doesn't work" nao e util
-- **Recommend fixes** — Nao apenas reportar problemas, criar tasks
-- **Quality check e mandatory** — Nao opcional
-- **NUNCA quick mode** — Validacao completa sempre
-- **Estrutura features/** — Nunca use fixes/
+- [ ] All P1 acceptance criteria verified
+- [ ] All P2 acceptance criteria verified
+- [ ] All P3 acceptance criteria verified
+- [ ] Edge cases tested
+- [ ] Error states tested
+- [ ] Performance criteria met
+- [ ] Security criteria met
+- [ ] Documentation complete
+- [ ] Validation report saved
+
+---
+
+## Integration with lspec
+
+This skill works together with:
+- `lspec-specify`: For specification context
+- `lspec-tasks`: For task list
+- `lspec-execute`: For implementation context
