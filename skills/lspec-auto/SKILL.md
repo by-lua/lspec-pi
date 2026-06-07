@@ -27,9 +27,9 @@ fi
 **Actions by type:**
 
 | Type | Flow |
-|------|-------|
+|------|------|
 | BUG | Short Discovery (3 questions) → Specify → Tasks → Execute |
-| FEATURE | Focused Discovery → Specify → Clarify? → Tasks → Execute |
+| FEATURE | Specify → Execute (streamlined — no extra questions) |
 | MAP | Use `lspec-map` directly |
 | GENERAL | Complete Discovery → All phases |
 
@@ -42,18 +42,11 @@ fi
 
 ## Execution Flow
 
-**AFTER EACH PHASE, ALWAYS ASK:**
+**Streamlined by type — no unnecessary confirmations:**
 
-```
-✅ [Current phase] complete
-→ Do you want to advance to [next phase]? (Optional/Required)
-```
-
-**Confirmation rules:**
-- **REQUIRED**: "Advance to [next]?" → user responds yes/no
-- **OPTIONAL**: "Are there gray areas to discuss?" → user decides whether to skip
-- If OPTIONAL and user says "not needed" → save state and skip
-- If REQUIRED → user must confirm, otherwise continue with refinement
+- **FEATURE**: Specify → Execute (direct, no Discovery, no extra questions)
+- **BUG**: Discovery (3 questions) → Specify → Tasks → Execute
+- **GENERAL**: Discovery → Specify → Design → Tasks → Execute
 
 ---
 
@@ -78,7 +71,7 @@ Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 **If GENERAL/NEW:**
 6 complete phases (see lspec-discovery)
 
-**When finished:** "Discovery complete. Do you want to advance to Discuss (optional — gray areas)?"
+**When finished:** → Advance directly to Specify
 
 ---
 
@@ -87,7 +80,7 @@ Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 **OPTIONAL** — Only if there is ambiguity
 Capture context in gray areas (layout, interactions, edge cases)
 
-**When finished:** "Discuss complete. Advance to Specify (required)?"
+**When finished:** → Advance directly to Specify
 
 ---
 
@@ -242,7 +235,7 @@ How we know the feature is successful:
 - **Edge cases matter** — What breaks? What's empty? What's huge?
 - **Out of Scope prevents creep** — If it's not here, it doesn't get built
 
-**When finished:** "Specify complete. Are there ambiguities to resolve in Clarify (optional)?"
+**When finished:** → Advance directly to Tasks (or Execute if ≤3 steps)
 
 ---
 
@@ -252,7 +245,7 @@ How we know the feature is successful:
 
 Resolve remaining ambiguities in requirements
 
-**When finished:** "Clarify complete. Are there architectural decisions for Design (optional)?"
+**When finished:** → Advance directly to Tasks
 
 ---
 
@@ -418,7 +411,7 @@ interface AnotherModel {
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
 
-**When finished:** "Design complete. Advance to Tasks (required)?"
+**When finished:** → Advance directly to Tasks
 
 ---
 
@@ -510,15 +503,6 @@ Before showing tasks to the user, run ALL three pre-approval checks. These are N
 **Check 3: Test Co-location Validation** — verify every task's `Tests` field matches the TESTING.md coverage matrix (see Test Co-location Validation section).
 
 **Output both tables with the tasks** so the user can see the validation results. Any ❌ means you MUST restructure before presenting.
-
-#### 6. ASK About MCPs and Skills
-
-**CRITICAL**: Before execution, ask the user:
-
-> "For each task, which tools should I use?"
->
-> **Available MCPs**: [list from project or user]
-> **Available Skills**: [list from project or user]
 
 ### Template: `.specs/[feature]/tasks.md`
 
@@ -698,7 +682,7 @@ The goal: no task produces unverified code. If code can't be tested in the task 
 - **Requirement ID = Traceable** — Every task traces back to a spec requirement
 - **One commit per task** — Plan the commit message format in advance
 
-**When finished:** "Tasks complete. Do you want to advance to Execute (required)?"
+**When finished:** → Advance directly to Execute
 
 ---
 
