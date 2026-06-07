@@ -220,24 +220,24 @@ For: analyze existing code and generate spec
 - Legacy code to understand
 - "How does this project work?"
 
-### Mode: Map (brownfield)
+### Mode: Map (internal — auto-triggered when no .specs/)
 ```
-/lspec map → Analyze codebase → 7 architecture docs
+MAP analisa código → gera .specs/codebase/ com 7 arquivos
+→ Depois continua com pipeline solicitado
 ```
-For: existing projects need a map
+For: código existente sem specs — executado automaticamente
 
 ---
 
 ## Commands
 
-| Command | Mode | Usage |
-|---------|------|-------|
-| `/lspec [request]` | Forward | Complete pipeline |
-| `/lspec reverse` | Reverse | Map code → spec |
-| `/lspec map` | Map | Analyze existing project |
-| `/lspec pause` | - | Pause and save state |
-| `/lspec resume` | - | Resume from where you left off |
-| `/lspec help` | - | Show help |
+| Command | Usage |
+|---------|-------|
+| `/lspec [request]` | **Único comando** — auto-detecta contexto |
+
+**Auto-detecção:**
+- Projeto com `.specs/` → Pipeline Forward
+- Projeto sem `.specs/` → MAP interno primeiro → depois Forward
 
 ---
 
