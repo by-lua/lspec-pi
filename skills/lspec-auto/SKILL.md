@@ -70,10 +70,22 @@ Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 2. What is the expected vs current behavior?
 3. How to reproduce the bug?
 
-**If FEATURE detected:**
-1. What should the feature do?
-2. Who will use it?
-3. How do you know it's done?
+**If FEATURE detected:** Ask ONE section at a time. Wait for response before asking next.
+
+**Section 1 — Scope:**
+- What should the feature do? (list functionalities)
+- Which are MVP (must have) vs nice-to-have (post-MVP)?
+
+**Section2 — Users:**
+- Who will use it?
+- Does it need login/authentication?
+
+**Section 3 — Integration:**
+- How does it connect to existing system?
+- Where does data go? (database, localStorage, etc.)
+
+**Section 4 — Done criteria:**
+- How do you know it's done? (acceptance criteria)
 
 **If GENERAL/NEW:**
 6 complete phases (see lspec-discovery)
