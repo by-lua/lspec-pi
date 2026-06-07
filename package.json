@@ -19,7 +19,7 @@
     "url": "https://github.com/by-lua/lspec-pi/issues"
   },
   "license": "CC-BY-4.0",
-  "author": "Lua <noelia.assis@outlook.com> (https://github.com/by-lua)",
+  "author": "Lua (https://github.com/by-lua)",
   "pi": {
     "skills": [
       "./skills/lspec",
