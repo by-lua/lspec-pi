@@ -7,7 +7,30 @@ description: "Executes complete automatic cycle: Discovery, Specify, Design, Tas
 
 Executes complete feature development cycle: Discovery → Discuss* → Specify → Clarify* → Design* → Tasks → Execute.
 
-## AUTO-DETECTION (run first)
+## Smart Detection (run first)
+
+Before starting, check the project state:
+
+```bash
+# Check if .specs/ exists
+if [ -d ".specs" ]; then
+  echo "HAS_SPECS"
+elif [ -z "$(ls -A)" ]; then
+  echo "EMPTY_PROJECT"  # No .specs, no content → New Project Discovery
+else
+  echo "CODE_ONLY"  # Has code but no .specs → MAP first
+fi
+```
+
+**Actions by project state:**
+
+| State | Action |
+|-------|--------|
+| HAS_SPECS | Run normal flow (Feature/Bug/General) |
+| EMPTY_PROJECT | Full Discovery (new project) |
+| CODE_ONLY | MAP first → then ask what to do |
+
+## AUTO-DETECTION (run after smart detection)
 
 Analyze the user's message to detect the task type:
 
@@ -42,18 +65,13 @@ fi
 
 ## Execution Flow
 
-**AFTER EACH PHASE, ALWAYS ASK:**
+**Streamlined by type — no unnecessary confirmations:**
 
-```
-✅ [Current phase] complete
-→ Do you want to advance to [next phase]? (Optional/Required)
-```
-
-**Confirmation rules:**
-- **REQUIRED**: "Advance to [next]?" → user responds yes/no
-- **OPTIONAL**: "Are there gray areas to discuss?" → user decides whether to skip
-- If OPTIONAL and user says "not needed" → save state and skip
-- If REQUIRED → user must confirm, otherwise continue with refinement
+- **FEATURE**: Specify → Execute (direct, no Discovery, no extra questions)
+- **BUG**: Discovery (3 questions) → Specify → Tasks → Execute
+- **GENERAL**: Discovery → Specify → Design → Tasks → Execute
+- **NEW PROJECT** (EMPTY_PROJECT): Full Discovery → all phases
+- **CODE_ONLY**: MAP first → "What do you want to do?" → falls into Feature/Bug/General flow
 
 ---
 
@@ -90,7 +108,7 @@ Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 **If GENERAL/NEW:**
 6 complete phases (see lspec-discovery)
 
-**When finished:** "Discovery complete. Do you want to advance to Discuss (optional — gray areas)?"
+**When finished:** → Advance directly to Specify
 
 ---
 
@@ -99,7 +117,7 @@ Collect: goal, problem, target user, MVP, stack, references, risks, milestones
 **OPTIONAL** — Only if there is ambiguity
 Capture context in gray areas (layout, interactions, edge cases)
 
-**When finished:** "Discuss complete. Advance to Specify (required)?"
+**When finished:** → Advance directly to Specify
 
 ---
 
@@ -254,7 +272,7 @@ How we know the feature is successful:
 - **Edge cases matter** — What breaks? What's empty? What's huge?
 - **Out of Scope prevents creep** — If it's not here, it doesn't get built
 
-**When finished:** "Specify complete. Are there ambiguities to resolve in Clarify (optional)?"
+**When finished:** → Advance directly to Tasks (or Execute if ≤3 steps)
 
 ---
 
@@ -264,7 +282,7 @@ How we know the feature is successful:
 
 Resolve remaining ambiguities in requirements
 
-**When finished:** "Clarify complete. Are there architectural decisions for Design (optional)?"
+**When finished:** → Advance directly to Tasks
 
 ---
 
@@ -430,7 +448,7 @@ interface AnotherModel {
 - **Small components** — If component does 3+ things, split it
 - **Check CONCERNS.md** — If it exists, flag fragile areas the design must address
 
-**When finished:** "Design complete. Advance to Tasks (required)?"
+**When finished:** → Advance directly to Tasks
 
 ---
 
@@ -522,15 +540,6 @@ Before showing tasks to the user, run ALL three pre-approval checks. These are N
 **Check 3: Test Co-location Validation** — verify every task's `Tests` field matches the TESTING.md coverage matrix (see Test Co-location Validation section).
 
 **Output both tables with the tasks** so the user can see the validation results. Any ❌ means you MUST restructure before presenting.
-
-#### 6. ASK About MCPs and Skills
-
-**CRITICAL**: Before execution, ask the user:
-
-> "For each task, which tools should I use?"
->
-> **Available MCPs**: [list from project or user]
-> **Available Skills**: [list from project or user]
 
 ### Template: `.specs/[feature]/tasks.md`
 
@@ -710,7 +719,7 @@ The goal: no task produces unverified code. If code can't be tested in the task 
 - **Requirement ID = Traceable** — Every task traces back to a spec requirement
 - **One commit per task** — Plan the commit message format in advance
 
-**When finished:** "Tasks complete. Do you want to advance to Execute (required)?"
+**When finished:** → Advance directly to Execute
 
 ---
 

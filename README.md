@@ -35,26 +35,63 @@ pi uninstall npm:@by-lua/lspec-pi
 
 Each agent uses available tools with grep/read fallback if the package is not installed.
 
-## Usage Mode
+## Usage Recommendations
 
-Just say what you want:
+### Quick Guide
+
+| Scenario | Command | What happens |
+|----------|---------|--------------|
+| **Existing project** without `.specs/` | `/lspec map` | Map code → creates specs → then ask what to do |
+| **Add feature** in existing project | `/lspec add [feature]` | Falls into correct flow automatically |
+| **Fix bug** in existing project | `/lspec fix [bug]` | Short Discovery → Tasks → Execute |
+| **New project** | `/lspec create [project]` | Full Discovery → pipeline |
+
+### Decision Tree
 
 ```
-/lspec I need to create the auth module
-/lspec there's a bug in login that doesn't validate the token
-/lspec add email validation to the registration form
-/lspec refactor the payments service
+START
+ │
+  ├─► Has .specs/ folder?
+  │     │
+  │     ├─► YES → Use /lspec [request] → Forward flow
+  │     │
+  │     └─► NO
+  │           │
+  │           ├─► Folder is empty?
+  │           │     │
+  │           │     ├─► YES → /lspec [new project] → Full Discovery
+  │           │     │
+  │           │     └─► NO (has code) → /lspec map → Map first → then ask what to do
+  │           │
+  │           └─► Has .specs/ but empty → /lspec [request] → Full Discovery
 ```
 
-L-Spec automatically detects context:
+### Tips to Avoid Errors
 
-- **Existing code, no spec** → Map: maps the code, understands the structure, creates the spec, and helps you proceed. Use `/lspec map` to trigger.
-- **Existing code, with spec** → runs normal flow: verifies state, proposes changes, applies with gates
-- **New project** → Comprehensive Discovery: asks strategic questions to discover features, defines scope and structure
+**Use `/lspec auto [request]`** — the smart command that detects your project state and routes automatically:
+- No need to guess which command to use
+- Detects empty folder vs. existing code vs. has specs
+- Less error-prone than calling specific phases manually
 
-No configuration needed. No need to create files first. Just say what you want or what's broken — the flow adjusts itself.
+**Example**: `/lspec auto add user authentication`
 
+Instead of manually calling `/lspec discover` → `/lspec specify` → etc., just use `auto` and let the system guide you through the phases.
 
+### When to Use Each Command
+
+**`/lspec map`** — for existing project without specs:
+- Project exists but has no `.specs/`
+- Need to understand structure before adding anything
+- Taking over project from someone else
+- Maps code automatically → generates 7 architecture docs → then asks what you want to do
+
+**`/lspec [request]`** — for everything else:
+- Add feature → Feature flow (phased Discovery)
+- Fix bug → Bug flow (3 questions)
+- New project → Full Discovery
+- Refactor → Analyze → Specify → Execute
+
+No need to choose phase manually. The system auto-detects and advances.
 
 ---
 
