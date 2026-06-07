@@ -6,9 +6,10 @@ description: "Mapeia codebase existente e documenta estrutura/análise. Gera 7 a
 # map — Mapeamento de Codebase Brownfield
 
 **Aviso CRÍTICO:**
-- Responda APENAS com perguntas da fase atual
-- NUNCA pule fases ou despeje todas perguntas de uma vez
-- CONFIRME antes de continuar para próxima fase
+- MAP é 100% AUTOMÁTICO — analisa o código e gera os7 arquivos
+- NUNCA faça perguntas ao usuário durante o mapeamento
+- Se o projeto tem `.specs/` → analisa área específica
+- Se o projeto NÃO tem `.specs/` → mapeia toda a base e gera `.specs/codebase/`
 
 **Pipeline:**
 ```
@@ -49,13 +50,19 @@ fi
 
 ---
 
-## Map Flow (curto — projeto existente)
+## Map Flow (projeto existente — análise automática)
 
-1. Qual área do código quer mapear?
-2. Qual o objetivo do mapeamento?
-3. Quais outputs são mais relevantes?
+Quando o projeto JÁ tem `.specs/` mas você quer mapear uma área específica:
+
+1. Explorar estrutura de diretórios
+2. Identificar stack técnica
+3. Mapear arquitetura e padrões
+4. Documentar convenções
+5. Catalogar integrações
 
 → Gera `features/[name]/codebase/STACK.md`, `ARCHITECTURE.md`, etc.
+
+**Sem perguntas.** Analisa o código automaticamente.
 
 ---
 
