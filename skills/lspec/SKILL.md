@@ -62,15 +62,21 @@ DISCOVERY → RESEARCH → [DISCUSS?] → SPECIFY → [CLARIFY?] → [DESIGN?] �
 
 ## Absolute Rules
 
-**AUTO-DETECTION — CRITICAL:**
+**AUTO-DETECTION — CRÍTICO:**
 ```
-1. On /lspec [request], check if .specs/ exists:
+1. No /lspec [request], verificar se .specs/ existe:
    if [ -d ".specs" ]; then
-     → Normal Forward Pipeline
+     → Pipeline Normal (Forward)
    else
-     → AUTO-ACTIVATE MAP FIRST
-     → Map analyzes codebase → generates .specs/
-     → Then continue with requested pipeline
+     → Verificar se tem conteúdo/codebase:
+       if [ has code files ]; then
+         → MAP PRIMEIRO (análise automática)
+         → Depois pergunta: "O que quer fazer?"
+         → Continua com pipeline escolhido
+       else
+         → NEW PROJECT
+         → Discovery (projeto novo)
+       fi
    fi
 ```
 
@@ -236,8 +242,9 @@ For: código existente sem specs — executado automaticamente
 | `/lspec [request]` | **Único comando** — auto-detecta contexto |
 
 **Auto-detecção:**
-- Projeto com `.specs/` → Pipeline Forward
-- Projeto sem `.specs/` → MAP interno primeiro → depois Forward
+- Projeto com `.specs/` → Forward
+- Projeto sem `.specs/` + tem código → MAP → pergunta o que quer fazer
+- Projeto sem `.specs/` + vazio → NEW PROJECT → Discovery
 
 ---
 
